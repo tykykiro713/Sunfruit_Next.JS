@@ -5,8 +5,8 @@ import "./globals.css";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/lib/apollo-client";
 import { MyProvider } from "@/context/MyContext";
-import { CartProvider } from "@/context/CartContext"; // Import the CartProvider
-import Script from "next/script"; // Import next/script for adding scripts
+import { CartProvider } from "@/context/CartContext";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,8 +36,8 @@ export default function RootLayout({
       <head>
         {/* Klaviyo Active Onsite Script */}
         <Script
-          src="https://static.klaviyo.com/onsite/js/UTwqjt/klaviyo.js"
-          strategy="afterInteractive" // Ensures the script loads after the page is interactive
+          src={`https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=${process.env.NEXT_PUBLIC_KLAVIYO_COMPANY_ID}`}
+          strategy="afterInteractive"
         />
       </head>
       <body
@@ -52,6 +52,7 @@ export default function RootLayout({
     </html>
   );
 }
+
 
 
 
