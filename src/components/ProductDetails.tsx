@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Disclosure,
   DisclosureButton,
@@ -13,6 +13,7 @@ import {
   TabPanel,
   TabPanels,
 } from "@headlessui/react";
+import { useCart } from '@/context/CartContext';
 import { StarIcon } from "@heroicons/react/20/solid";
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 
@@ -20,8 +21,10 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductDetails({ product }: { product: any }) {
-  const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || null);
+export default function ProductDetails({ product }) {
+  const [selectedColor, setSelectedColor] = useState(
+    product.colors?.[0] || null
+  );
 
   const accordionItems = [
     {
@@ -61,24 +64,29 @@ export default function ProductDetails({ product }: { product: any }) {
     },
   ];
 
-  const handleAddToCart = () => {
-    console.log("Triggered Klaviyo modal for product:", product);
+  useEffect(() => {
+    // Ensure Klaviyo's global object is initialized
+    window._klOnsite = window._klOnsite || [];
+  }, []);
 
-    // Commented out the cart drawer trigger
-    addToCart({
-       id: product.id,
-       title: product.title,
-       price: product.priceRange?.minVariantPrice?.amount || "N/A",
-       image: product.images?.edges[0]?.node.url || "/placeholder-image.png",
-       selectedColor: selectedColor?.name || null,
-    });
-
-    // Trigger the Klaviyo modal
-    if (typeof window !== "undefined" && window._klOnsite) {
-      window._klOnsite.openForm([
-        "XhTP7m", // Replace with your Klaviyo form ID
-        () => console.log("Klaviyo modal triggered"),
-      ]);
+  const { addToCart } = useCart();
+  
+  const handleAddToCart = (e: React.FormEvent) => {
+    e.preventDefault();
+  
+    // Add the product to the cart
+    //addToCart({
+      //id: product.id,
+      //title: product.title,
+      //price: parseFloat(product.priceRange?.minVariantPrice?.amount) || 0,
+      //quantity: 1,
+    //});
+  
+    // Trigger the Klaviyo form
+    if (window._klOnsite?.openForm) {
+      window._klOnsite.openForm('RU73Kw');
+    } else {
+      console.error('Klaviyo form function not available');
     }
   };
 
@@ -91,12 +99,14 @@ export default function ProductDetails({ product }: { product: any }) {
             {/* Image selector */}
             <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
               <TabList className="grid grid-cols-4 gap-6">
-                {product.images?.edges.map((image: any, idx: number) => (
+                {product.images?.edges.map((image, idx) => (
                   <Tab
                     key={idx}
                     className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-green-500/50 focus:ring-offset-4"
                   >
-                    <span className="sr-only">{image.node.altText || "Product Image"}</span>
+                    <span className="sr-only">
+                      {image.node.altText || "Product Image"}
+                    </span>
                     <span className="absolute inset-0 overflow-hidden rounded-md">
                       <img
                         alt={image.node.altText || "Product Image"}
@@ -114,7 +124,7 @@ export default function ProductDetails({ product }: { product: any }) {
             </div>
 
             <TabPanels>
-              {product.images?.edges.map((image: any, idx: number) => (
+              {product.images?.edges.map((image, idx) => (
                 <TabPanel key={idx}>
                   <img
                     alt={image.node.altText || "Product Image"}
@@ -135,9 +145,9 @@ export default function ProductDetails({ product }: { product: any }) {
             <div className="mt-3">
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight text-gray-900">
-              {product.priceRange
-                ? `${product.priceRange.minVariantPrice.amount} ${product.priceRange.minVariantPrice.currencyCode}`
-                : "N/A"}
+                {product.priceRange
+                  ? `${product.priceRange.minVariantPrice.amount} ${product.priceRange.minVariantPrice.currencyCode}`
+                  : "N/A"}
               </p>
             </div>
 
@@ -171,7 +181,7 @@ export default function ProductDetails({ product }: { product: any }) {
               />
             </div>
 
-            <form className="mt-6">
+            <form className="mt-6" onSubmit={handleAddToCart}>
               {/* Colors */}
               {product.colors && (
                 <div>
@@ -211,7 +221,7 @@ export default function ProductDetails({ product }: { product: any }) {
                   type="submit"
                   className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-green-500 px-8 py-3 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-offset-2 focus:ring-offset-green-700 sm:w-full"
                 >
-                  Add to bag
+                  Add to Bag
                 </button>
                 <button
                   type="button"
@@ -270,4 +280,7 @@ export default function ProductDetails({ product }: { product: any }) {
     </div>
   );
 }
+
+ 
+
 

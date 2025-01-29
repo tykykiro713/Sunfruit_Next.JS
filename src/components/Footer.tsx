@@ -95,7 +95,7 @@ const navigation = {
             <div className="space-y-8">
               <img
                 alt="Company name"
-                src="/images/nuun_logo.png"
+                src="/images/Sunfruit_Green_logo.png"
                 className="h-9"
               />
               <p className="text-balance text-sm/6 text-gray-600">

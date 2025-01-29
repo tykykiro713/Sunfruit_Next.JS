@@ -1,17 +1,17 @@
 import React from 'react';
 
 const valueProps = [
-  { text: 'VEGAN' },
-  { text: 'GLUTEN-FREE' },
+  { text: '100% ORGANIC' },
+  { text: 'SUGAR-FREE' },
+  { text: 'SODIUM-FREE' },
+  { text: 'NON-GMO' },
   { text: 'DAIRY-FREE' },
-  { text: 'NON GMO' },
-  { text: 'NO SUGAR ADDED' },
-  { text: 'NO ARTIFICIAL SWEETENERS' },
+  { text: 'NO PRESERVATIVES' },
 ];
 
 export default function ValueProps() {
   return (
-    <div className="bg-custombeige-500 py-8 px-4">
+    <div className="bg-mastersyellow-500 py-8 px-4">
       <div className="mx-auto max-w-7xl flex flex-col sm:flex-row sm:flex-wrap sm:justify-between items-center gap-4">
         {valueProps.map((prop, index) => (
           <div

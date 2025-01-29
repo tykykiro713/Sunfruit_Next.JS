@@ -4,7 +4,7 @@ export default function VideoCTA() {
       {/* Text Section */}
       <div className="p-8 md:p-12 lg:px-16 lg:py-24">
         <div className="mx-auto max-w-xl text-center sm:text-left">
-          <h2 className="text-4xl font-poppins font-semibold tracking-tight text-darkteal-500 sm:text-5xl">
+          <h2 className="text-4xl font-poppins font-semibold tracking-tight text-chewsybrown-500 sm:text-5xl">
             Better Water Starts with Sunfruit
           </h2>
           <p className="mt-6 text-xl/8 text-gray-600">
@@ -15,7 +15,7 @@ export default function VideoCTA() {
           <div className="mt-4 md:mt-8">
             <a
               href="#"
-              className="mt-4 inline-block rounded-3xl bg-darkteal-500 px-12 py-3 text-base md:text-lg font-medium text-white transition hover:bg-brightgreen-500 focus:outline-none focus:ring focus:ring-green-500"
+              className="mt-4 inline-block rounded-3xl bg-emeraldgreen-500 px-12 py-3 text-base md:text-lg font-medium text-white transition hover:bg-brightgreen-500 focus:outline-none focus:ring focus:ring-green-500"
             >
               Get FREE Samples*
             </a>

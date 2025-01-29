@@ -127,7 +127,7 @@ export default function Header() {
 
       <header className="relative z-40 lg:z-50">
         <nav aria-label="Top">
-          {/*}
+          {/*
           <div className="bg-brightgreen-500">
             <div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4 sm:px-6 lg:px-8">
               <div className="flex items-center space-x-6">
@@ -143,11 +143,21 @@ export default function Header() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="border-b border-gray-200">
                 <div className="flex h-16 items-center justify-between">
-                  <div className="hidden lg:flex lg:flex-1 lg:items-center">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(true)}
+                    className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 lg:hidden"
+                  >
+                    <span className="sr-only">Open menu</span>
+                    <Bars3Icon aria-hidden="true" className="h-6 w-6" />
+                  </button>
+                  <div className="flex-1 flex justify-center lg:justify-start">
                     <a href="/">
-                      <img alt="" src="/images/Nuun_Logo.png" className="h-8 w-auto" />
+                      <img alt="" src="/images/Sunfruit_Green_Logo.png" className="h-8 w-auto" />
                     </a>
                   </div>
+
+
 
                   <div className="hidden h-full lg:flex">
                     <PopoverGroup className="inset-x-0 bottom-0 px-4">
@@ -155,7 +165,7 @@ export default function Header() {
                         {navigation.categories.map((category) => (
                           <Popover key={category.name} className="flex">
                             <div className="relative flex">
-                              <PopoverButton className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-lg font-bold text-gray-700 transition-colors duration-200 ease-out hover:text-gray-800 data-[open]:border-indigo-600 data-[open]:text-indigo-600">
+                              <PopoverButton className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-lg font-bold text-emeraldgreen-500 transition-colors duration-200 ease-out hover:text-brightgreen-500 data-[open]:border-indigo-600 data-[open]:text-indigo-600">
                                 {category.name}
                               </PopoverButton>
                             </div>
@@ -191,7 +201,7 @@ export default function Header() {
                           <a
                             key={page.name}
                             href={page.href}
-                            className="flex items-center text-lg font-bold text-gray-700 hover:text-gray-800"
+                            className="flex items-center text-lg font-bold text-emeraldgreen-500 hover:text-brightgreen-500"
                           >
                             {page.name}
                           </a>
@@ -206,6 +216,7 @@ export default function Header() {
                         onClick={() => setDrawerOpen(!isDrawerOpen)}
                         className="group -m-2 flex items-center p-2"
                       >
+                      
                         <ShoppingBagIcon
                           aria-hidden="true"
                           className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
@@ -216,7 +227,7 @@ export default function Header() {
                         <span className="sr-only">items in cart, view bag</span>
                       </button>
                     </div>
-
+                        
                     
                     {/* Cart Drawer */}
                     {isDrawerOpen && (

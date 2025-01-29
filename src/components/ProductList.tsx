@@ -29,7 +29,7 @@ export default function ProductList() {
   return (
     <div className="bg-gray-50">
       <div className="mx-auto max-w-2xl px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
-        <h2 className="text-4xl font-poppins font-semibold tracking-tight text-darkteal-500 sm:text-5xl text-center">
+        <h2 className="text-4xl font-poppins font-semibold tracking-tight text-chewsybrown-500 sm:text-5xl text-center">
           Flavors
         </h2>
         {/*}

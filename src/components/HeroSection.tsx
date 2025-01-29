@@ -16,7 +16,7 @@ export default function HeroSection() {
                 </p>
                 <a
                   href="#"
-                  className="mt-4 inline-block rounded-3xl bg-darkteal-500 px-12 py-3 text-base md:text-lg font-medium text-white transition hover:bg-brightgreen-500 focus:outline-none focus:ring focus:ring-green-500"
+                  className="mt-4 inline-block rounded-3xl bg-emeraldgreen-500 px-12 py-3 text-base md:text-lg font-medium text-white transition hover:bg-brightgreen-500 focus:outline-none focus:ring focus:ring-green-500"
                 >
                   Get FREE Samples*
                 </a>

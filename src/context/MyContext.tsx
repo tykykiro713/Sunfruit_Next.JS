@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { usePathname } from "next/navigation";
 
-// Define the context type
 interface MyContextType {
   state: string;
   setState: React.Dispatch<React.SetStateAction<string>>;
@@ -11,13 +11,25 @@ interface MyContextType {
 // Create the context
 const MyContext = createContext<MyContextType | null>(null);
 
+// GA4 Pageview Tracking Function
+const trackPageview = (url: string) => {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("config", process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID as string, {
+      page_path: url,
+    });
+  }
+};
+
 // Provider Component
 export const MyProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState("Default value");
+  const pathname = usePathname(); // Get current route
 
-  if (!MyContext) {
-    throw new Error("MyContext must be initialized");
-  }
+  useEffect(() => {
+    if (pathname) {
+      trackPageview(pathname);
+    }
+  }, [pathname]);
 
   return (
     <MyContext.Provider value={{ state, setState }}>

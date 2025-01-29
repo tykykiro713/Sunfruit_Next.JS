@@ -1,10 +1,9 @@
-import NewHeader from "@/components/NewHeader";
+import Header from "@/components/Header";
 import VideoCTA from "@/components/VideoCTA"; 
 import ValueProps from "@/components/ValueProps";
 import ProductList from "@/components/ProductList";
 import UsVsThem from "@/components/UsVsThem";
 import Content1 from "@/components/Content1";
-import Circle_Testimonial from "@/components/Circle_Testimonial";
 import Testimonials from "@/components/Testimonials";
 import HeroSection from "@/components/HeroSection";
 import Faqs from "@/components/Faqs";
@@ -14,13 +13,12 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <div>
-      <NewHeader />
+      <Header />
       <VideoCTA />
       <ValueProps />
       <ProductList />
       <UsVsThem />
       <Content1 />
-      <Circle_Testimonial />
       <Testimonials />
       <HeroSection />
       <Faqs />
