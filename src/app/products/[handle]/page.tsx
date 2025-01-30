@@ -4,19 +4,12 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
 
-interface PageParams {
-  handle: string;
-}
-
-interface GenerateMetadataProps {
-  params: PageParams;
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
-export async function generateMetadata(
-  props: GenerateMetadataProps
-): Promise<Metadata> {
-  const product = await fetchProductByHandle(props.params.handle);
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: { handle: string } 
+}): Promise<Metadata> {
+  const product = await fetchProductByHandle(params.handle);
 
   if (!product) {
     return {
@@ -31,11 +24,9 @@ export async function generateMetadata(
 }
 
 export default async function ProductPage({
-  params,
-  searchParams,
-}: {
-  params: PageParams;
-  searchParams: { [key: string]: string | string[] | undefined };
+  params 
+}: { 
+  params: { handle: string } 
 }) {
   const { handle } = params;
 
