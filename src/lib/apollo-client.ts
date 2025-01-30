@@ -6,7 +6,7 @@ const SHOPIFY_API_URL = process.env.NEXT_PUBLIC_SHOPIFY_API_URL || "";
 
 // Ensure the Shopify Access Token is only used on the server
 const SHOPIFY_ACCESS_TOKEN = 
-  typeof window === "undefined" ? process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN : "";
+  typeof window === "undefined" ? process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN : "";
 
 // Prevent app from starting if the required environment variables are missing (only on server)
 if (typeof window === "undefined" && !SHOPIFY_ACCESS_TOKEN) {
