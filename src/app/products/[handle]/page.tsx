@@ -1,15 +1,33 @@
+import { Metadata } from 'next';
 import { fetchProductByHandle } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
 
-// ✅ Correct the type definition for Next.js App Router
-interface ProductPageProps {
-  params: { handle: string };
+type Props = {
+  params: {
+    handle: string;
+  };
+};
+
+// Generate metadata for the page
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const product = await fetchProductByHandle(params.handle);
+
+  if (!product) {
+    return {
+      title: 'Product Not Found',
+    };
+  }
+
+  return {
+    title: product.title,
+    description: product.description,
+  };
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  // Ensure `params` is correctly structured
+// Product page component
+export default async function ProductPage({ params }: Props) {
   const { handle } = params;
 
   // Fetch product by handle
