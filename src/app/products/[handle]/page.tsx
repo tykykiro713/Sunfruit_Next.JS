@@ -5,13 +5,14 @@ import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
 
 type Props = {
-  params: {
-    handle: string;
-  };
+  params: { handle: string };
+  searchParams: Record<string, string | string[] | undefined>;
 };
 
 // Generate metadata for the page
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: Props
+): Promise<Metadata> {
   const product = await fetchProductByHandle(params.handle);
 
   if (!product) {
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // Product page component
-export default async function ProductPage({ params }: Props) {
+export default async function ProductPage({ params, searchParams }: Props) {
   const { handle } = params;
 
   // Fetch product by handle
@@ -45,4 +46,3 @@ export default async function ProductPage({ params }: Props) {
     </div>
   );
 }
-

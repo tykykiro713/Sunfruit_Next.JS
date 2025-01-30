@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const config: NextConfig = {
   images: {
     remotePatterns: [
       {
@@ -11,8 +11,12 @@ const nextConfig: NextConfig = {
     ],
   },
   eslint: {
-    ignoreDuringBuilds: true, // Prevents ESLint errors from blocking deployment
+    ignoreDuringBuilds: true,
   },
+  // Add experimental flag for proper module support
+  experimental: {
+    esmExternals: true,
+  }
 };
 
-export default nextConfig;
+export default config;
