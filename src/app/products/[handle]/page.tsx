@@ -16,6 +16,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const product = await fetchProductByHandle(params.handle);
+  console.log("Fetched product:", product); // Debugging line
 
   if (!product) {
     return notFound();
