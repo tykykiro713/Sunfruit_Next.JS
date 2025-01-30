@@ -1,29 +1,30 @@
 import { fetchProductByHandle } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
-import ProductDetails from "@/components/ProductDetails"; // Ensure this component is correctly imported
+import ProductDetails from "@/components/ProductDetails";
 
-export default async function ProductPage({ params }: { params: { handle: string } }) {
-  try {
-    // Extract the `handle` from params
-    const handle = params?.handle;
+// ✅ Correct the type definition for Next.js App Router
+interface ProductPageProps {
+  params: { handle: string };
+}
 
-    // Fetch the product data using the `handle`
-    const product = await fetchProductByHandle(handle);
+export default async function ProductPage({ params }: ProductPageProps) {
+  // Ensure `params` is correctly structured
+  const { handle } = params;
 
-    // Handle the case where the product is not found
-    if (!product) {
-      return notFound();
-    }
+  // Fetch product by handle
+  const product = await fetchProductByHandle(handle);
 
-    return (
-      <div className="bg-white">
-        <Header />
-        <ProductDetails product={product} />
-      </div>
-    );
-  } catch (error) {
-    console.error("Error loading product page:", error);
+  // Handle case where the product is not found
+  if (!product) {
     return notFound();
   }
+
+  return (
+    <div className="bg-white">
+      <Header />
+      <ProductDetails product={product} />
+    </div>
+  );
 }
+
