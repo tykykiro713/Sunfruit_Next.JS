@@ -1,52 +1,43 @@
-import { Metadata } from 'next';
-import { fetchProductByHandle } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
+import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
 
-type GenerateMetadataProps = {
-  params: Promise<{ handle: string }>;
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
-type PageProps = {
-  params: { handle: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
-export async function generateMetadata(
-  { params }: GenerateMetadataProps
-): Promise<Metadata> {
-  const resolvedParams = await params;
-  const product = await fetchProductByHandle(resolvedParams.handle);
-
-  if (!product) {
-    return {
-      title: 'Product Not Found',
-    };
-  }
-
-  return {
-    title: product.title,
-    description: product.description,
+interface ProductPageProps {
+  params: {
+    handle: string;
   };
 }
 
-export default async function ProductPage({ params }: PageProps) {
-  const { handle } = params;
+export default async function ProductPage({ params }: ProductPageProps) {
+  // Ensure params.handle is correctly received
+  if (!params || !params.handle) {
+    return notFound();
+  }
 
-  // Fetch product by handle
-  const product = await fetchProductByHandle(handle);
+  const product = await fetchProductByHandle(params.handle);
 
-  // Handle case where the product is not found
   if (!product) {
     return notFound();
   }
 
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-screen">
       <Header />
-      <ProductDetails product={product} />
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <ProductDetails product={product} />
+      </main>
     </div>
   );
+}
+
+// Pre-generate static paths for known products
+export async function generateStaticParams() {
+  try {
+    const products = await fetchProducts();
+    return products.map((product: { handle: string }) => ({ handle: product.handle }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
 }
