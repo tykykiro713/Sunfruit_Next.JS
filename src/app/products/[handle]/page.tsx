@@ -2,15 +2,15 @@ import { fetchProductByHandle } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails"; // Ensure this component is correctly imported
-import type { PageProps } from "next";
 
-export default async function ProductPage({ params }: PageProps<{ handle: string }>) {
+interface ProductPageProps {
+  params: { handle: string }; // ✅ Correct type for params
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
   try {
-    // Ensure params is properly awaited (fix TypeScript issue)
-    const { handle } = await params;
-
-    // Fetch the product data using the resolved `handle`
-    const product = await fetchProductByHandle(handle);
+    // Fetch product by handle
+    const product = await fetchProductByHandle(params.handle);
 
     // Handle the case where the product is not found
     if (!product) {
@@ -28,6 +28,7 @@ export default async function ProductPage({ params }: PageProps<{ handle: string
     return notFound();
   }
 }
+
 
 
 
