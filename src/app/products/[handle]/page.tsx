@@ -3,14 +3,13 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails"; // Ensure this component is correctly imported
 
-interface ProductPageProps {
-  params: { handle: string }; // ✅ Correct type for params
-}
-
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({ params }: { params: { handle: string } }) {
   try {
-    // Fetch product by handle
-    const product = await fetchProductByHandle(params.handle);
+    // Extract the `handle` from params
+    const handle = params?.handle;
+
+    // Fetch the product data using the `handle`
+    const product = await fetchProductByHandle(handle);
 
     // Handle the case where the product is not found
     if (!product) {
@@ -28,7 +27,3 @@ export default async function ProductPage({ params }: ProductPageProps) {
     return notFound();
   }
 }
-
-
-
-
