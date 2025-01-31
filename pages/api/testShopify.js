@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     const SHOPIFY_ACCESS_TOKEN = process.env.NEXT_SHOPIFY_ACCESS_TOKEN;
 
     const query = `
-    {
+    {n
       products(first: 5) {
         edges {
           node {

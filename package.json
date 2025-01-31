@@ -15,6 +15,7 @@
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@shopify/buy-button-js": "^2.4.0",
+    "dotenv": "^16.4.7",
     "graphql": "^16.10.0",
     "keen-slider": "^6.8.6",
     "next": "^15.1.6",
