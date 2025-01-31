@@ -23,7 +23,7 @@ import Link from "next/link";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { cart } = useCart();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<{ title: string; handle: string; images?: { edges: { node: { url?: string; altText?: string } }[] } }[]>([]);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {

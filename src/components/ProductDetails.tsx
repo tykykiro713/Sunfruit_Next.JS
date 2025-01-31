@@ -21,16 +21,33 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductDetails({ product }) {
-  const [selectedColor, setSelectedColor] = useState(
-    product.colors?.[0] || null
-  );
+interface Product {
+  title: string;
+  description: string;
+  priceRange?: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+  images?: {
+    edges: { node: { url: string; altText?: string } }[];
+  };
+  colors?: { name: string; bgColor: string; selectedColor: string }[];
+  rating?: number;
+}
+
+export default function ProductDetails({ product }: { product: Product }) {
+  const [selectedColor, setSelectedColor] = useState<
+    Product["colors"][number] | null
+  >(product.colors && product.colors.length > 0 ? product.colors[0] : null);
+
 
   const accordionItems = [
     {
       name: "Description",
       content: [
-        "Made from organic lemon and organic mint",
+        "Now made from organic lemon and organic mint",
         "Prebiotics to improve gut health",
         "5 Calories, Zero sugar, Zero Carbs, Zero Preservatives",
         "Simply mix with 16oz of water and enjoy",
