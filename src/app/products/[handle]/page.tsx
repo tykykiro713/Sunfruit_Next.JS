@@ -3,20 +3,21 @@ import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
 import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
 
-export default async function ProductPage({ params }: { params: { handle: string } }) {
-    // 🛠️ Debugging: Log the type and value of params
-    console.log("🛠️ Params type:", typeof params);
-    console.log("🛠️ Params value:", params);
+export default async function ProductPage(props: Promise<{ params: { handle: string } }>) {
+  const { params } = await props; // ✅ Await the promise if needed
+  console.log("🛠️ Product Page Params (after await):", params);
 
   if (!params?.handle) {
-    return notFound();
+    console.error("🚨 Missing params.handle - Throwing Error!");
+    throw new Error("❌ Params handle is missing!");
   }
 
   const product = await fetchProductByHandle(params.handle);
-  console.log("Fetched product:", product); // Debugging log
+  console.log("Fetched product:", product);
 
   if (!product) {
-    return notFound();
+    console.error("🚨 Product not found for handle:", params.handle);
+    throw new Error(`❌ Product not found for handle: ${params.handle}`);
   }
 
   return (
@@ -29,18 +30,24 @@ export default async function ProductPage({ params }: { params: { handle: string
   );
 }
 
-// ✅ Explicit return type for generateStaticParams
+// ✅ Explicitly return a resolved Promise in generateStaticParams
 export async function generateStaticParams(): Promise<{ handle: string }[]> {
   try {
     const products = await fetchProducts();
-    console.log("Generating Static Paths:", products); // Debugging log
+    console.log("📌 Generating Static Paths:", products);
 
     if (!products || products.length === 0) {
       console.warn("⚠️ No products found. Ensure Shopify API is returning products.");
       return [];
     }
 
-    return products.map((product) => ({ handle: product.handle }));
+    const paths = products.map((product) => {
+      console.log("🛠️ Generated Params:", { handle: product.handle });
+      return { handle: product.handle };
+    });
+
+    console.log("✅ Final Generated Paths:", paths);
+    return paths;
   } catch (error) {
     console.error("❌ Error generating static params:", error);
     return [];
