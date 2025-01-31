@@ -3,20 +3,15 @@ import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
 import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
 
-interface ProductPageProps {
-  params: {
-    handle: string;
-  };
-}
+export default async function ProductPage({ params }: { params: { handle: string } }) {
+  console.log("Product Page Params:", params); // Debugging log
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  // Ensure params.handle is correctly received
-  if (!params || !params.handle) {
+  if (!params?.handle) {
     return notFound();
   }
 
   const product = await fetchProductByHandle(params.handle);
-  console.log("Fetched product:", product); // Debugging line
+  console.log("Fetched product:", product); // Debugging log
 
   if (!product) {
     return notFound();
@@ -32,13 +27,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
   );
 }
 
-// Pre-generate static paths for known products
-export async function generateStaticParams() {
+// ✅ Explicit return type for generateStaticParams
+export async function generateStaticParams(): Promise<{ handle: string }[]> {
   try {
     const products = await fetchProducts();
-    return products.map((product: { handle: string }) => ({ handle: product.handle }));
+    console.log("Generating Static Paths:", products); // Debugging log
+
+    if (!products || products.length === 0) {
+      console.warn("⚠️ No products found. Ensure Shopify API is returning products.");
+      return [];
+    }
+
+    return products.map((product) => ({ handle: product.handle }));
   } catch (error) {
-    console.error("Error generating static params:", error);
+    console.error("❌ Error generating static params:", error);
     return [];
   }
 }
