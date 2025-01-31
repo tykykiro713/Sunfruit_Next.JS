@@ -4,10 +4,38 @@ import React, { useEffect, useState } from "react";
 import { fetchProducts } from "@/lib/shopify";
 import Link from "next/link";
 
+interface ProductMedia {
+  mediaContentType: string;
+  image?: {
+    url: string;
+    altText: string | null;
+  };
+  sources?: {
+    url: string;
+    mimeType: string;
+  }[];
+}
+
+interface Product {
+  id: string;
+  title: string;
+  handle: string;
+  description: string;
+  media: {
+    edges: {
+      node: ProductMedia;
+    }[];
+  };
+}
+
+interface ErrorWithMessage {
+  message: string;
+}
+
 export default function ProductList() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<ErrorWithMessage | null>(null);
 
   useEffect(() => {
     async function loadProducts() {
@@ -16,7 +44,8 @@ export default function ProductList() {
         setProducts(fetchedProducts);
         setLoading(false);
       } catch (err) {
-        setError(err);
+        const error = err as ErrorWithMessage;
+        setError(error);
         setLoading(false);
       }
     }
@@ -46,9 +75,9 @@ export default function ProductList() {
                   if (node.mediaContentType === "IMAGE") {
                     return (
                       <img
-                        key={node.image.url}
-                        src={node.image.url}
-                        alt={node.image.altText || product.title}
+                        key={node.image?.url}
+                        src={node.image?.url}
+                        alt={node.image?.altText || product.title}
                         className="aspect-[3/2] w-full rounded-lg object-cover"
                       />
                     );
@@ -56,13 +85,13 @@ export default function ProductList() {
                   if (node.mediaContentType === "VIDEO") {
                     return (
                       <video
-                        key={node.sources[0]?.url}
+                        key={node.sources?.[0]?.url}
                         controls
                         className="aspect-[3/2] w-full rounded-lg"
                       >
                         <source
-                          src={node.sources[0]?.url}
-                          type={node.sources[0]?.mimeType}
+                          src={node.sources?.[0]?.url}
+                          type={node.sources?.[0]?.mimeType}
                         />
                       </video>
                     );
@@ -88,7 +117,6 @@ export default function ProductList() {
     </div>
   );
 }
-
 
 
 

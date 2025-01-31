@@ -1,5 +1,16 @@
 "use client";
 
+declare global {
+  interface KlaviyoObject {
+    openForm(formId: string): void;
+    push(args: any[]): void;
+  }
+  
+  interface Window {
+    _klOnsite: KlaviyoObject;
+  }
+}
+
 import { useState, useEffect } from "react";
 import {
   Disclosure,
@@ -21,6 +32,12 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+type Color = {
+  name: string;
+  bgColor: string;
+  selectedColor: string;
+};
+
 interface Product {
   title: string;
   description: string;
@@ -33,15 +50,14 @@ interface Product {
   images?: {
     edges: { node: { url: string; altText?: string } }[];
   };
-  colors?: { name: string; bgColor: string; selectedColor: string }[];
+  colors?: Color[];
   rating?: number;
 }
 
 export default function ProductDetails({ product }: { product: Product }) {
-  const [selectedColor, setSelectedColor] = useState<
-    Product["colors"][number] | null
-  >(product.colors && product.colors.length > 0 ? product.colors[0] : null);
-
+  const [selectedColor, setSelectedColor] = useState<Color | null>(
+    product.colors && product.colors.length > 0 ? product.colors[0] : null
+  );
 
   const accordionItems = [
     {
@@ -100,10 +116,14 @@ export default function ProductDetails({ product }: { product: Product }) {
     //});
   
     // Trigger the Klaviyo form
-    if (window._klOnsite?.openForm) {
-      window._klOnsite.openForm('RU73Kw');
-    } else {
-      console.error('Klaviyo form function not available');
+    try {
+      if (window._klOnsite && typeof window._klOnsite.openForm === 'function') {
+        window._klOnsite.openForm('RU73Kw');
+      } else {
+        console.error('Klaviyo form function not available');
+      }
+    } catch (error) {
+      console.error('Error opening Klaviyo form:', error);
     }
   };
 
@@ -178,7 +198,7 @@ export default function ProductDetails({ product }: { product: Product }) {
                       key={rating}
                       aria-hidden="true"
                       className={classNames(
-                        product.rating > rating
+                        (product.rating || 0) > rating
                           ? "text-green-500"
                           : "text-gray-300",
                         "size-5 shrink-0"
@@ -209,7 +229,7 @@ export default function ProductDetails({ product }: { product: Product }) {
                       onChange={setSelectedColor}
                       className="flex items-center gap-x-3"
                     >
-                      {product.colors.map((color: any) => (
+                      {product.colors.map((color: Color) => (
                         <Radio
                           key={color.name}
                           value={color}
@@ -297,7 +317,5 @@ export default function ProductDetails({ product }: { product: Product }) {
     </div>
   );
 }
-
- 
 
 
