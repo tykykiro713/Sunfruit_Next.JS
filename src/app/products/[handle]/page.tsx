@@ -3,9 +3,11 @@ import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
 import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
 
-export default async function ProductPage(props: Promise<{ params: { handle: string } }>) {
-  const { params } = await props; // ✅ Await the promise if needed
-  console.log("🛠️ Product Page Params (after await):", params);
+// ✅ Force Next.js to recognize params correctly
+export default async function ProductPage(props: any) {
+  const params = props.params as { handle: string }; // ✅ Override incorrect type inference
+
+  console.log("🛠️ Page Props:", params);
 
   if (!params?.handle) {
     console.error("🚨 Missing params.handle - Throwing Error!");
@@ -30,10 +32,10 @@ export default async function ProductPage(props: Promise<{ params: { handle: str
   );
 }
 
-// ✅ Explicitly return a resolved Promise in generateStaticParams
+// ✅ Ensure generateStaticParams properly resolves values
 export async function generateStaticParams(): Promise<{ handle: string }[]> {
   try {
-    const products: { handle: string }[] = await fetchProducts(); // ✅ Explicitly define products type
+    const products: { handle: string }[] = await fetchProducts();
     console.log("📌 Generating Static Paths:", products);
 
     if (!products || products.length === 0) {
@@ -41,16 +43,9 @@ export async function generateStaticParams(): Promise<{ handle: string }[]> {
       return [];
     }
 
-    const paths = products.map((product: { handle: string }) => {
-      console.log("🛠️ Generated Params:", { handle: product.handle });
-      return { handle: product.handle };
-    });
-
-    console.log("✅ Final Generated Paths:", paths);
-    return paths;
+    return products.map((product) => ({ handle: product.handle }));
   } catch (error) {
     console.error("❌ Error generating static params:", error);
     return [];
   }
 }
-
