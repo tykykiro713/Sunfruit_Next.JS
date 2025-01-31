@@ -4,7 +4,9 @@ import ProductDetails from "@/components/ProductDetails";
 import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
 
 export default async function ProductPage({ params }: { params: { handle: string } }) {
-  console.log("Product Page Params:", params); // Debugging log
+    // 🛠️ Debugging: Log the type and value of params
+    console.log("🛠️ Params type:", typeof params);
+    console.log("🛠️ Params value:", params);
 
   if (!params?.handle) {
     return notFound();
