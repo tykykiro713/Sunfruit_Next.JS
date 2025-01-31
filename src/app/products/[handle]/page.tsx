@@ -33,7 +33,7 @@ export default async function ProductPage(props: Promise<{ params: { handle: str
 // ✅ Explicitly return a resolved Promise in generateStaticParams
 export async function generateStaticParams(): Promise<{ handle: string }[]> {
   try {
-    const products = await fetchProducts();
+    const products: { handle: string }[] = await fetchProducts(); // ✅ Explicitly define products type
     console.log("📌 Generating Static Paths:", products);
 
     if (!products || products.length === 0) {
@@ -41,7 +41,7 @@ export async function generateStaticParams(): Promise<{ handle: string }[]> {
       return [];
     }
 
-    const paths = products.map((product) => {
+    const paths = products.map((product: { handle: string }) => {
       console.log("🛠️ Generated Params:", { handle: product.handle });
       return { handle: product.handle };
     });
@@ -53,3 +53,4 @@ export async function generateStaticParams(): Promise<{ handle: string }[]> {
     return [];
   }
 }
+
