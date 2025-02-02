@@ -16,14 +16,14 @@ import {
   TabPanels,
 } from "@headlessui/react";
 import { Bars3Icon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { fetchProducts } from "@/lib/shopify";
+import { fetchProducts, ProductNode } from "@/lib/shopify";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { cart } = useCart();
-  const [products, setProducts] = useState<{ title: string; handle: string; images?: { edges: { node: { url?: string; altText?: string } }[] } }[]>([]);
+  const [products, setProducts] = useState<ProductNode[]>([]);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
@@ -127,18 +127,6 @@ export default function Header() {
 
       <header className="relative z-40 lg:z-50">
         <nav aria-label="Top">
-          {/*
-          <div className="bg-brightgreen-500">
-            <div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center space-x-6">
-                <a href="#" className="text-sm font-medium text-gray-900 hover:text-brightgreen-500">
-                  Get FREE Samples this week only! click here
-                </a>
-              </div>
-            </div>
-          </div> 
-          */}
-
           <div className="bg-white">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="border-b border-gray-200">
@@ -152,12 +140,10 @@ export default function Header() {
                     <Bars3Icon aria-hidden="true" className="h-6 w-6" />
                   </button>
                   <div className="flex-1 flex justify-center lg:justify-start">
-                    <a href="/">
+                    <Link href="/">
                       <img alt="" src="/images/Sunfruit_Green_Logo.png" className="h-8 w-auto" />
-                    </a>
+                    </Link>
                   </div>
-
-
 
                   <div className="hidden h-full lg:flex">
                     <PopoverGroup className="inset-x-0 bottom-0 px-4">
@@ -198,13 +184,13 @@ export default function Header() {
                         ))}
 
                         {navigation.pages.map((page) => (
-                          <a
+                          <Link
                             key={page.name}
                             href={page.href}
                             className="flex items-center text-lg font-bold text-emeraldgreen-500 hover:text-brightgreen-500"
                           >
                             {page.name}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </PopoverGroup>
@@ -216,7 +202,6 @@ export default function Header() {
                         onClick={() => setDrawerOpen(!isDrawerOpen)}
                         className="group -m-2 flex items-center p-2"
                       >
-                      
                         <ShoppingBagIcon
                           aria-hidden="true"
                           className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
@@ -227,8 +212,7 @@ export default function Header() {
                         <span className="sr-only">items in cart, view bag</span>
                       </button>
                     </div>
-                        
-                    
+
                     {/* Cart Drawer */}
                     {isDrawerOpen && (
                       <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-lg z-50">

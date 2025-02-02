@@ -1,26 +1,69 @@
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
-import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
+import { fetchProductByHandle, fetchProducts, ProductNode } from "@/lib/shopify";
 
-// ✅ Force Next.js to recognize params correctly
-export default async function ProductPage(props: any) {
-  const params = props.params as { handle: string }; // ✅ Override incorrect type inference
+interface Product {
+  title: string;
+  description: string;
+  priceRange?: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+  images?: {
+    edges: {
+      node: {
+        url: string;
+        altText?: string;
+      };
+    }[];
+  };
+  colors?: {
+    name: string;
+    bgColor: string;
+    selectedColor: string;
+  }[];
+  rating?: number;
+}
 
-  console.log("🛠️ Page Props:", params);
+function convertShopifyProduct(shopifyProduct: ProductNode): Product {
+  return {
+    title: shopifyProduct.title,
+    description: shopifyProduct.description,
+    priceRange: shopifyProduct.priceRange,
+    images: {
+      edges: shopifyProduct.images.edges.map(edge => ({
+        node: {
+          url: edge.node.url,
+          altText: edge.node.altText || undefined
+        }
+      }))
+    }
+  };
+}
 
-  if (!params?.handle) {
-    console.error("🚨 Missing params.handle - Throwing Error!");
+interface PageProps {
+  params: Promise<{ handle: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+const ProductPage = async ({ params, searchParams }: PageProps) => {
+  // Resolve both promises
+  const [resolvedParams, resolvedSearchParams] = await Promise.all([params, searchParams]);
+
+  if (!resolvedParams?.handle) {
     throw new Error("❌ Params handle is missing!");
   }
 
-  const product = await fetchProductByHandle(params.handle);
-  console.log("Fetched product:", product);
+  const shopifyProduct = await fetchProductByHandle(resolvedParams.handle);
 
-  if (!product) {
-    console.error("🚨 Product not found for handle:", params.handle);
-    throw new Error(`❌ Product not found for handle: ${params.handle}`);
+  if (!shopifyProduct) {
+    notFound();
   }
+
+  const product = convertShopifyProduct(shopifyProduct);
 
   return (
     <div className="bg-white min-h-screen">
@@ -30,20 +73,16 @@ export default async function ProductPage(props: any) {
       </main>
     </div>
   );
-}
+};
 
-// ✅ Ensure generateStaticParams properly resolves values
-export async function generateStaticParams(): Promise<{ handle: string }[]> {
+export default ProductPage;
+
+export async function generateStaticParams() {
   try {
-    const products: { handle: string }[] = await fetchProducts();
-    console.log("📌 Generating Static Paths:", products);
-
-    if (!products || products.length === 0) {
-      console.warn("⚠️ No products found. Ensure Shopify API is returning products.");
-      return [];
-    }
-
-    return products.map((product) => ({ handle: product.handle }));
+    const products = await fetchProducts();
+    return products?.map((product) => ({
+      handle: product.handle,
+    })) ?? [];
   } catch (error) {
     console.error("❌ Error generating static params:", error);
     return [];

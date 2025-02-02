@@ -1,26 +1,26 @@
 import { gql } from "@apollo/client";
 import client from "@/lib/apollo-client";
 
-interface MediaImage {
+export interface MediaImage {
   image: {
     url: string;
     altText: string | null;
   };
 }
 
-interface VideoSource {
+export interface VideoSource {
   url: string;
   mimeType: string;
 }
 
-interface MediaNode {
+export interface MediaNode {
   mediaContentType: string;
   alt: string | null;
   image?: MediaImage['image'];
   sources?: VideoSource[];
 }
 
-interface ProductNode {
+export interface ProductNode {
   id: string;
   title: string;
   description: string;
@@ -50,7 +50,7 @@ interface ProductNode {
   };
 }
 
-interface ProductsData {
+export interface ProductsData {
   products: {
     edges: {
       node: ProductNode;
@@ -58,7 +58,7 @@ interface ProductsData {
   };
 }
 
-interface ProductByHandleData {
+export interface ProductByHandleData {
   productByHandle: ProductNode;
 }
 
