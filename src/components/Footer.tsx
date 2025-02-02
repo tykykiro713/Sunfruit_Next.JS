@@ -61,7 +61,7 @@ export default function Footer() {
             <img
               alt="Company name"
               src="/images/Sunfruit_Green_logo.png"
-              className="h-9"
+              className="h-9 w-auto"
             />
             <p className="text-sm text-gray-600">
               Making the world a better place through constructing elegant hierarchies.

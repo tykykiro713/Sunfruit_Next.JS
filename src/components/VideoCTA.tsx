@@ -31,7 +31,7 @@ export default function VideoCTA() {
         playsInline
       >
         <source
-          src="https://cdn.sanity.io/files/jf30o7wb/production/df2710e2dc918ccee5068445f86c3f47432df657.mp4"
+          src="/Lemonade_Creation.mp4"
           type="video/mp4"
         />
         Your browser does not support the video tag.
