@@ -5,12 +5,12 @@ export default function VideoCTA() {
       <div className="p-8 md:p-12 lg:px-16 lg:py-24">
         <div className="mx-auto max-w-xl text-center sm:text-left">
           <h2 className="text-4xl font-poppins font-semibold tracking-tight text-chewsybrown-500 sm:text-5xl">
-            Better Water Starts with Sunfruit
+            Better Health Starts Here
           </h2>
           <p className="mt-6 text-xl/8 text-gray-600">
-            Sunfruit flavors combine organic fruits and botanicals for
-            mouthwatering taste. No sugar, preservatives, fillers... only the
-            good stuff.
+            Sunfruit combines organic fruits and botanicals to enchance your water with
+            mouthwatering flavors. No sugar, sodium, preservatives, fillers... only the
+            good stuff. 
           </p>
           <div className="mt-4 md:mt-8">
             <a
