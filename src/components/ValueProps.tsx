@@ -5,7 +5,7 @@ const valueProps = [
   { text: 'SUGAR-FREE' },
   { text: 'SODIUM-FREE' },
   { text: 'NON-GMO' },
-  { text: 'DAIRY-FREE' },
+  { text: 'PROBIOTIC' },
   { text: 'NO PRESERVATIVES' },
 ];
 

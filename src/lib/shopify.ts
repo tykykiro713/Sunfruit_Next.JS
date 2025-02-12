@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import client from "@/lib/apollo-client";
 
 export interface MediaImage {
+  id: string;
   image: {
     url: string;
     altText: string | null;
@@ -9,15 +10,22 @@ export interface MediaImage {
 }
 
 export interface VideoSource {
+  format: string;
   url: string;
   mimeType: string;
 }
 
 export interface MediaNode {
+  id: string;
   mediaContentType: string;
-  alt: string | null;
-  image?: MediaImage['image'];
+  image?: {
+    url: string;
+    altText: string | null;
+  };
   sources?: VideoSource[];
+  previewImage?: {
+    url: string;
+  };
 }
 
 export interface ProductNode {
@@ -75,18 +83,24 @@ export const GET_PRODUCTS = gql`
           media(first: 5) {
             edges {
               node {
+                id
                 mediaContentType
-                alt
                 ... on MediaImage {
+                  id
                   image {
                     url
                     altText
                   }
                 }
                 ... on Video {
+                  id
                   sources {
+                    format
                     url
                     mimeType
+                  }
+                  previewImage {
+                    url
                   }
                 }
               }
@@ -117,18 +131,24 @@ export const GET_PRODUCT_BY_HANDLE = gql`
       media(first: 5) {
         edges {
           node {
+            id
             mediaContentType
-            alt
             ... on MediaImage {
+              id
               image {
                 url
                 altText
               }
             }
             ... on Video {
+              id
               sources {
+                format
                 url
                 mimeType
+              }
+              previewImage {
+                url
               }
             }
           }

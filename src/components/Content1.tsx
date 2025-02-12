@@ -9,7 +9,7 @@ export default function Example() {
           <div className="lg:pr-4">
             <div className="lg:max-w-lg">
               <p className="text-base/7 font-semibold text-indigo-600">Deploy faster</p>
-              <h1 className="mt-2 text-pretty text-4xl font-poppins font-semibold tracking-tight text-darkteal-500 sm:text-5xl">
+              <h1 className="mt-2 text-pretty text-4xl font-poppins font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl">
                 A healthier option
               </h1>
               <p className="mt-6 text-xl/8 text-gray-700">

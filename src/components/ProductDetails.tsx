@@ -26,17 +26,12 @@ import {
 } from "@headlessui/react";
 import { useCart } from '@/context/CartContext';
 import { StarIcon } from "@heroicons/react/20/solid";
+import type { UIProduct } from '@/types/shopify';
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
-
-type Color = {
-  name: string;
-  bgColor: string;
-  selectedColor: string;
-};
 
 interface Product {
   title: string;
@@ -48,13 +43,46 @@ interface Product {
     };
   };
   images?: {
-    edges: { node: { url: string; altText?: string } }[];
+    edges: { 
+      node: { 
+        url: string; 
+        altText: string | null;
+      } 
+    }[];
+  };
+  media?: {
+    edges: {
+      node: {
+        mediaContentType: string;
+        alt: string | null;
+        image?: {
+          url: string;
+          altText: string | null;
+        };
+        previewImage?: {
+          image: {
+            url: string;
+            altText: string | null;
+          };
+        };
+        sources?: {
+          url: string;
+          mimeType: string;
+        }[];
+      };
+    }[];
   };
   colors?: Color[];
   rating?: number;
 }
 
-export default function ProductDetails({ product }: { product: Product }) {
+type Color = {
+  name: string;
+  bgColor: string;
+  selectedColor: string;
+};
+
+export default function ProductDetails({ product }: { product: UIProduct }) {
   const [selectedColor, setSelectedColor] = useState<Color | null>(
     product.colors && product.colors.length > 0 ? product.colors[0] : null
   );
@@ -131,43 +159,83 @@ export default function ProductDetails({ product }: { product: Product }) {
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
-          {/* Image gallery */}
+          {/* Image and Video gallery */}
           <TabGroup className="flex flex-col-reverse">
-            {/* Image selector */}
+            {/* Media selector */}
             <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
-              <TabList className="grid grid-cols-4 gap-6">
-                {product.images?.edges.map((image, idx) => (
-                  <Tab
-                    key={idx}
-                    className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-green-500/50 focus:ring-offset-4"
-                  >
-                    <span className="sr-only">
-                      {image.node.altText || "Product Image"}
-                    </span>
-                    <span className="absolute inset-0 overflow-hidden rounded-md">
+            <TabList className="grid grid-cols-4 gap-6">
+              {product.media?.edges.map((mediaItem, idx) => (
+                <Tab
+                  key={idx}
+                  className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-green-500/50 focus:ring-offset-4"
+                >
+                  <span className="sr-only">
+                    {mediaItem.node.alt || "Product Media"}
+                  </span>
+                  <span className="absolute inset-0 overflow-hidden rounded-md">
+                    {mediaItem.node.mediaContentType === 'VIDEO' ? (
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full aspect-square object-cover sm:rounded-lg"
+                        poster={mediaItem.node.previewImage?.image?.url || mediaItem.node.image?.url}
+                      >
+                        {mediaItem.node.sources?.map((source, sourceIdx) => (
+                          <source
+                            key={sourceIdx}
+                            src={source.url}
+                            type={source.mimeType}
+                          />
+                        ))}
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
                       <img
-                        alt={image.node.altText || "Product Image"}
-                        src={image.node.url}
-                        className="size-full object-cover"
+                        alt={mediaItem.node.alt || "Product Image"}
+                        src={mediaItem.node.image?.url}
+                        className="aspect-square w-full object-cover sm:rounded-lg"
                       />
-                    </span>
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-[selected]:ring-green-500"
-                    />
-                  </Tab>
-                ))}
-              </TabList>
+                    )}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-[selected]:ring-green-500"
+                  />
+                </Tab>
+              ))}
+            </TabList>
             </div>
 
             <TabPanels>
-              {product.images?.edges.map((image, idx) => (
+              {product.media?.edges.map((mediaItem, idx) => (
                 <TabPanel key={idx}>
-                  <img
-                    alt={image.node.altText || "Product Image"}
-                    src={image.node.url}
-                    className="aspect-square w-full object-cover sm:rounded-lg"
-                  />
+                  {mediaItem.node.mediaContentType === 'VIDEO' ? (
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full aspect-square object-cover sm:rounded-lg"
+                      poster={mediaItem.node.previewImage?.image?.url || mediaItem.node.image?.url}
+                    >
+                      {mediaItem.node.sources?.map((source, sourceIdx) => (
+                        <source
+                          key={sourceIdx}
+                          src={source.url}
+                          type={source.mimeType}
+                        />
+                      ))}
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <img
+                      alt={mediaItem.node.alt || "Product Image"}
+                      src={mediaItem.node.image?.url}
+                      className="aspect-square w-full object-cover sm:rounded-lg"
+                    />
+                  )}
                 </TabPanel>
               ))}
             </TabPanels>

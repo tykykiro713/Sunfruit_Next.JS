@@ -41,7 +41,7 @@ export default function Testimonials() {
     <section className="bg-custombeige-500">
       <div className="mx-auto max-w-screen-2xl px-4 py-12 sm:px-6 lg:me-0 lg:py-16 lg:pe-0 lg:ps-8 xl:py-24">
         <div className="max-w-7xl items-end justify-between sm:flex sm:pe-6 lg:pe-8">
-          <h2 className="max-w-xl text-3xl font-poppins font-semibold tracking-tight text-darkteal-500 sm:text-5xl">
+          <h2 className="max-w-xl text-3xl font-poppins font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl">
             Read trusted reviews from our customers
           </h2>
           <div className="mt-8 flex gap-4 lg:mt-0">

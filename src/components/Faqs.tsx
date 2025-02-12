@@ -11,29 +11,29 @@ export default function Faqs() {
 
   const faqs = [
     {
-      question: "What's the best thing about Switzerland?",
+      question: "What are the health benefits of Sunfruit?",
       answer:
-        "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "While we don't make health claims. The Sunbfruit differnce is that we use 100% organic ingredients with no sugar, sodium, preservatives or fillers.",
     },
     {
-      question: "What's the best thing about Switzerland?",
+      question: "Is Sunfruit safe for my dietary restricions?",
       answer:
-        "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "We are certified organic, keto and paleo frindly, Whole30, kosher, and non-GMO. We are also soy-free, dairy-free, and gluten-free. For addtional dietary questions, please contact our friendly customer service team.",
     },
     {
-      question: "What's the best thing about Switzerland?",
+      question: "How do I prepare Sunfruit organic beverage mixes?",
       answer:
-        "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "To prepare, simply add the contents of one stick pack to 16 oz of hot or cold water. For more intense flavor, you can add more organic drink mix or use less water.",
     },
     {
-      question: "What's the best thing about Switzerland?",
+      question: "How long does shipping take?",
       answer:
-        "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "Most orders are delivered within 3-5 days from placing your order. 1-2 days for order processing, and 2-3 days for shipping.",
     },
     {
-      question: "What's the best thing about Switzerland?",
+      question: "How do I manage my subscription?",
       answer:
-        "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "You can modify or cancel your subscription at any time using this link XXX.",
     },
   ];
 
@@ -41,7 +41,7 @@ export default function Faqs() {
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
         <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
-          <h2 className="text-4xl font-poppins font-semibold tracking-tight text-darkteal-500 sm:text-5xl">
+          <h2 className="text-4xl font-poppins font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl">
             FAQs
           </h2>
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">

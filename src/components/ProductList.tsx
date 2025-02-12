@@ -1,39 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { fetchProducts } from "@/lib/shopify";
+import { fetchProducts, ProductNode } from "@/lib/shopify";
 import Link from "next/link";
-
-interface ProductMedia {
-  mediaContentType: string;
-  image?: {
-    url: string;
-    altText: string | null;
-  };
-  sources?: {
-    url: string;
-    mimeType: string;
-  }[];
-}
-
-interface Product {
-  id: string;
-  title: string;
-  handle: string;
-  description: string;
-  media: {
-    edges: {
-      node: ProductMedia;
-    }[];
-  };
-}
 
 interface ErrorWithMessage {
   message: string;
 }
 
 export default function ProductList() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductNode[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorWithMessage | null>(null);
 
@@ -58,8 +34,8 @@ export default function ProductList() {
   return (
     <div className="bg-gray-50">
       <div className="mx-auto max-w-2xl px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
-        <h2 className="text-4xl font-poppins font-semibold tracking-tight text-chewsybrown-500 sm:text-5xl text-center">
-          Flavors
+        <h2 className="text-4xl font-poppins font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl text-center">
+          100% Organic Flavors
         </h2>
         {/*}
         <p className="mt-4 text-lg text-gray-600 text-center">
@@ -70,8 +46,8 @@ export default function ProductList() {
           {products.map((product) => (
             <div key={product.id}>
               <Link href={`/products/${product.handle}`}>
-                {/* Link wraps the media */}
-                {product.media.edges.map(({ node }) => {
+                {/* Show only the first media item */}
+                {product.media.edges.slice(0, 1).map(({ node }) => {
                   if (node.mediaContentType === "IMAGE") {
                     return (
                       <img
@@ -87,7 +63,12 @@ export default function ProductList() {
                       <video
                         key={node.sources?.[0]?.url}
                         controls
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
                         className="aspect-[3/2] w-full rounded-lg"
+                        poster={node.previewImage?.url}
                       >
                         <source
                           src={node.sources?.[0]?.url}
@@ -117,6 +98,3 @@ export default function ProductList() {
     </div>
   );
 }
-
-
-

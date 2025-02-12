@@ -4,12 +4,12 @@ export default function VideoCTA() {
       {/* Text Section */}
       <div className="p-8 md:p-12 lg:px-16 lg:py-24">
         <div className="mx-auto max-w-xl text-center sm:text-left">
-          <h2 className="text-4xl font-poppins font-semibold tracking-tight text-chewsybrown-500 sm:text-5xl">
-            Better Health Starts Here
+          <h2 className="text-4xl font-poppins font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl">
+            Elevate your water with organic flavors
           </h2>
+
           <p className="mt-6 text-xl/8 text-gray-600">
-            Sunfruit combines organic fruits and botanicals to enchance your water with
-            mouthwatering flavors. No sugar, sodium, preservatives, fillers... only the
+            Sunfruit combines organic fruits and botanicals to create naturally flavorful water. No sugar, sodium, preservatives, fillers... only the
             good stuff. 
           </p>
           <div className="mt-4 md:mt-8">

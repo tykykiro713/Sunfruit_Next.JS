@@ -6,7 +6,7 @@ export default function ComparisonTable() {
       <div className="max-w-7xl mx-auto">
         {/* Title Section */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-poppins font-semibold text-darkteal-500 sm:text-5xl">Us Vs Them</h2>
+          <h2 className="text-3xl font-poppins font-semibold text-emeraldgreen-500 sm:text-5xl">Us Vs Them</h2>
           <p className="mt-4 text-gray-700">
             Nuun Sport has the right balance of electrolytes for hydration bliss that fuels your every move. Here's how
             we stack up to other flavored electrolyte powders!

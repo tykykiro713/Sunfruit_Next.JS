@@ -2,31 +2,7 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
 import { fetchProductByHandle, fetchProducts, ProductNode } from "@/lib/shopify";
-
-interface Product {
-  title: string;
-  description: string;
-  priceRange?: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    };
-  };
-  images?: {
-    edges: {
-      node: {
-        url: string;
-        altText?: string;
-      };
-    }[];
-  };
-  colors?: {
-    name: string;
-    bgColor: string;
-    selectedColor: string;
-  }[];
-  rating?: number;
-}
+import { Product } from "@/types/product";
 
 function convertShopifyProduct(shopifyProduct: ProductNode): Product {
   return {
@@ -37,7 +13,29 @@ function convertShopifyProduct(shopifyProduct: ProductNode): Product {
       edges: shopifyProduct.images.edges.map(edge => ({
         node: {
           url: edge.node.url,
-          altText: edge.node.altText || undefined
+          altText: edge.node.altText || null
+        }
+      }))
+    },
+    media: {
+      edges: shopifyProduct.media.edges.map(edge => ({
+        node: {
+          mediaContentType: edge.node.mediaContentType,
+          alt: edge.node.mediaContentType === 'VIDEO' ? null : edge.node.image?.altText || null,
+          image: edge.node.image ? {
+            url: edge.node.image.url,
+            altText: edge.node.image.altText || null
+          } : undefined,
+          previewImage: edge.node.previewImage ? {
+            image: {
+              url: edge.node.previewImage.url,
+              altText: null
+            }
+          } : undefined,
+          sources: edge.node.sources?.map(source => ({
+            url: source.url,
+            mimeType: source.mimeType
+          }))
         }
       }))
     }
@@ -50,7 +48,6 @@ interface PageProps {
 }
 
 const ProductPage = async ({ params, searchParams }: PageProps) => {
-  // Resolve both promises
   const [resolvedParams, resolvedSearchParams] = await Promise.all([params, searchParams]);
 
   if (!resolvedParams?.handle) {
