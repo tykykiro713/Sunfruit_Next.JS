@@ -1,78 +1,71 @@
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
-import ProductDetails from "@/components/ProductDetails";
-import { fetchProductByHandle, fetchProducts, ProductNode } from "@/lib/shopify";
-import { Product } from "@/types/product";
+import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
+import ProductMedia from "@/components/ProductMedia";
+import ProductInfo from "@/components/ProductInfo";
+import ProductForm from "@/components/ProductForm";
+import ProductAccordion from "@/components/ProductAccordion";
+import Circle_Testimonial from "@/components/Circle_Testimonial";
+import ProductHeroSplit from "@/components/ProductHeroSplit";
+import ProductRecirculation from "@/components/ProductRecirculation";
+import SampleCTA from "@/components/SampleCTA";
+import Faqs from "@/components/Faqs";
+import Footer from "@/components/Footer";
 
-function convertShopifyProduct(shopifyProduct: ProductNode): Product {
-  return {
-    title: shopifyProduct.title,
-    description: shopifyProduct.description,
-    priceRange: shopifyProduct.priceRange,
-    images: {
-      edges: shopifyProduct.images.edges.map(edge => ({
-        node: {
-          url: edge.node.url,
-          altText: edge.node.altText || null
-        }
-      }))
-    },
-    media: {
-      edges: shopifyProduct.media.edges.map(edge => ({
-        node: {
-          mediaContentType: edge.node.mediaContentType,
-          alt: edge.node.mediaContentType === 'VIDEO' ? null : edge.node.image?.altText || null,
-          image: edge.node.image ? {
-            url: edge.node.image.url,
-            altText: edge.node.image.altText || null
-          } : undefined,
-          previewImage: edge.node.previewImage ? {
-            image: {
-              url: edge.node.previewImage.url,
-              altText: null
-            }
-          } : undefined,
-          sources: edge.node.sources?.map(source => ({
-            url: source.url,
-            mimeType: source.mimeType
-          }))
-        }
-      }))
-    }
-  };
-}
-
-interface PageProps {
-  params: Promise<{ handle: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
-
-const ProductPage = async ({ params, searchParams }: PageProps) => {
-  const [resolvedParams, resolvedSearchParams] = await Promise.all([params, searchParams]);
-
-  if (!resolvedParams?.handle) {
+// @ts-expect-error - Next.js App Router typing issue
+export default async function ProductPage({ params, searchParams }) {
+  if (!params?.handle) {
     throw new Error("❌ Params handle is missing!");
   }
 
-  const shopifyProduct = await fetchProductByHandle(resolvedParams.handle);
+  const product = await fetchProductByHandle(params.handle);
 
-  if (!shopifyProduct) {
+  if (!product) {
     notFound();
   }
-
-  const product = convertShopifyProduct(shopifyProduct);
 
   return (
     <div className="bg-white min-h-screen">
       <Header />
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <ProductDetails product={product} />
+      <main>
+        {/* Product details section - constrained width on mobile, full width on desktop */}
+        <div className="px-4 py-8 sm:px-6 sm:py-16 md:py-24 lg:py-32 lg:px-0">
+          <div className="mx-auto max-w-2xl lg:max-w-none lg:px-8 xl:px-16">
+            <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+              {/* Left column - Product Media */}
+              <ProductMedia product={product} />
+
+              {/* Right column - Product Info & Form */}
+              <div className="mt-10 px-4 sm:mt-16 sm:px-6 lg:mt-0 lg:px-8 xl:px-12">
+                <ProductInfo product={product} />
+                <ProductForm product={product} />
+                <ProductAccordion />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Full width sections */}
+        <div>
+          <Circle_Testimonial />
+          <ProductHeroSplit />
+        </div>
+        
+        {/* Product recirculation section - constrained width on mobile, full width on desktop */}
+        <div className="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-8 xl:px-16">
+          <ProductRecirculation />
+        </div>
+
+        {/* Faqs and Footer section - constrained width on mobile, full width on desktop */}
+        <div>
+          <SampleCTA />
+          <Faqs />
+          <Footer />
+        </div>
       </main>
     </div>
   );
-};
-
-export default ProductPage;
+}
 
 export async function generateStaticParams() {
   try {

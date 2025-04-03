@@ -1,8 +1,10 @@
 import { gql } from "@apollo/client";
 import client from "@/lib/apollo-client";
 
+// Type Definitions
 export interface MediaImage {
-  id: string;
+  id?: string;
+  mediaContentType: string;
   image: {
     url: string;
     altText: string | null;
@@ -10,13 +12,13 @@ export interface MediaImage {
 }
 
 export interface VideoSource {
-  format: string;
+  format?: string;
   url: string;
   mimeType: string;
 }
 
 export interface MediaNode {
-  id: string;
+  id?: string;
   mediaContentType: string;
   image?: {
     url: string;
@@ -25,7 +27,9 @@ export interface MediaNode {
   sources?: VideoSource[];
   previewImage?: {
     url: string;
+    altText: string | null;
   };
+  embeddedUrl?: string;
 }
 
 export interface ProductNode {
@@ -70,7 +74,39 @@ export interface ProductByHandleData {
   productByHandle: ProductNode;
 }
 
-// GraphQL query to fetch products with media
+export interface UIProduct {
+  id: string;
+  title: string;
+  description: string;
+  handle?: string;
+  priceRange?: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+  images?: {
+    edges: {
+      node: {
+        url: string;
+        altText: string | null;
+      };
+    }[];
+  };
+  media?: {
+    edges: {
+      node: MediaNode;
+    }[];
+  };
+  colors?: {
+    name: string;
+    bgColor: string;
+    selectedColor: string;
+  }[];
+  rating?: number;
+}
+
+// GraphQL Queries
 export const GET_PRODUCTS = gql`
   query GetProducts($first: Int!) {
     products(first: $first) {
@@ -83,17 +119,9 @@ export const GET_PRODUCTS = gql`
           media(first: 5) {
             edges {
               node {
-                id
-                mediaContentType
-                ... on MediaImage {
-                  id
-                  image {
-                    url
-                    altText
-                  }
-                }
                 ... on Video {
                   id
+                  mediaContentType
                   sources {
                     format
                     url
@@ -101,6 +129,23 @@ export const GET_PRODUCTS = gql`
                   }
                   previewImage {
                     url
+                    altText
+                  }
+                }
+                ... on ExternalVideo {
+                  id
+                  mediaContentType
+                  embeddedUrl
+                  previewImage {
+                    url
+                    altText
+                  }
+                }
+                ... on MediaImage {
+                  id
+                  image {
+                    url
+                    altText
                   }
                 }
               }
@@ -114,13 +159,22 @@ export const GET_PRODUCTS = gql`
               }
             }
           }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
+          }
         }
       }
     }
   }
 `;
 
-// GraphQL query to fetch a single product by handle
 export const GET_PRODUCT_BY_HANDLE = gql`
   query GetProductByHandle($handle: String!) {
     productByHandle(handle: $handle) {
@@ -131,17 +185,9 @@ export const GET_PRODUCT_BY_HANDLE = gql`
       media(first: 5) {
         edges {
           node {
-            id
-            mediaContentType
-            ... on MediaImage {
-              id
-              image {
-                url
-                altText
-              }
-            }
             ... on Video {
               id
+              mediaContentType
               sources {
                 format
                 url
@@ -149,6 +195,23 @@ export const GET_PRODUCT_BY_HANDLE = gql`
               }
               previewImage {
                 url
+                altText
+              }
+            }
+            ... on ExternalVideo {
+              id
+              mediaContentType
+              embeddedUrl
+              previewImage {
+                url
+                altText
+              }
+            }
+            ... on MediaImage {
+              id
+              image {
+                url
+                altText
               }
             }
           }
@@ -176,7 +239,7 @@ export const GET_PRODUCT_BY_HANDLE = gql`
   }
 `;
 
-// Function to fetch products
+// API Functions
 export async function fetchProducts(first = 10): Promise<ProductNode[]> {
   try {
     const { data } = await client.query<ProductsData>({
@@ -190,14 +253,28 @@ export async function fetchProducts(first = 10): Promise<ProductNode[]> {
   }
 }
 
-// Function to fetch a single product by handle
-export async function fetchProductByHandle(handle: string): Promise<ProductNode | null> {
+export async function fetchProductByHandle(handle: string): Promise<UIProduct | null> {
   try {
     const { data } = await client.query<ProductByHandleData>({
       query: GET_PRODUCT_BY_HANDLE,
       variables: { handle },
     });
-    return data.productByHandle;
+    
+    if (!data.productByHandle) return null;
+
+    // Transform ProductNode to UIProduct
+    const product: UIProduct = {
+      id: data.productByHandle.id,
+      title: data.productByHandle.title,
+      description: data.productByHandle.description,
+      handle: data.productByHandle.handle,
+      priceRange: data.productByHandle.priceRange,
+      images: data.productByHandle.images,
+      media: data.productByHandle.media,
+      rating: 5, // Default rating or calculate based on your needs
+    };
+
+    return product;
   } catch (error) {
     console.error("Error fetching product by handle:", error);
     return null;

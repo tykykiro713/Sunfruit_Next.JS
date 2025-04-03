@@ -7,18 +7,6 @@ export default {
   theme: {
     extend: {
       colors: {
-        limegreen: {
-          50: '#f7fce5',
-          100: '#eef8cc',
-          200: '#dcef99',
-          300: '#cae666',
-          400: '#b8dd33',
-          500: '#cddd00',
-          600: '#a4b200',
-          700: '#7b8600',
-          800: '#525a00',
-          900: '#292d00',
-        },
         darkteal: {
           50: '#e5f6f6',
           100: '#cceeee',
@@ -96,7 +84,7 @@ export default {
           200: '#F3D8A5',
           300: '#EBC37C',
           400: '#E3AC52',
-          500: '#E2AC49',
+          500: '#FAEB62',
           600: '#CC9639',
           700: '#A97730',
           800: '#855B26',
@@ -172,7 +160,19 @@ export default {
           800: "#00281D", 
           900: "#001B13", // Very dark
         },
-
+        limegreen: {
+          50:  '#f7fbef',
+          100: '#eef7da',
+          200: '#d8eeb0',
+          300: '#c2e286',
+          400: '#adc764',
+          500: '#9BB85A', // base color
+          600: '#86a14f',
+          700: '#6a8241',
+          800: '#536634',
+          900: '#3e4b28',
+          950: '#29331b',
+        },
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

@@ -5,13 +5,13 @@ const valueProps = [
   { text: 'SUGAR-FREE' },
   { text: 'SODIUM-FREE' },
   { text: 'NON-GMO' },
-  { text: 'PROBIOTIC' },
+  { text: 'PREBIOTIC' },
   { text: 'NO PRESERVATIVES' },
 ];
 
 export default function ValueProps() {
   return (
-    <div className="bg-mastersyellow-500 py-8 px-4">
+    <div className="bg-yellow-300 py-8 px-4">
       <div className="mx-auto max-w-7xl flex flex-col sm:flex-row sm:flex-wrap sm:justify-between items-center gap-4">
         {valueProps.map((prop, index) => (
           <div

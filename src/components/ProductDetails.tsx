@@ -12,6 +12,7 @@ declare global {
 }
 
 import { useState, useEffect } from "react";
+import Image from 'next/image';
 import {
   Disclosure,
   DisclosureButton,
@@ -26,54 +27,11 @@ import {
 } from "@headlessui/react";
 import { useCart } from '@/context/CartContext';
 import { StarIcon } from "@heroicons/react/20/solid";
-import type { UIProduct } from '@/types/shopify';
+import type { UIProduct } from '@/lib/shopify';
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
-}
-
-interface Product {
-  title: string;
-  description: string;
-  priceRange?: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    };
-  };
-  images?: {
-    edges: { 
-      node: { 
-        url: string; 
-        altText: string | null;
-      } 
-    }[];
-  };
-  media?: {
-    edges: {
-      node: {
-        mediaContentType: string;
-        alt: string | null;
-        image?: {
-          url: string;
-          altText: string | null;
-        };
-        previewImage?: {
-          image: {
-            url: string;
-            altText: string | null;
-          };
-        };
-        sources?: {
-          url: string;
-          mimeType: string;
-        }[];
-      };
-    }[];
-  };
-  colors?: Color[];
-  rating?: number;
 }
 
 type Color = {
@@ -126,7 +84,6 @@ export default function ProductDetails({ product }: { product: UIProduct }) {
   ];
 
   useEffect(() => {
-    // Ensure Klaviyo's global object is initialized
     window._klOnsite = window._klOnsite || [];
   }, []);
 
@@ -135,15 +92,6 @@ export default function ProductDetails({ product }: { product: UIProduct }) {
   const handleAddToCart = (e: React.FormEvent) => {
     e.preventDefault();
   
-    // Add the product to the cart
-    //addToCart({
-      //id: product.id,
-      //title: product.title,
-      //price: parseFloat(product.priceRange?.minVariantPrice?.amount) || 0,
-      //quantity: 1,
-    //});
-  
-    // Trigger the Klaviyo form
     try {
       if (window._klOnsite && typeof window._klOnsite.openForm === 'function') {
         window._klOnsite.openForm('RU73Kw');
@@ -163,49 +111,54 @@ export default function ProductDetails({ product }: { product: UIProduct }) {
           <TabGroup className="flex flex-col-reverse">
             {/* Media selector */}
             <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
-            <TabList className="grid grid-cols-4 gap-6">
-              {product.media?.edges.map((mediaItem, idx) => (
-                <Tab
-                  key={idx}
-                  className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-green-500/50 focus:ring-offset-4"
-                >
-                  <span className="sr-only">
-                    {mediaItem.node.alt || "Product Media"}
-                  </span>
-                  <span className="absolute inset-0 overflow-hidden rounded-md">
-                    {mediaItem.node.mediaContentType === 'VIDEO' ? (
-                      <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full aspect-square object-cover sm:rounded-lg"
-                        poster={mediaItem.node.previewImage?.image?.url || mediaItem.node.image?.url}
-                      >
-                        {mediaItem.node.sources?.map((source, sourceIdx) => (
-                          <source
-                            key={sourceIdx}
-                            src={source.url}
-                            type={source.mimeType}
+              <TabList className="grid grid-cols-4 gap-6">
+                {product.media?.edges.map((mediaItem, idx) => (
+                  <Tab
+                    key={idx}
+                    className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-green-500/50 focus:ring-offset-4"
+                  >
+                    <span className="sr-only">
+                      {mediaItem.node.image?.altText || "Product Media"}
+                    </span>
+                    <span className="absolute inset-0 overflow-hidden rounded-md">
+                      {mediaItem.node.mediaContentType === 'VIDEO' ? (
+                        <video
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full aspect-square object-cover sm:rounded-lg"
+                          // @ts-expect-error - Handling inconsistent media types
+                          poster={mediaItem.node.previewImage?.image?.url || mediaItem.node.image?.url}
+                        >
+                          {mediaItem.node.sources?.map((source, sourceIdx) => (
+                            <source
+                              key={sourceIdx}
+                              src={source.url}
+                              type={source.mimeType}
+                            />
+                          ))}
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : (
+                        <div className="relative aspect-square w-full">
+                          <Image
+                            alt={mediaItem.node.image?.altText || "Product Image"}
+                            src={mediaItem.node.image?.url || ''}
+                            fill
+                            className="object-cover rounded-lg"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
-                        ))}
-                        Your browser does not support the video tag.
-                      </video>
-                    ) : (
-                      <img
-                        alt={mediaItem.node.alt || "Product Image"}
-                        src={mediaItem.node.image?.url}
-                        className="aspect-square w-full object-cover sm:rounded-lg"
-                      />
-                    )}
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-[selected]:ring-green-500"
-                  />
-                </Tab>
-              ))}
-            </TabList>
+                        </div>
+                      )}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-[selected]:ring-green-500"
+                    />
+                  </Tab>
+                ))}
+              </TabList>
             </div>
 
             <TabPanels>
@@ -218,6 +171,7 @@ export default function ProductDetails({ product }: { product: UIProduct }) {
                       muted
                       playsInline
                       className="w-full aspect-square object-cover sm:rounded-lg"
+                      // @ts-expect-error - Handling inconsistent media types
                       poster={mediaItem.node.previewImage?.image?.url || mediaItem.node.image?.url}
                     >
                       {mediaItem.node.sources?.map((source, sourceIdx) => (
@@ -230,11 +184,15 @@ export default function ProductDetails({ product }: { product: UIProduct }) {
                       Your browser does not support the video tag.
                     </video>
                   ) : (
-                    <img
-                      alt={mediaItem.node.alt || "Product Image"}
-                      src={mediaItem.node.image?.url}
-                      className="aspect-square w-full object-cover sm:rounded-lg"
-                    />
+                    <div className="relative aspect-square w-full">
+                      <Image
+                        alt={mediaItem.node.image?.altText || "Product Image"}
+                        src={mediaItem.node.image?.url || ''}
+                        fill
+                        className="object-cover rounded-lg"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
                   )}
                 </TabPanel>
               ))}
@@ -385,5 +343,4 @@ export default function ProductDetails({ product }: { product: UIProduct }) {
     </div>
   );
 }
-
 

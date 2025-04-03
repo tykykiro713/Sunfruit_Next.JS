@@ -7,6 +7,8 @@ import client from "@/lib/apollo-client";
 import { MyProvider } from "@/context/MyContext";
 import { CartProvider } from "@/context/CartContext";
 import Script from "next/script";
+import { useEffect } from "react";
+import clarity from "@microsoft/clarity";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +33,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID) {
+      clarity.init(process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID);
+    }
+  }, []);
+
   return (
     <html lang="en">
       <head>
@@ -68,7 +76,6 @@ export default function RootLayout({
     </html>
   );
 }
-
 
 
 

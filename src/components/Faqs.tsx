@@ -13,12 +13,12 @@ export default function Faqs() {
     {
       question: "What are the health benefits of Sunfruit?",
       answer:
-        "While we don't make health claims. The Sunbfruit differnce is that we use 100% organic ingredients with no sugar, sodium, preservatives or fillers.",
+        "While we don't make health claims. The Sunfruit differnce is that we use 100% organic ingredients with no sugar, sodium, preservatives or fillers.",
     },
     {
       question: "Is Sunfruit safe for my dietary restricions?",
       answer:
-        "We are certified organic, keto and paleo frindly, Whole30, kosher, and non-GMO. We are also soy-free, dairy-free, and gluten-free. For addtional dietary questions, please contact our friendly customer service team.",
+        "Sunfruit is certified organic, keto and paleo frindly, Whole30, kosher, and non-GMO. We are also soy-free, dairy-free, and gluten-free. For addtional dietary questions, please contact our friendly customer service team.",
     },
     {
       question: "How do I prepare Sunfruit organic beverage mixes?",
@@ -50,15 +50,17 @@ export default function Faqs() {
                 <dt>
                   <button
                     type="button"
-                    className="flex w-full items-start justify-between text-left text-gray-900"
+                    className="flex w-full items-start justify-between text-left text-gray-900 group relative"
                     aria-expanded={openFAQ === index}
                     onClick={() => toggleFAQ(index)}
                   >
-                    <span className="text-base/7 font-semibold">{faq.question}</span>
+                    <span className="text-lg md:text-xl lg:text-2xl font-medium text-gray-900 group-data-[open]:text-green-600">
+                      {faq.question}
+                    </span>
                     <span className="ml-6 flex h-7 items-center">
                       {openFAQ === index ? (
                         <svg
-                          className="size-6"
+                          className="size-6 text-green-400 group-hover:text-green-500"
                           fill="none"
                           viewBox="0 0 24 24"
                           strokeWidth="1.5"
@@ -70,7 +72,7 @@ export default function Faqs() {
                         </svg>
                       ) : (
                         <svg
-                          className="size-6"
+                          className="size-6 text-gray-400 group-hover:text-gray-500"
                           fill="none"
                           viewBox="0 0 24 24"
                           strokeWidth="1.5"
@@ -85,8 +87,10 @@ export default function Faqs() {
                   </button>
                 </dt>
                 {openFAQ === index && (
-                  <dd className="mt-2 pr-12">
-                    <p className="text-base/7 text-gray-600">{faq.answer}</p>
+                  <dd className="mt-4 pr-12">
+                    <p className="text-lg md:text-xl text-gray-700">
+                      {faq.answer}
+                    </p>
                   </dd>
                 )}
               </div>

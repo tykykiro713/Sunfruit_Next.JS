@@ -2,10 +2,9 @@ import Header from "@/components/Header";
 import VideoCTA from "@/components/VideoCTA"; 
 import ValueProps from "@/components/ValueProps";
 import ProductList from "@/components/ProductList";
-import UsVsThem from "@/components/UsVsThem";
-import Content1 from "@/components/Content1";
-import Testimonials from "@/components/Testimonials";
-import HeroSection from "@/components/HeroSection";
+import IngredientsSection from "@/components/IngredientsSection";
+import HeroSplit from "@/components/HeroSplit";
+import SampleCTA from "@/components/SampleCTA";
 import Faqs from "@/components/Faqs";
 import Footer from "@/components/Footer";
 
@@ -17,10 +16,9 @@ export default function Home() {
       <VideoCTA />
       <ValueProps />
       <ProductList />
-      <UsVsThem />
-      <Content1 />
-      <Testimonials />
-      <HeroSection />
+      <IngredientsSection />
+      <HeroSplit />
+      <SampleCTA />
       <Faqs />
       <Footer />
       {/* Add more sections here */}
