@@ -33,7 +33,7 @@ export default function HeroSplit() {
       {/* Image Section */}
       <div className="relative w-full md:w-1/2 border border-gray-500">
         <Image
-          src="/Images/Grapefruit_3.png"
+          src="/images/Grapefruit_3.png"
           alt="Hero Right"
           width={800}
           height={600}
