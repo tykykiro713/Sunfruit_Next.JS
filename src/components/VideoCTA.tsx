@@ -19,7 +19,7 @@ export default function VideoCTA() {
       <div className="p-8 md:p-12 lg:px-16 lg:py-24 order-last sm:order-first">
         <div className="mx-auto max-w-xl text-center sm:text-left">
           <h2 className="text-4xl font-poppins font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl">
-            Elevate your water with organic flavors
+            Elevate your water with organic flavor
           </h2>
 
           <p className="mt-6 text-xl/8 text-gray-600">
