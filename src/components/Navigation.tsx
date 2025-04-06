@@ -139,7 +139,7 @@ export default function Navigation() {
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               <div className="flow-root">
                 <Link href="/profile" className="-m-2 block p-2 font-medium text-gray-900">
-                  My Account
+                  Sign In
                 </Link>
               </div>
             </div>
@@ -282,7 +282,7 @@ export default function Navigation() {
                             d="M12 11.73a2.97 2.97 0 100-5.94 2.97 2.97 0 000 5.94zm0 1.89c-2.88 0-5.31 2.34-5.31 5.31v.36C8.22 20.37 10.02 21 12 21c1.98 0 3.78-.63 5.31-1.71v-.36c0-2.88-2.43-5.31-5.31-5.31z"
                           ></path>
                         </svg>
-                        <span className="text-black group-hover:text-emeraldgreen-500 font-sans">My Account</span>
+                        <span className="text-black group-hover:text-emeraldgreen-500 font-sans">Sign In</span>
                       </Link>
                       
                       {/* Cart Icon - visible on all screen sizes */}
