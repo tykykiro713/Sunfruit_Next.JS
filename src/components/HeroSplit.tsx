@@ -9,7 +9,7 @@ export default function HeroSplit() {
     <section className="w-full flex flex-col md:flex-row">
       
       {/* Image Section */}
-      <div className="relative w-full aspect-square md:aspect-auto md:w-1/2 border border-gray-500">
+      <div className="relative w-full aspect-square md:aspect-auto md:w-1/2">
         <Image
           src="/images/Grapefruit_3.png"
           alt="Hero Right"
@@ -28,7 +28,7 @@ export default function HeroSplit() {
       </div>
 
       {/* Video Section */}
-      <div className="relative w-full aspect-square md:aspect-auto md:w-1/2 border border-gray-500">
+      <div className="relative w-full aspect-square md:aspect-auto md:w-1/2">
         <video
           className="w-full h-full object-cover"
           autoPlay
