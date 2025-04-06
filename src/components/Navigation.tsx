@@ -169,7 +169,7 @@ export default function Navigation() {
                       {navigation.categories.map((category) => (
                         <Popover key={category.name} className="flex">
                           <div className="relative flex">
-                            <PopoverButton className="relative z-10 flex items-center pt-px text-xl font-bold text-emeraldgreen-500 transition-colors duration-200 ease-out hover:text-brightgreen-500 data-[open]:text-brightgreen-500">
+                            <PopoverButton className="relative z-10 flex items-center pt-px text-xl font-bold text-black transition-colors duration-200 ease-out hover:text-emeraldgreen-500 data-[open]:text-emeraldgreen-500 focus:outline-none">
                               {category.name}
                             </PopoverButton>
                           </div>
@@ -205,7 +205,7 @@ export default function Navigation() {
                         <Link
                           key={page.name}
                           href={page.href}
-                          className="flex items-center text-xl font-bold text-emeraldgreen-500 hover:text-brightgreen-500 whitespace-nowrap"
+                          className="flex items-center text-xl font-bold text-black hover:text-emeraldgreen-500 whitespace-nowrap"
                         >
                           {page.name}
                         </Link>
@@ -218,7 +218,7 @@ export default function Navigation() {
                     <div className="flex space-x-6">
                       <Link
                         href="#"
-                        className="flex items-center text-lg font-bold text-emeraldgreen-500 hover:text-brightgreen-500 whitespace-nowrap transition-colors duration-200 ease-out"
+                        className="flex items-center text-lg font-bold text-black hover:text-emeraldgreen-500 whitespace-nowrap transition-colors duration-200 ease-out focus:outline-none"
                       >
                         Shop
                       </Link>
@@ -226,7 +226,7 @@ export default function Navigation() {
                         <Link
                           key={page.name}
                           href={page.href}
-                          className="flex items-center text-lg font-bold text-emeraldgreen-500 hover:text-brightgreen-500 whitespace-nowrap"
+                          className="flex items-center text-lg font-bold text-black hover:text-emeraldgreen-500 whitespace-nowrap"
                         >
                           {page.name}
                         </Link>
@@ -247,35 +247,52 @@ export default function Navigation() {
 
                   {/* User and Cart icons - right */}
                   <div className="flex w-10 md:w-1/3 lg:w-1/3 items-center md:justify-end lg:justify-end">
-                    <div className="md:pr-2 lg:mr-32 xl:mr-40 flex items-center space-x-2">
+                    <div className="md:pr-2 lg:mr-32 xl:mr-40 flex items-center space-x-4">
                       {/* User Icon - visible only on tablet and desktop */}
-                      <Link href="/profile" className="hidden md:flex group items-center p-2">
+                      <Link href="/profile" className="hidden md:flex group items-center gap-1.5 p-2">
                         <svg 
                           xmlns="http://www.w3.org/2000/svg" 
                           fill="none" 
+                          aria-hidden="true" 
                           viewBox="0 0 24 24" 
-                          strokeWidth={1.5} 
-                          stroke="currentColor" 
-                          className="size-6 lg:size-7 shrink-0 text-gray-400 group-hover:text-gray-500"
+                          role="img"
+                          width="28" 
+                          height="28"
+                          className="shrink-0 text-black group-hover:text-emeraldgreen-500"
+                          style={{transform: "scale(1.2)"}}
                         >
                           <path 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round" 
-                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" 
-                          />
+                            vector-effect="non-scaling-stroke" 
+                            stroke="currentColor" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                            stroke-miterlimit="10" 
+                            stroke-width="1.5" 
+                            d="M12 21a9 9 0 100-18 9 9 0 000 18z"
+                          ></path>
+                          <path 
+                            vector-effect="non-scaling-stroke" 
+                            stroke="currentColor" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                            stroke-miterlimit="10" 
+                            stroke-width="1.5" 
+                            d="M12 11.73a2.97 2.97 0 100-5.94 2.97 2.97 0 000 5.94zm0 1.89c-2.88 0-5.31 2.34-5.31 5.31v.36C8.22 20.37 10.02 21 12 21c1.98 0 3.78-.63 5.31-1.71v-.36c0-2.88-2.43-5.31-5.31-5.31z"
+                          ></path>
                         </svg>
-                        <span className="sr-only">My Account</span>
+                        <span className="text-black group-hover:text-emeraldgreen-500 font-sans">My Account</span>
                       </Link>
                       
                       {/* Cart Icon - visible on all screen sizes */}
                       <button
                         onClick={() => setDrawerOpen(!isDrawerOpen)}
-                        className="group flex items-center p-2"
+                        className="group flex items-center gap-1.5 p-2"
                       >
                         <ShoppingBagIcon
                           aria-hidden="true"
-                          className="size-6 lg:size-7 shrink-0 text-gray-400 group-hover:text-gray-500"
+                          className="size-6 lg:size-7 shrink-0 text-black group-hover:text-emeraldgreen-500"
                         />
+                        <span className="hidden md:inline text-black group-hover:text-emeraldgreen-500 font-sans">Cart</span>
                         <span className="sr-only">View cart</span>
                       </button>
                     </div>

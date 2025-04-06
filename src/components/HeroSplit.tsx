@@ -19,7 +19,7 @@ export default function HeroSplit() {
         />
         <div className="absolute bottom-4 inset-x-0 text-center md:text-right md:bottom-6 md:right-6 md:left-auto text-black z-10">
           <a
-            href="#"
+            href="./products/grapefruit-ginger"
             className="text-lg md:text-xl font-semibold underline hover:text-gray-700 transition"
           >
             GET YOURS NOW - SHIPS TODAY!
