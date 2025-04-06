@@ -14,7 +14,7 @@ export default function Circle_Testimonial() {
           {/* Image Section */}
           <div className="justify-self-center md:justify-self-end md:pr-4 lg:pr-6">
             <img
-              src="/images/Happy_Family.png"
+              src="/images/Testimonial.jpg"
               alt="Smiling_woman"
               className="w-full h-auto rounded-full shadow-lg aspect-square object-cover max-w-lg mx-auto"
             />

@@ -1,26 +1,27 @@
+import Link from 'next/link';
+
 const navigation = {
   solutions: [
-    { name: "Marketing", href: "#" },
-    { name: "Analytics", href: "#" },
-    { name: "Automation", href: "#" },
-    { name: "Commerce", href: "#" },
-    { name: "Insights", href: "#" },
-  ],
-  support: [
-    { name: "Submit ticket", href: "#" },
-    { name: "Documentation", href: "#" },
-    { name: "Guides", href: "#" },
-  ],
-  company: [
-    { name: "About", href: "#" },
+    { name: "Our Story", href: "/aboutus" },
+    { name: "Careers", href: "#" },
     { name: "Blog", href: "#" },
-    { name: "Jobs", href: "#" },
     { name: "Press", href: "#" },
   ],
+  support: [
+    { name: "Find a Store", href: "#" },
+    { name: "Refer a Friend", href: "#" },
+    { name: "Wholesale", href: "#" },
+    { name: "Affiliate", href: "#" },
+  ],
+  company: [
+    { name: "FAQs", href: "#" },
+    { name: "My Account", href: "#" },
+    { name: "Contact Us", href: "#" },
+  ],
   legal: [
-    { name: "Terms of service", href: "#" },
-    { name: "Privacy policy", href: "#" },
-    { name: "License", href: "#" },
+    { name: "Terms of service", href: "/legal" },
+    { name: "Privacy policy", href: "/legal" },
+    { name: "Accessibility", href: "/legal" },
   ],
   social: [
     {
@@ -58,13 +59,15 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
-            <img
-              alt="Company name"
-              src="/images/Logo_Trans.png"
-              className="h-10 w-auto sm:h-12"
-            />
+            <Link href="/" className="inline-block">
+              <img
+                alt="Company name"
+                src="/images/Logo_Trans.png"
+                className="h-10 w-auto sm:h-12"
+              />
+            </Link>
             <p className="text-base text-white">
-              Making the world a better place through constructing elegant hierarchies.
+              100% organic fruit and botanicals.
             </p>
             <div className="flex gap-x-6">
               {navigation.social.map((item) => (
@@ -78,25 +81,25 @@ export default function Footer() {
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-base font-semibold text-white">Solutions</h3>
+                <h3 className="text-base font-semibold text-white">About Us</h3>
                 <ul className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-base text-white hover:text-gray-900">
+                      <Link href={item.href} className="text-base text-white hover:text-gray-900">
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-base font-semibold text-white">Support</h3>
+                <h3 className="text-base font-semibold text-white">Connect</h3>
                 <ul className="mt-6 space-y-4">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-base text-white hover:text-gray-900">
+                      <Link href={item.href} className="text-base text-white hover:text-gray-900">
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -104,13 +107,13 @@ export default function Footer() {
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-base font-semibold text-white">Company</h3>
+                <h3 className="text-base font-semibold text-white">Help</h3>
                 <ul className="mt-6 space-y-4">
                   {navigation.company.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-base text-white hover:text-gray-900">
+                      <Link href={item.href} className="text-base text-white hover:text-gray-900">
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -120,9 +123,9 @@ export default function Footer() {
                 <ul className="mt-6 space-y-4">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-base text-white hover:text-gray-900">
+                      <Link href={item.href} className="text-base text-white hover:text-gray-900">
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -137,4 +140,3 @@ export default function Footer() {
     </footer>
   );
 }
-  

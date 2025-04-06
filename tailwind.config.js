@@ -131,7 +131,7 @@ export default {
           500: '#9CCACC',
         },
         chewsyskin: {
-          500: '#F0E4DC',
+          500: '#EBECE5',
         },
         chewsyred: {
           500: '#F1B3BB',

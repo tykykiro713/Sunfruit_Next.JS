@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
+import Navigation from "@/components/Navigation";
 import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
 import ProductMedia from "@/components/ProductMedia";
 import ProductInfo from "@/components/ProductInfo";
@@ -26,7 +26,7 @@ export default async function ProductPage({ params, searchParams }) {
 
   return (
     <div className="bg-white min-h-screen">
-      <Header />
+      <Navigation />
       <main>
         {/* Product details section - constrained width on mobile, full width on desktop */}
         <div className="px-4 py-8 sm:px-6 sm:py-16 md:py-24 lg:py-32 lg:px-0">
@@ -48,7 +48,9 @@ export default async function ProductPage({ params, searchParams }) {
         {/* Full width sections */}
         <div>
           <Circle_Testimonial />
-          <ProductHeroSplit />
+          {(product.images?.edges || []).length >= 3 && (
+            <ProductHeroSplit product={product} />
+          )}
         </div>
         
         {/* Product recirculation section - constrained width on mobile, full width on desktop */}
