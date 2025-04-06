@@ -1,3 +1,5 @@
+// Need to update the styling for the Shop button to remove the box
+
 "use client";
 
 import { Fragment, useState, useEffect } from "react";
@@ -214,7 +216,7 @@ export default function Navigation() {
                   </div>
 
                   {/* Add tablet navigation */}
-                  <div className="hidden md:flex lg:hidden justify-start w-1/3 pl-6">
+                  <div className="hidden md:flex lg:hidden justify-start w-1/3 pl-4 sm:pl-6">
                     <div className="flex space-x-6">
                       <Link
                         href="#"
@@ -247,9 +249,9 @@ export default function Navigation() {
 
                   {/* User and Cart icons - right */}
                   <div className="flex w-10 md:w-1/3 lg:w-1/3 items-center md:justify-end lg:justify-end">
-                    <div className="md:pr-2 lg:mr-32 xl:mr-40 flex items-center space-x-4">
+                    <div className="md:pr-6 flex items-center space-x-4">
                       {/* User Icon - visible only on tablet and desktop */}
-                      <Link href="/profile" className="hidden md:flex group items-center gap-1.5 p-2">
+                      <Link href="/profile" className="hidden md:flex group items-center gap-1.5 p-2 whitespace-nowrap">
                         <svg 
                           xmlns="http://www.w3.org/2000/svg" 
                           fill="none" 
@@ -286,7 +288,7 @@ export default function Navigation() {
                       {/* Cart Icon - visible on all screen sizes */}
                       <button
                         onClick={() => setDrawerOpen(!isDrawerOpen)}
-                        className="group flex items-center gap-1.5 p-2"
+                        className="group flex items-center gap-1.5 p-2 whitespace-nowrap"
                       >
                         <ShoppingBagIcon
                           aria-hidden="true"
