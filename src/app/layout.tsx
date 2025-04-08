@@ -5,7 +5,7 @@ import "./globals.css";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/lib/apollo-client";
 import { MyProvider } from "@/context/MyContext";
-import { CartProvider } from "@/context/cartContext";
+import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import Script from "next/script";
 import { useEffect } from "react";

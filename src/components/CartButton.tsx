@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import { useCart } from '@/context/cartContext';
+import { useCart } from '@/context/CartContext';
 
 export default function CartButton() {
   const { openCart, cartCount } = useCart();

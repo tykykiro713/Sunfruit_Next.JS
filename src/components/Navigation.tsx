@@ -19,7 +19,7 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { fetchProducts, ProductNode } from "@/lib/shopify";
-import { useCart } from "@/context/cartContext";
+import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 
 export default function Navigation() {

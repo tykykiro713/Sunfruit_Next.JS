@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';  // Added missing React import
 import type { UIProduct, MediaNode } from '@/lib/shopify';  // Import both UIProduct and MediaNode types
-import { useCart } from '@/context/cartContext';
+import { useCart } from '@/context/CartContext';
 
 // Add this to fix the Klaviyo window type issue
 declare global {

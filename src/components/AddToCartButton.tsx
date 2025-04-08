@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useCart } from '@/context/cartContext';
+import { useCart } from '@/context/CartContext';
 
 // Define Klaviyo window object
 declare global {
@@ -18,6 +18,7 @@ interface AddToCartButtonProps {
   subscriptionDiscount?: number;
   sellingPlanId?: string;
   klaviyoFormId?: string;
+  productTitle?: string;
 }
 
 export default function AddToCartButton({ 
@@ -27,7 +28,8 @@ export default function AddToCartButton({
   subscriptionFrequency = 'monthly',
   subscriptionDiscount = 0,
   sellingPlanId,
-  klaviyoFormId = 'RU73Kw'
+  klaviyoFormId = 'RU73Kw',
+  productTitle = 'this product'
 }: AddToCartButtonProps) {
   const [quantity, setQuantity] = useState(1);
   const { addItem, isLoading } = useCart();
@@ -63,9 +65,13 @@ export default function AddToCartButton({
     }
   };
   
-  // Get button text - now consistent regardless of availability
+  // Get the appropriate button text based on product availability
   const getButtonText = () => {
     if (isLoading) return 'Adding...';
+    
+    if (!availableForSale) {
+      return 'Notify me when back in stock';
+    }
     
     if (isSubscription && subscriptionDiscount) {
       return `Subscribe & Save ${subscriptionDiscount}%`;
@@ -103,10 +109,22 @@ export default function AddToCartButton({
         </div>
       )}
       
+      {/* Out of stock message */}
+      {!availableForSale && (
+        <div className="mb-6">
+          <p className="text-red-600 font-medium">Currently out of stock</p>
+          <p className="text-gray-500 text-sm mt-1">
+            Enter your email to be notified when {productTitle} is back in stock.
+          </p>
+        </div>
+      )}
+      
       <button
         type="button"
         className={`md:w-1/2 w-full flex items-center justify-center rounded-md border border-transparent px-16 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-emeraldgreen-500 focus:ring-offset-2 ${
-          'bg-emeraldgreen-500 hover:bg-brightgreen-500'
+          availableForSale
+            ? 'bg-emeraldgreen-500 hover:bg-brightgreen-500'
+            : 'bg-emeraldgreen-500 hover:bg-brightgreen-500' // Keep consistent styling for both states
         }`}
         onClick={handleAddToCart}
         disabled={isLoading}
@@ -117,7 +135,7 @@ export default function AddToCartButton({
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            Adding...
+            {availableForSale ? 'Adding...' : 'Loading...'}
           </>
         ) : (
           getButtonText()
