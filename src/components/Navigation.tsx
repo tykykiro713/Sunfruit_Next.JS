@@ -19,20 +19,13 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { fetchProducts, ProductNode } from "@/lib/shopify";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/context/cartContext";
 import Link from "next/link";
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
-  const { cart } = useCart();
   const [products, setProducts] = useState<ProductNode[]>([]);
-  const [isDrawerOpen, setDrawerOpen] = useState(false);
-
-  useEffect(() => {
-    if (cart.length > 0) {
-      setDrawerOpen(true);
-    }
-  }, [cart]);
+  const { openCart, cartCount } = useCart();
 
   useEffect(() => {
     async function loadProducts() {
@@ -248,7 +241,7 @@ export default function Navigation() {
                   </div>
 
                   {/* User and Cart icons - right */}
-                  <div className="flex w-10 md:w-1/3 lg:w-1/3 items-center md:justify-end lg:justify-end">
+                  <div className="flex w-10 md:w-1/3 lg:w-1/3 items-center justify-center md:justify-end lg:justify-end">
                     <div className="md:pr-6 flex items-center space-x-4">
                       {/* User Icon - visible only on tablet and desktop */}
                       <Link href="/profile" className="hidden md:flex group items-center gap-1.5 p-2 whitespace-nowrap">
@@ -264,21 +257,21 @@ export default function Navigation() {
                           style={{transform: "scale(1.2)"}}
                         >
                           <path 
-                            vector-effect="non-scaling-stroke" 
+                            vectorEffect="non-scaling-stroke" 
                             stroke="currentColor" 
-                            stroke-linecap="round" 
-                            stroke-linejoin="round" 
-                            stroke-miterlimit="10" 
-                            stroke-width="1.5" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            strokeMiterlimit="10" 
+                            strokeWidth="1.5" 
                             d="M12 21a9 9 0 100-18 9 9 0 000 18z"
                           ></path>
                           <path 
-                            vector-effect="non-scaling-stroke" 
+                            vectorEffect="non-scaling-stroke" 
                             stroke="currentColor" 
-                            stroke-linecap="round" 
-                            stroke-linejoin="round" 
-                            stroke-miterlimit="10" 
-                            stroke-width="1.5" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            strokeMiterlimit="10" 
+                            strokeWidth="1.5" 
                             d="M12 11.73a2.97 2.97 0 100-5.94 2.97 2.97 0 000 5.94zm0 1.89c-2.88 0-5.31 2.34-5.31 5.31v.36C8.22 20.37 10.02 21 12 21c1.98 0 3.78-.63 5.31-1.71v-.36c0-2.88-2.43-5.31-5.31-5.31z"
                           ></path>
                         </svg>
@@ -287,13 +280,20 @@ export default function Navigation() {
                       
                       {/* Cart Icon - visible on all screen sizes */}
                       <button
-                        onClick={() => setDrawerOpen(!isDrawerOpen)}
-                        className="group flex items-center gap-1.5 p-2 whitespace-nowrap"
+                        onClick={openCart}
+                        className="group flex items-center gap-1.5 p-2 whitespace-nowrap relative"
                       >
-                        <ShoppingBagIcon
-                          aria-hidden="true"
-                          className="size-6 lg:size-7 shrink-0 text-black group-hover:text-emeraldgreen-500"
-                        />
+                        <div className="relative">
+                          <ShoppingBagIcon
+                            aria-hidden="true"
+                            className="size-6 lg:size-7 shrink-0 text-black group-hover:text-emeraldgreen-500"
+                          />
+                          {cartCount > 0 && (
+                            <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-emeraldgreen-500 text-xs font-medium text-white">
+                              {cartCount}
+                            </span>
+                          )}
+                        </div>
                         <span className="hidden md:inline text-black group-hover:text-emeraldgreen-500 font-sans">Cart</span>
                         <span className="sr-only">View cart</span>
                       </button>
@@ -305,36 +305,6 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
-
-      {/* Cart Drawer */}
-      {isDrawerOpen && (
-        <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-lg z-50">
-          <div className="p-4">
-            <h2 className="text-xl font-bold">The Cart</h2>
-            <ul>
-              {cart.map((item) => (
-                <li key={item.id} className="flex items-center justify-between py-2">
-                  <div>
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-16 h-16 object-cover"
-                    />
-                    <p>{item.title}</p>
-                  </div>
-                  <p>${item.price}</p>
-                </li>
-              ))}
-            </ul>
-            <button
-              className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md"
-              onClick={() => setDrawerOpen(false)}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

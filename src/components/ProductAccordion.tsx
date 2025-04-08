@@ -2,46 +2,13 @@
 
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
+import type { AccordionItem } from '@/data/productAccordionData';
 
-const accordionItems = [
-  {
-    name: "Description",
-    content: [
-      "Made from organic lemon and organic mint",
-      "Prebiotics to improve gut health",
-      "5 Calories, Zero sugar, Zero Carbs, Zero Preservatives",
-      "Simply mix with 16oz of water and enjoy",
-      "20 stick packs per can",
-    ],
-  },
-  {
-    name: "Ingredients",
-    content: [
-      "Organic Lemon Juice",
-      "Organic Acacia Fiber (Prebiotic)",
-      "Organic Mint",
-      "Organic Monk Fruit Extract",
-    ],
-  },
-  {
-    name: "Shipping & Returns",
-    content: [
-      "Free Shipping on all orders",
-      "100% Satisfaction Guarantee or your money back",
-      "We are unable to accept returns on opened product",
-    ],
-  },
-  {
-    name: "Subscription",
-    content: [
-      "Free Shipping on all orders",
-      "100% Satisfaction Guarantee or your money back",
-      "We are unable to accept returns on opened product",
-    ],
-  },
-];
+interface ProductAccordionProps {
+  items: AccordionItem[];
+}
 
-export default function ProductAccordion() {
+export default function ProductAccordion({ items }: ProductAccordionProps) {
   return (
     <section aria-labelledby="details-heading" className="mt-12">
       <h2 id="details-heading" className="sr-only">
@@ -49,7 +16,7 @@ export default function ProductAccordion() {
       </h2>
 
       <div className="divide-y divide-gray-200 border-t">
-        {accordionItems.map((item, idx) => (
+        {items.map((item, idx) => (
           <Disclosure key={idx} as="div">
             <h3>
               <DisclosureButton className="group relative flex w-full items-center justify-between py-6 text-left">

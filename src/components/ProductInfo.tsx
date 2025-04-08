@@ -16,16 +16,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         {product.title}
       </h1>
 
-      <div className="mt-3">
-        <h2 className="sr-only">Product information</h2>
-        <p className="text-3xl tracking-tight text-gray-900">
-          {product.priceRange
-            ? `${product.priceRange.minVariantPrice.amount} ${product.priceRange.minVariantPrice.currencyCode}`
-            : "N/A"}
-        </p>
-      </div>
-
-      {/* Reviews */}
+      {/* Reviews - Moved before price */}
       <div className="mt-3">
         <h3 className="sr-only">Reviews</h3>
         <div className="flex items-center">
@@ -45,6 +36,16 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           </div>
           <p className="sr-only">{product.rating || 0} out of 5 stars</p>
         </div>
+      </div>
+
+      {/* Price - Moved after star rating */}
+      <div className="mt-3">
+        <h2 className="sr-only">Product information</h2>
+        <p className="text-3xl tracking-tight text-gray-900">
+          {product.priceRange
+            ? `$${product.priceRange.minVariantPrice.amount} ${product.priceRange.minVariantPrice.currencyCode}`
+            : "N/A"}
+        </p>
       </div>
 
       <div className="mt-6">

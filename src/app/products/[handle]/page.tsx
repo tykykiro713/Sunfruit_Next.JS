@@ -3,14 +3,16 @@ import Navigation from "@/components/Navigation";
 import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
 import ProductMedia from "@/components/ProductMedia";
 import ProductInfo from "@/components/ProductInfo";
-import ProductForm from "@/components/ProductForm";
+import EnhancedProductForm from "@/components/EnhancedProductForm";
 import ProductAccordion from "@/components/ProductAccordion";
-import Circle_Testimonial from "@/components/Circle_Testimonial";
+import ProductTestimonial from "@/components/ProductTestimonial";
 import ProductHeroSplit from "@/components/ProductHeroSplit";
 import ProductRecirculation from "@/components/ProductRecirculation";
 import SampleCTA from "@/components/SampleCTA";
 import Faqs from "@/components/Faqs";
 import Footer from "@/components/Footer";
+import { getProductTestimonial } from "@/data/productTestimonials";
+import { getProductAccordionData } from "@/data/productAccordionData";
 
 // @ts-expect-error - Next.js App Router typing issue
 export default async function ProductPage({ params, searchParams }) {
@@ -23,6 +25,10 @@ export default async function ProductPage({ params, searchParams }) {
   if (!product) {
     notFound();
   }
+
+  // Get the testimonial and accordion data for this product
+  const testimonial = getProductTestimonial(params.handle);
+  const accordionData = getProductAccordionData(params.handle);
 
   return (
     <div className="bg-white min-h-screen">
@@ -38,8 +44,8 @@ export default async function ProductPage({ params, searchParams }) {
               {/* Right column - Product Info & Form */}
               <div className="mt-10 px-4 sm:mt-16 sm:px-6 lg:mt-0 lg:px-8 xl:px-12">
                 <ProductInfo product={product} />
-                <ProductForm product={product} />
-                <ProductAccordion />
+                <EnhancedProductForm product={product} />
+                <ProductAccordion items={accordionData.items} />
               </div>
             </div>
           </div>
@@ -47,7 +53,14 @@ export default async function ProductPage({ params, searchParams }) {
 
         {/* Full width sections */}
         <div>
-          <Circle_Testimonial />
+          <ProductTestimonial 
+            image={testimonial.image}
+            alt={testimonial.alt}
+            quote={testimonial.quote}
+            author={testimonial.author}
+            location={testimonial.location}
+            title={testimonial.title}
+          />
           {(product.images?.edges || []).length >= 3 && (
             <ProductHeroSplit product={product} />
           )}
