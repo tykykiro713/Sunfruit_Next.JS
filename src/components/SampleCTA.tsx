@@ -1,4 +1,84 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { fetchProductByHandle } from '@/lib/shopify';
+import { createCart, addToCart } from '@/lib/cart';
+
+// Define Klaviyo window object
+declare global {
+  interface Window {
+    _klOnsite: any;
+  }
+}
+
 export default function SampleCTA() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [samplePackProduct, setSamplePackProduct] = useState<any>(null);
+  
+  // Sample pack product handle - update this to your actual sample pack handle
+  const SAMPLE_PACK_HANDLE = 'sunfruit-sample-pack';
+  const KLAVIYO_FORM_ID = 'RU73Kw'; // Your Klaviyo form ID for out-of-stock notifications
+  
+  // Initialize Klaviyo
+  useEffect(() => {
+    window._klOnsite = window._klOnsite || [];
+  }, []);
+  
+  // Fetch sample pack product on component mount
+  useEffect(() => {
+    async function fetchSamplePack() {
+      try {
+        const product = await fetchProductByHandle(SAMPLE_PACK_HANDLE);
+        setSamplePackProduct(product);
+      } catch (error) {
+        console.error('Error fetching sample pack product:', error);
+      }
+    }
+    
+    fetchSamplePack();
+  }, []);
+  
+  // Check if the sample pack is available
+  const isAvailable = samplePackProduct?.availableForSale && 
+                     samplePackProduct?.variants?.edges?.[0]?.node?.availableForSale;
+
+  // Get variant ID
+  const variantId = samplePackProduct?.variants?.edges?.[0]?.node?.id;
+  
+  const handleGetSamples = async () => {
+    setIsLoading(true);
+    
+    try {
+      if (isAvailable && variantId) {
+        // Create a new cart and add the sample pack directly
+        const cartId = await createCart();
+        
+        // Add only the sample pack to the cart
+        const updatedCart = await addToCart(cartId, variantId, 1);
+        
+        if (updatedCart?.checkoutUrl) {
+          // Redirect directly to checkout, bypassing the cart drawer
+          window.location.href = updatedCart.checkoutUrl;
+        } else {
+          setIsLoading(false);
+          console.error('Failed to get checkout URL');
+        }
+      } else {
+        // If out of stock, open Klaviyo form
+        if (window._klOnsite && typeof window._klOnsite.openForm === 'function') {
+          window._klOnsite.openForm(KLAVIYO_FORM_ID);
+          setIsLoading(false);
+        } else {
+          console.error('Klaviyo form function not available');
+          setIsLoading(false);
+        }
+      }
+    } catch (error) {
+      console.error('Error handling samples:', error);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div id="samples" className="bg-gray-50">
       <div className="mx-auto max-w-7xl py-24 sm:px-2 sm:py-32 lg:px-4">
@@ -12,19 +92,27 @@ export default function SampleCTA() {
               </h2>
               <p className="mt-4 text-xl/8 text-gray-500">
                 We&apos;ll ship you 8 samples for free. Receive 2 stick packs of
-                each flavor, just pay $4 shipping.  Samples ship today!
+                each flavor, just pay $4 shipping. Samples ship today!
               </p>
-              <a
-                href="#"
+              <button
+                onClick={handleGetSamples}
+                disabled={isLoading}
                 className="mt-6 inline-block rounded-3xl bg-emeraldgreen-500 px-12 py-3 text-base md:text-lg font-medium text-white transition hover:bg-brightgreen-500 focus:outline-none focus:ring focus:ring-green-500"
               >
-                Get FREE Samples*
-              </a>
+                {isLoading ? (
+                  <>
+                    <span className="inline-block animate-spin mr-2">↻</span>
+                    Processing...
+                  </>
+                ) : (
+                  'Get FREE Samples*'
+                )}
+              </button>
             </div>
             <img
-              src="/images/Stick_Packs.png"
+              src="/images/Samples2.png"
               alt="Stick Packs"
-              className="aspect-[3/2] w-full rounded-lg bg-gray-100 object-cover"
+              className="aspect-[3/2] w-full rounded-lg bg-gray-50 object-cover"
             />
           </div>
         </div>

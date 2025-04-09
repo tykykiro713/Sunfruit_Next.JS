@@ -24,7 +24,13 @@ export default function ProductList() {
       try {
         const fetchedProducts = await fetchProducts();
         console.log("Fetched products:", fetchedProducts);
-        setProducts(fetchedProducts);
+        
+        // Filter out the Sunfruit Sample Pack and limit to 4 products
+        const filteredProducts = fetchedProducts
+          .filter(product => !product.title.toLowerCase().includes('sample pack'))
+          .slice(0, 4);
+        
+        setProducts(filteredProducts);
         setLoading(false);
       } catch (err) {
         const error = err as ErrorWithMessage;
