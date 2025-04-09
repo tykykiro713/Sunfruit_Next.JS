@@ -19,7 +19,13 @@ export default function ProductRecirculation() {
     async function loadProducts() {
       try {
         const fetchedProducts = await fetchProducts(12); // Fetch up to 12 products
-        setProducts(fetchedProducts);
+        
+        // Filter out the Sunfruit Sample Pack and limit to 4 products
+        const filteredProducts = fetchedProducts
+          .filter(product => !product.title.toLowerCase().includes('sample pack'))
+          .slice(0, 4);
+        
+        setProducts(filteredProducts);
         setLoading(false);
       } catch (err) {
         const error = err as { message: string };
