@@ -53,7 +53,7 @@ export default function Navigation() {
     ],
     pages: [
       { name: "About Us", href: "/aboutus" },
-      { name: "Find Us", href: "#" },
+      { name: "Find Us", href: "/findus" },
     ],
   };
 
