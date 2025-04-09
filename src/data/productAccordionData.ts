@@ -19,8 +19,8 @@ export interface AccordionItem {
           "Made from organic fruits and botanicals",
           "Prebiotics to improve gut health",
           "10 Calories, Zero sugar, Zero Carbs, Zero Preservatives",
-          "Simply mix with 16oz of water and enjoy",
           "20 stick packs per can",
+          "Simply mix with 16oz of water and enjoy",
         ],
       },
       {
@@ -44,7 +44,7 @@ export interface AccordionItem {
         content: [
             "Subscribe and save 15%",
             "Pause or cancel your subscription at any time",
-            "Change your flavors or shipping frequency with ease",
+            "Easy to change your flavors or shipping frequency",
         ],
       },
     ],
@@ -61,8 +61,8 @@ export interface AccordionItem {
             "Made from organic lemon and organic mint",
             "Prebiotics to improve gut health",
             "10 Calories, Zero sugar, Zero Carbs, Zero Preservatives",
-            "Simply mix with 16oz of water and enjoy",
             "20 stick packs per can",
+            "Simply mix with 16oz of water and enjoy",
           ],
         },
         {
@@ -86,7 +86,7 @@ export interface AccordionItem {
           content: [
             "Subscribe and save 15%",
             "Pause or cancel your subscription at any time",
-            "Change your flavors or shipping frequency with ease",
+            "Easy to change your flavors or shipping frequency",
           ],
         },
       ],
@@ -101,8 +101,8 @@ export interface AccordionItem {
             "Made from organic lime and organic basil",
             "Prebiotics to improve gut health",
             "10 Calories, Zero sugar, Zero Carbs, Zero Preservatives",
-            "Simply mix with 16oz of water and enjoy",
             "20 stick packs per can",
+            "Simply mix with 16oz of water and enjoy",
           ],
         },
         {
@@ -126,7 +126,7 @@ export interface AccordionItem {
           content: [
             "Subscribe and save 15%",
             "Pause or cancel your subscription at any time",
-            "Change your flavors or shipping frequency with ease",
+            "Easy to change your flavors or shipping frequency",
           ],
         },
       ],
@@ -141,8 +141,8 @@ export interface AccordionItem {
             "Made from organic raspberry and organic hibiscus",
             "Prebiotics to improve gut health",
             "10 Calories, Zero sugar, Zero Carbs, Zero Preservatives",
-            "Simply mix with 16oz of water and enjoy",
             "20 stick packs per can",
+            "Simply mix with 16oz of water and enjoy",
           ],
         },
         {
@@ -166,7 +166,7 @@ export interface AccordionItem {
           content: [
             "Subscribe and save 15%",
             "Pause or cancel your subscription at any time",
-            "Change your flavors or shipping frequency with ease",
+            "Easy to change your flavors or shipping frequency",
           ],
         },
       ],
@@ -181,8 +181,8 @@ export interface AccordionItem {
             "Made from organic grapefruit and organic ginger",
             "Prebiotics to improve gut health",
             "10 Calories, Zero sugar, Zero Carbs, Zero Preservatives",
-            "Simply mix with 16oz of water and enjoy",
             "20 stick packs per can",
+            "Simply mix with 16oz of water and enjoy",
           ],
         },
         {
@@ -206,7 +206,7 @@ export interface AccordionItem {
           content: [
             "Subscribe and save 15%",
             "Pause or cancel your subscription at any time",
-            "Change your flavors or shipping frequency with ease",
+            "Easy to change your flavors or shipping frequency",
           ],
         },
       ],
