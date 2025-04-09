@@ -10,6 +10,13 @@ interface ProductInfoProps {
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
+  // Format the price to remove cents and currency code
+  const formatPrice = (amount: string) => {
+    // Parse amount and round to nearest integer
+    const price = parseInt(amount, 10);
+    return `$${price}`;
+  };
+
   return (
     <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
       <h1 className="text-3xl font-bold tracking-tight text-emeraldgreen-500">
@@ -38,12 +45,12 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         </div>
       </div>
 
-      {/* Price - Moved after star rating */}
+      {/* Price - Formatted to show only dollars, no cents or currency code */}
       <div className="mt-3">
         <h2 className="sr-only">Product information</h2>
         <p className="text-3xl tracking-tight text-gray-900">
           {product.priceRange
-            ? `$${product.priceRange.minVariantPrice.amount} ${product.priceRange.minVariantPrice.currencyCode}`
+            ? formatPrice(product.priceRange.minVariantPrice.amount)
             : "N/A"}
         </p>
       </div>
