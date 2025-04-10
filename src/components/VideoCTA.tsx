@@ -19,12 +19,11 @@ export default function VideoCTA() {
       <div className="p-8 md:p-12 lg:px-16 lg:py-24 order-last sm:order-first">
         <div className="mx-auto max-w-xl text-center sm:text-left">
           <h2 className="text-4xl font-poppins font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl">
-            Elevate your water with organic flavor
+            100% Organic Powder Drink Mix
           </h2>
 
           <p className="mt-6 text-xl/8 text-gray-600">
-            Sunfruit combines organic fruits and botanicals to create naturally flavorful water. No sugar, sodium, preservatives, fillers... only the
-            good stuff.
+          Sunfruit is an organic drink mix made from real fruit and botanical powders. Just add water for a clean, refreshing hydration—no sugar, no sodium, no preservatives, no fillers. Only the good stuff.
           </p>
           <div className="mt-4 md:mt-8">
             <a

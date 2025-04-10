@@ -91,7 +91,7 @@ export default function SampleCTA() {
                 Get FREE samples now!
               </h2>
               <p className="mt-4 text-xl/8 text-gray-500">
-                We&apos;ll ship you 8 samples for free. Receive 2 stick packs of
+                *We&apos;ll ship you 8 samples for free. Receive 2 stick packs of
                 each flavor, just pay $4 shipping. Samples ship today!
               </p>
               <button
@@ -110,7 +110,7 @@ export default function SampleCTA() {
               </button>
             </div>
             <img
-              src="/images/Samples2.png"
+              src="/images/Samples.png"
               alt="Stick Packs"
               className="aspect-[3/2] w-full rounded-lg bg-gray-50 object-cover"
             />

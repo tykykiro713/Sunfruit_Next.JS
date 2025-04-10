@@ -85,7 +85,7 @@ export default function ProductList() {
     <div className="bg-gray-50">
       <div className="mx-auto max-w-2xl px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
         <h2 className="text-4xl font-poppins font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl text-center">
-          100% Organic Flavors
+          Sunfruit Flavors
         </h2>
         <div className="mt-16 grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:gap-x-8">
           {products.map((product) => {
