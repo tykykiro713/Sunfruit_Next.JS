@@ -23,7 +23,7 @@ export default function VideoCTA() {
           </h2>
 
           <p className="mt-6 text-xl/8 text-gray-600">
-          Sunfruit is an organic drink mix made from real fruit and botanical powders. Just add water for a clean, refreshing hydration—no sugar, no sodium, no preservatives, no fillers. Only the good stuff.
+          Sunfruit is made from real fruits and botanicals. Just add water for clean, refreshing hydration—no sugar, no sodium, no preservatives, no fillers. Only the good stuff.
           </p>
           <div className="mt-4 md:mt-8">
             <a
