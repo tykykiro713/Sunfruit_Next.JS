@@ -1,8 +1,12 @@
+'use client';
+
 import Script from 'next/script';
 import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export function GoogleAnalytics() {
+// This component contains the part that needs Suspense
+function GoogleAnalyticsInner() {
   const pathname = usePathname() ?? '';
   const searchParams = useSearchParams();
 
@@ -18,6 +22,11 @@ export function GoogleAnalytics() {
     }
   }, [pathname, searchParams]);
 
+  return null;
+}
+
+// Main component with Suspense boundary
+export function GoogleAnalytics() {
   return (
     <>
       <Script
@@ -36,6 +45,10 @@ export function GoogleAnalytics() {
           `,
         }}
       />
+
+      <Suspense fallback={null}>
+        <GoogleAnalyticsInner />
+      </Suspense>
     </>
   );
 }

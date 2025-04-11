@@ -1,9 +1,13 @@
+'use client';
+
 import Navigation from "@/components/Navigation";
 import ProductRecirculation from "@/components/ProductRecirculation"
 import Footer from "@/components/Footer";
 import { CheckCircleIcon, InformationCircleIcon } from '@heroicons/react/20/solid';
+import { Suspense } from 'react';
 
-export default function AboutPage() {
+// Content component to wrap in Suspense
+function FindUsContent() {
   return (
     <div>
       <Navigation />
@@ -27,5 +31,13 @@ export default function AboutPage() {
       <div className="h-16 bg-white"></div>
       <Footer />
     </div>
+  );
+}
+
+export default function AboutPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <FindUsContent />
+    </Suspense>
   );
 }
