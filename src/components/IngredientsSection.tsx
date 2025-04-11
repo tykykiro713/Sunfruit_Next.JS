@@ -25,8 +25,8 @@ export default function IngredientsSection() {
           Organic Fruits and Botanicals
         </h2>
         <p className="max-w-3xl mx-auto mb-12 text-lg md:text-xl text-neutral-700">
-          We care about our ingredients as much as you do. By combining organic fruits and botanicals,
-          our flavors are delicious without any of the bad stuff.
+          We care about ingredients as much as you do. By combining organic fruits and botanicals,
+          Sunfruit flavors are delicious without any of the bad stuff.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

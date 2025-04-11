@@ -8,8 +8,8 @@ import { MyProvider } from "@/context/MyContext";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import Script from "next/script";
-import { useEffect } from "react";
-import clarity from "@microsoft/clarity";
+import { ClarityProvider } from "@/components/ClarityProvider"; // Import ClarityProvider
+import { GoogleAnalytics } from "@/components/GoogleAnalytics"; // Import GoogleAnalytics
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,31 +34,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  useEffect(() => {
-    if (process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID) {
-      clarity.init(process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID);
-    }
-  }, []);
-
   return (
     <html lang="en">
       <head>
-        {/* Google Analytics 4 */}
-        <Script
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
-              page_path: window.location.pathname,
-            });
-          `}
-        </Script>
-
+        {/* All analytics scripts are now handled by dedicated components */}
+        
         {/* Klaviyo Active Onsite Script */}
         <Script
           src={`https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=${process.env.NEXT_PUBLIC_KLAVIYO_COMPANY_ID}`}
@@ -68,6 +48,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
+        {/* Add analytics components */}
+        <ClarityProvider />
+        <GoogleAnalytics />
+        
         <ApolloProvider client={client}>
           <MyProvider>
             <CartProvider>
@@ -80,7 +64,6 @@ export default function RootLayout({
     </html>
   );
 }
-
 
 
 

@@ -13,7 +13,7 @@ export default function Faqs() {
     {
       question: "What are the health benefits of Sunfruit?",
       answer:
-        "While we don't make health claims. The Sunfruit differnce is that we use 100% organic ingredients with no sugar, sodium, preservatives or fillers.",
+        "The Sunfruit differnce is that you can stay hydrated with 100% organic ingredients without sugar, sodium, preservatives or fillers.",
     },
     {
       question: "Is Sunfruit safe for my dietary restricions?",
