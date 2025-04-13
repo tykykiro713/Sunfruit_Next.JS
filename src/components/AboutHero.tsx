@@ -20,10 +20,10 @@ export default function AboutHero() {
   // Health journey content
   const journeyContent = {
     imageUrl: "/images/Tyson.jpg", // Keep existing image or update as needed
-    imageAlt: "The journey to better health",
+    imageAlt: "The Journey to Better Health",
     title: "The Journey to Better Health",
     paragraphs: [
-      "I started fasting in the mornings, walking every day, lifting weights again, and cleaning up everything I put in my body.",
+      "I started walking every day, lifting weights again, and cleaning up everything I put in my body.",
       "What happened next blew me away… I lost 30 pounds. My blood pressure dropped back to normal. The energy came back. My joints stopped aching. Even my dentist was shocked—'No plaque or tartar at all,' she said. That had never happened before.",
       "But there was one thing missing: flavor. I found myself drinking just coffee, tea, and water. Which was fine—until it wasn't. I needed something more. Something I could sip throughout the day that felt refreshing and exciting, without loading up on chemicals or sugar."
     ]
@@ -32,12 +32,12 @@ export default function AboutHero() {
   // Birth of Sunfruit content
   const sunfruitBirthContent = {
     imageUrl: "/images/Lemon_3.jpg", // Keep existing image or update as needed
-    imageAlt: "The birth of Sunfruit",
-    title: "The Birth of Sunfruit",
+    imageAlt: "The Origin of Sunfruit",
+    title: "The Origin of Sunfruit",
     paragraphs: [
-      "I tried hydration powders. I read every label. Most were full of sweeteners, fillers, or fake 'natural' ingredients. A few salty mixes were okay for after a workout—but not something I wanted all day long.",
+      "I tried hydration powders. I read every label. Most were full of preservatives, fillers, or fake 'natural' ingredients. A few electrolyte mixes were okay for after a workout—but not something I wanted all day long.",
       "Then I had an idea. What if I could take real fruit and real botanicals and create clean, bold flavors... with no sugar, no salt, no preservatives, no sketchy stuff at all?",
-      "That's how Sunfruit was born. Every stick pack is 100% organic. It's clean enough for me—and safe enough for my kids. In fact, they love the Lemon Mint flavor. They think it's lemonade. I know it's way better."
+      "That's how Sunfruit was born. Every serving is 100% organic. It's clean enough for me—and safe enough for my kids. In fact, they love the Lemon Mint flavor and think its lemonade, but I know it's way better."
     ]
   };
 
@@ -48,9 +48,9 @@ export default function AboutHero() {
     title: "Create Your Health Revolution",
     paragraphs: [
       "Sunfruit is now part of our daily routine—and it might just become part of yours too.",
-      "We're building more than just a company – we're creating a community of people who care deeply about what they put into their bodies. People who understand that proper hydration with clean ingredients is fundamental to health and wellness.",
-      "Our customers include busy parents, diabetics, fitness enthusiasts, heart-conscious individuals, and anyone who wants to feel their best throughout the day. What unites them is a commitment to quality and a refusal to settle for artificial ingredients or sugar-laden beverage options.",
-      "When you choose Sunfruit, you're not just purchasing a product – you're joining a movement toward better health and better living. We're honored to be part of your journey.",
+      "Whether you're watching your blood sugar, eating clean, cutting processed foods, or just trying to stay consistent—Sunfruit helps you stay on track without compromise. No sugar. No salt. No preservatives. Just bold, refreshing flavor from organic fruits and botanicals.",
+      "Our customers include busy parents, diabetics, fitness enthusiasts, heart-conscious individuals, and anyone who wants to feel their best throughout the day. What unites them is the understanding that proper hydration with clean ingredients is fundamental to health and wellness.",
+      "No matter where you are in your health journey, try Sunfruit today - your future self will thank you for it. We're honored to be part of your journey.",
       "To better health, Tyson R."
     ]
   };

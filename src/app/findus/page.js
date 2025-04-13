@@ -14,16 +14,16 @@ function FindUsContent() {
       <div className="bg-gray-50 px-6 py-32 lg:px-8">
         <div className="mx-auto max-w-3xl text-base/7 text-gray-700">
           <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl">
-            Find Us
+            Where to Find Sunfruit
           </h1>
           <p className="mt-6 text-xl/8">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Right now Sunfruit is exclusively available on Sunfruit.com. It’s where you’ll always find the broadest selection, limited releases, and exclusive early access to what’s next. We’re launching on Amazon very soon, so you can find us there as well.
           </p>
           <p className="mt-6 text-xl/8">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          In addition, we’re actively accepting wholesale applications from retailers who share our passion for clean-label products and better-for-you hydration. If you run a grocery store, yoga studio, wellness shop, or boutique market and want to bring Sunfruit to your shelves, we’d love to hear from you!
           </p>
           <p className="mt-6 text-xl/8">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          As we expand, we’ll be updating this page with a list of local retailers. So whether you&aptos;re looking to grab Sunfruit at your neighborhood store or discover a new favorite while traveling, check back here soon.
           </p>
         </div>
       </div>

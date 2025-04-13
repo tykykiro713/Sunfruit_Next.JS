@@ -6,10 +6,12 @@ import { ApolloProvider } from "@apollo/client";
 import client from "@/lib/apollo-client";
 import { MyProvider } from "@/context/MyContext";
 import { CartProvider } from "@/context/CartContext";
+import { CustomerProvider } from "@/context/CustomerContext"; // Add the CustomerProvider
 import CartDrawer from "@/components/CartDrawer";
 import Script from "next/script";
-import { ClarityProvider } from "@/components/ClarityProvider"; // Import ClarityProvider
-import { GoogleAnalytics } from "@/components/GoogleAnalytics"; // Import GoogleAnalytics
+import { ClarityProvider } from "@/components/ClarityProvider";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { KlaviyoProvider } from "@/components/KlaviyoProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,24 +50,25 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
-        {/* Add analytics components */}
+        {/* Analytics components */}
         <ClarityProvider />
         <GoogleAnalytics />
+        <KlaviyoProvider />
         
         <ApolloProvider client={client}>
           <MyProvider>
-            <CartProvider>
-              {children}
-              <CartDrawer />
-            </CartProvider>
+            <CustomerProvider> {/* Add CustomerProvider to wrap CartProvider */}
+              <CartProvider>
+                {children}
+                <CartDrawer />
+              </CartProvider>
+            </CustomerProvider>
           </MyProvider>
         </ApolloProvider>
       </body>
     </html>
   );
 }
-
-
 
 
 

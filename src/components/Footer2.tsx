@@ -3,17 +3,19 @@ import Link from 'next/link';
 const navigation = {
   solutions: [
     { name: "Our Story", href: "/aboutus" },
-    { name: "Careers", href: "/aboutus" },
-    { name: "Press", href: "/aboutus" },
+    { name: "Careers", href: "/" },
+    { name: "Blog", href: "/" },
+    { name: "Press", href: "/" },
   ],
   support: [
+    { name: "Find a Store", href: "/findus" },
     { name: "Refer a Friend", href: "/" },
     { name: "Wholesale", href: "/" },
     { name: "Affiliate", href: "/" },
   ],
   company: [
     { name: "FAQs", href: "/" },
-    { name: "My Account", href: "/account" },
+    { name: "My Account", href: "/" },
     { name: "Contact Us", href: "/" },
   ],
   legal: [
@@ -59,7 +61,7 @@ export default function Footer() {
           <div className="space-y-8">
             <Link href="/" className="inline-block">
               <img
-                alt="Sunfruit"
+                alt="Company name"
                 src="/images/Logo_Trans.png"
                 className="h-10 w-auto sm:h-12"
               />

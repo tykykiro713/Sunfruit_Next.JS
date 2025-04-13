@@ -1,5 +1,3 @@
-// Need to update the styling for the Shop button to remove the box
-
 "use client";
 
 import { Fragment, useState, useEffect } from "react";
@@ -20,12 +18,14 @@ import {
 import { Bars3Icon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { fetchProducts, ProductNode } from "@/lib/shopify";
 import { useCart } from "@/context/CartContext";
+import { useCustomer } from "@/context/CustomerContext"; // Import customer context
 import Link from "next/link";
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState<ProductNode[]>([]);
   const { openCart, cartCount } = useCart();
+  const { isLoggedIn, customer } = useCustomer(); // Use customer context
 
   useEffect(() => {
     async function loadProducts() {
@@ -56,6 +56,10 @@ export default function Navigation() {
       { name: "Find Us", href: "/findus" },
     ],
   };
+
+  // Get the appropriate account link and text based on login status
+  const accountLink = isLoggedIn ? "/account" : "/account/login";
+  const accountText = isLoggedIn ? "My Account" : "Sign In";
 
   return (
     <div className="bg-white">
@@ -128,11 +132,11 @@ export default function Navigation() {
               ))}
             </div>
 
-            {/* Add user profile link for mobile */}
+            {/* Updated user profile link for mobile */}
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               <div className="flow-root">
-                <Link href="/profile" className="-m-2 block p-2 font-medium text-gray-900">
-                  Sign In
+                <Link href={accountLink} className="-m-2 block p-2 font-medium text-gray-900">
+                  {accountText}
                 </Link>
               </div>
             </div>
@@ -243,8 +247,8 @@ export default function Navigation() {
                   {/* User and Cart icons - right */}
                   <div className="flex w-10 md:w-1/3 lg:w-1/3 items-center justify-center md:justify-end lg:justify-end">
                     <div className="md:pr-6 flex items-center space-x-4">
-                      {/* User Icon - visible only on tablet and desktop */}
-                      <Link href="/profile" className="hidden md:flex group items-center gap-1.5 p-2 whitespace-nowrap">
+                      {/* User Icon - updated without pulsing green dot */}
+                      <Link href={accountLink} className="hidden md:flex group items-center gap-1.5 p-2 whitespace-nowrap">
                         <svg 
                           xmlns="http://www.w3.org/2000/svg" 
                           fill="none" 
@@ -275,7 +279,9 @@ export default function Navigation() {
                             d="M12 11.73a2.97 2.97 0 100-5.94 2.97 2.97 0 000 5.94zm0 1.89c-2.88 0-5.31 2.34-5.31 5.31v.36C8.22 20.37 10.02 21 12 21c1.98 0 3.78-.63 5.31-1.71v-.36c0-2.88-2.43-5.31-5.31-5.31z"
                           ></path>
                         </svg>
-                        <span className="text-black group-hover:text-emeraldgreen-500 font-sans">Sign In</span>
+                        <span className="text-gray-900 group-hover:text-emeraldgreen-500 font-sans">
+                          {accountText}
+                        </span>
                       </Link>
                       
                       {/* Cart Icon - visible on all screen sizes */}
