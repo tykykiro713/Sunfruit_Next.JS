@@ -23,7 +23,7 @@ function FindUsContent() {
           In addition, we’re actively accepting wholesale applications from retailers who share our passion for clean-label products and better-for-you hydration. If you run a grocery store, yoga studio, wellness shop, or boutique market and want to bring Sunfruit to your shelves, we’d love to hear from you!
           </p>
           <p className="mt-6 text-xl/8">
-          As we expand, we’ll be updating this page with a list of local retailers. So whether you&aptos;re looking to grab Sunfruit at your neighborhood store or discover a new favorite while traveling, check back here soon.
+          As we expand, we’ll be updating this page with a list of local retailers. So whether you&apos;re looking to grab Sunfruit at your neighborhood store or discover a new favorite while traveling, check back here soon.
           </p>
         </div>
       </div>
