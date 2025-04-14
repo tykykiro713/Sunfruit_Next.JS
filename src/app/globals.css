@@ -22,6 +22,17 @@ body {
   font-family: 'Poppins', Arial, Helvetica, sans-serif; /* Update font-family to include Poppins */
 }
 
+/* Hide Zendesk Widget on mobile devices */
+@media screen and (max-width: 640px) {
+  iframe#launcher, 
+  div[data-brand-color="#10b981"],
+  div[role="presentation"][aria-hidden="true"][data-garden-id],
+  div[data-garden-id="modals.modal"],
+  div[data-garden-id="buttons.icon_button"],
+  div[data-testid="launcher"] {
+    display: none !important;
+  }
+}
 
 
 

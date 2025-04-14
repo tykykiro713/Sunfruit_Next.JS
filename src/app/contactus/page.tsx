@@ -18,9 +18,12 @@ export default function ContactPage() {
       <div className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl font-poppins font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl text-left mb-8">
-              Contact Us
-            </h1>
+            {/* Updated heading to match the About Us page heading style */}
+            <div className="text-left mb-12">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-poppins font-semibold text-emeraldgreen-500 leading-tight">
+                Contact Us
+              </h1>
+            </div>
             
             <div className="bg-white shadow overflow-hidden rounded-lg">
               <div className="px-4 py-5 sm:p-6">
