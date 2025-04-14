@@ -12,6 +12,7 @@ import Script from "next/script";
 import { ClarityProvider } from "@/components/ClarityProvider";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { KlaviyoProvider } from "@/components/KlaviyoProvider";
+import ZendeskWidget from "@/components/ZendeskWidget"; // Import the Zendesk widget
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,6 +62,7 @@ export default function RootLayout({
               <CartProvider>
                 {children}
                 <CartDrawer />
+                <ZendeskWidget /> {/* Add Zendesk Widget component */}
               </CartProvider>
             </CustomerProvider>
           </MyProvider>

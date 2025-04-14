@@ -14,7 +14,7 @@ const navigation = {
   company: [
     { name: "FAQs", href: "/" },
     { name: "My Account", href: "/account" },
-    { name: "Contact Us", href: "/" },
+    { name: "Contact Us", href: "/contactus" },
   ],
   legal: [
     { name: "Terms of service", href: "/legal" },

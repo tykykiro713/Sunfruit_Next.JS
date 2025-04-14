@@ -17,7 +17,7 @@ function FindUsContent() {
             Where to Find Sunfruit
           </h1>
           <p className="mt-6 text-xl/8">
-          Right now Sunfruit is exclusively available on Sunfruit.com. It’s where you’ll always find the broadest selection, limited releases, and exclusive early access to what’s next. We’re launching on Amazon very soon, so you can find us there as well.
+          Right now Sunfruit is exclusively available on Sunfruit.com. It’s where you’ll always find the broadest selection, limited releases, and early access to what’s next. We’re launching on Amazon very soon, so you can find us there as well.
           </p>
           <p className="mt-6 text-xl/8">
           In addition, we’re actively accepting wholesale applications from retailers who share our passion for clean-label products and better-for-you hydration. If you run a grocery store, yoga studio, wellness shop, or boutique market and want to bring Sunfruit to your shelves, we’d love to hear from you!
