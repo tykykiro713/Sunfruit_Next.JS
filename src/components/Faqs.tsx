@@ -33,7 +33,7 @@ export default function Faqs() {
     {
       question: "How do I manage my subscription?",
       answer:
-        "You can modify or cancel your subscription at any time using this link XXX.",
+        "You can modify or cancel your subscription at any time by contacting us.",
     },
   ];
 

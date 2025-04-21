@@ -30,14 +30,14 @@ export default function ContactPage() {
                 <div className="text-center">
                   <p className="text-lg text-gray-700 mb-8">
                     Have questions, feedback, or need assistance? <br />We&apos;re here to help!
-                    Use the form below to get in touch with our team.
+                    Click below to get in touch with our team.
                   </p>
                   
                   <button
                     onClick={openZendeskMessaging}
                     className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-emeraldgreen-500 hover:bg-emeraldgreen-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emeraldgreen-500"
                   >
-                    Open Contact Form
+                    Contact Us
                   </button>
                 </div>
                 

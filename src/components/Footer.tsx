@@ -3,13 +3,13 @@ import Link from 'next/link';
 const navigation = {
   solutions: [
     { name: "Our Story", href: "/aboutus" },
-    { name: "Careers", href: "/aboutus" },
-    { name: "Press", href: "/aboutus" },
+    { name: "Careers", href: "/contactus" },
+    { name: "Press", href: "/contactus" },
   ],
   support: [
-    { name: "Refer a Friend", href: "/" },
-    { name: "Wholesale", href: "/" },
-    { name: "Affiliate", href: "/" },
+    { name: "Refer a Friend", href: "/contactus" },
+    { name: "Wholesale", href: "/contactus" },
+    { name: "Affiliate", href: "/contactus" },
   ],
   company: [
     { name: "FAQs", href: "/" },
