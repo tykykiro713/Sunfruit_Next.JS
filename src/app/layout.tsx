@@ -6,13 +6,13 @@ import { ApolloProvider } from "@apollo/client";
 import client from "@/lib/apollo-client";
 import { MyProvider } from "@/context/MyContext";
 import { CartProvider } from "@/context/CartContext";
-import { CustomerProvider } from "@/context/CustomerContext"; // Add the CustomerProvider
+import { CustomerProvider } from "@/context/CustomerContext"; 
 import CartDrawer from "@/components/CartDrawer";
-import Script from "next/script";
 import { ClarityProvider } from "@/components/ClarityProvider";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { KlaviyoProvider } from "@/components/KlaviyoProvider";
-import ZendeskWidget from "@/components/ZendeskWidget"; // Import the Zendesk widget
+import ZendeskWidget from "@/components/ZendeskWidget";
+import GoogleAdsTag from "@/components/GoogleAdsTag"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,13 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* All analytics scripts are now handled by dedicated components */}
-        
-        {/* Klaviyo Active Onsite Script */}
-        <Script
-          src={`https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=${process.env.NEXT_PUBLIC_KLAVIYO_COMPANY_ID}`}
-          strategy="afterInteractive"
-        />
+        {/* No scripts here - all analytics scripts are now handled by dedicated components */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
@@ -55,6 +49,7 @@ export default function RootLayout({
         <ClarityProvider />
         <GoogleAnalytics />
         <KlaviyoProvider />
+        <GoogleAdsTag />
         
         <ApolloProvider client={client}>
           <MyProvider>
@@ -71,7 +66,6 @@ export default function RootLayout({
     </html>
   );
 }
-
 
 
 
