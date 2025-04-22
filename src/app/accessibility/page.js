@@ -1,5 +1,4 @@
 import Navigation from "@/components/Navigation";
-import ProductRecirculation from "@/components/ProductRecirculation"
 import Footer from "@/components/Footer";
 import { CheckCircleIcon, InformationCircleIcon } from '@heroicons/react/20/solid';
 
@@ -17,7 +16,6 @@ export default function AccessibilityPage() {
           </p>
         </div>
       </div>
-      <ProductRecirculation />
       <div className="h-16 bg-white"></div>
       <Footer />
     </div>
