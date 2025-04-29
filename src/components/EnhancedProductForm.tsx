@@ -1,3 +1,4 @@
+// components/EnhancedProductForm.tsx
 "use client"; 
 
 import { useState, useEffect } from "react";
@@ -35,6 +36,11 @@ export default function EnhancedProductForm({ product }: ProductFormProps) {
   const firstVariant = product.variants?.edges?.[0]?.node;
   const variantId = firstVariant?.id || '';
   const availableForSale = firstVariant?.availableForSale || false;
+  
+  // Get the price
+  const price = firstVariant?.priceV2?.amount 
+    ? parseFloat(firstVariant.priceV2.amount) 
+    : 0;
   
   // Set up subscription options based on product data
   useEffect(() => {
@@ -75,7 +81,7 @@ export default function EnhancedProductForm({ product }: ProductFormProps) {
     
     setSubscriptionOptions(options);
     setSelectedPurchaseOption(options[0]); // Default to one-time purchase
-  }, [product, getSubscriptionOptions]); // Added getSubscriptionOptions to dependencies
+  }, [product]); 
 
   // Handle purchase option change
   const handlePurchaseOptionChange = (option: PurchaseOption) => {
@@ -130,6 +136,10 @@ export default function EnhancedProductForm({ product }: ProductFormProps) {
       <div className="mt-10">
         <AddToCartButton 
           variantId={variantId} 
+          productId={product.id}
+          productName={product.title}
+          productHandle={product.handle}
+          price={price}
           availableForSale={availableForSale}
           isSubscription={selectedPurchaseOption?.value === 'subscription'}
           subscriptionFrequency={selectedPurchaseOption?.deliveryFrequency}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { fetchProductByHandle } from '@/lib/shopify';
 import { createCart, addToCart } from '@/lib/cart';
+import { trackSampleRequest } from '@/lib/analytics';
 
 // Define Klaviyo window object
 declare global {
@@ -46,6 +47,9 @@ export default function SampleCTA() {
   const variantId = samplePackProduct?.variants?.edges?.[0]?.node?.id;
   
   const handleGetSamples = async () => {
+    // Track the sample request event
+    trackSampleRequest(SAMPLE_PACK_HANDLE, isAvailable || false);
+    
     setIsLoading(true);
     
     try {
@@ -98,6 +102,8 @@ export default function SampleCTA() {
                 onClick={handleGetSamples}
                 disabled={isLoading}
                 className="mt-6 inline-block rounded-3xl bg-emeraldgreen-500 px-12 py-3 text-base md:text-lg font-medium text-white transition hover:bg-brightgreen-500 focus:outline-none focus:ring focus:ring-green-500"
+                id="get-free-samples-button"
+                data-product-handle={SAMPLE_PACK_HANDLE}
               >
                 {isLoading ? (
                   <>

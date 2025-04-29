@@ -16,6 +16,9 @@ export default function GoogleAdsTag() {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'AW-16998825904');
+          
+          // Define conversion events
+          gtag('set', 'conversion_events', ['add_to_cart', 'sample_request']);
         `}
       </Script>
     </>

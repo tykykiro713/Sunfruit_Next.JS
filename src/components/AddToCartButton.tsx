@@ -1,7 +1,9 @@
+// components/AddToCartButton.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
+import { trackAddToCart } from '@/lib/analytics';
 
 // Define Klaviyo window object
 declare global {
@@ -12,6 +14,10 @@ declare global {
 
 interface AddToCartButtonProps {
   variantId: string;
+  productId?: string;
+  productName?: string;
+  productHandle?: string;
+  price?: number;
   availableForSale?: boolean;
   isSubscription?: boolean;
   subscriptionFrequency?: string;
@@ -22,6 +28,10 @@ interface AddToCartButtonProps {
 
 export default function AddToCartButton({ 
   variantId, 
+  productId = '',
+  productName = '',
+  productHandle = '',
+  price = 0,
   availableForSale = true,
   isSubscription = false,
   subscriptionFrequency = 'monthly',
@@ -50,7 +60,23 @@ export default function AddToCartButton({
         console.error('Error opening Klaviyo form:', error);
       }
     } else {
-      // Otherwise, add to cart as normal
+      // Calculate effective price (with discount if subscription)
+      const effectivePrice = isSubscription && subscriptionDiscount 
+        ? price * (1 - (subscriptionDiscount / 100)) 
+        : price;
+      
+      // Track the add to cart event
+      trackAddToCart(
+        productId,
+        productName,
+        variantId,
+        effectivePrice,
+        quantity,
+        isSubscription,
+        subscriptionFrequency
+      );
+      
+      // Add to cart as normal
       await addItem(
         variantId, 
         quantity, 
@@ -110,6 +136,9 @@ export default function AddToCartButton({
         }`}
         onClick={handleAddToCart}
         disabled={isLoading}
+        id={`add-to-cart-${productHandle || variantId}`}
+        data-product-id={productId}
+        data-variant-id={variantId}
       >
         {isLoading ? (
           <>
