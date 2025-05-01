@@ -10,7 +10,7 @@ export default function VideoCTA() {
           muted
           playsInline
         >
-          <source src="/Lemonade_Creation.mp4" type="video/mp4" />
+          <source src="/Lemonade_Creation.webm" type="video/webm" />
           Your browser does not support the video tag.
         </video>
       </div>
