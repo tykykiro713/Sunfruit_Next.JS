@@ -8,11 +8,25 @@ import { MyProvider } from "@/context/MyContext";
 import { CartProvider } from "@/context/CartContext";
 import { CustomerProvider } from "@/context/CustomerContext"; 
 import CartDrawer from "@/components/CartDrawer";
-import { ClarityProvider } from "@/components/ClarityProvider";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
-import { KlaviyoProvider } from "@/components/KlaviyoProvider";
-import ZendeskWidget from "@/components/ZendeskWidget";
-import GoogleAdsTag from "@/components/GoogleAdsTag"; 
+import GoogleAdsTag from "@/components/GoogleAdsTag";
+import dynamic from 'next/dynamic';
+
+// Lazy load non-critical components
+const ZendeskWidget = dynamic(
+  () => import('@/components/ZendeskWidget'),
+  { ssr: false, loading: () => null }
+);
+
+const ClarityProvider = dynamic(
+  () => import('@/components/ClarityProvider').then(mod => ({ default: mod.ClarityProvider })),
+  { ssr: false, loading: () => null }
+);
+
+const KlaviyoProvider = dynamic(
+  () => import('@/components/KlaviyoProvider').then(mod => ({ default: mod.KlaviyoProvider })),
+  { ssr: false, loading: () => null }
+);
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,24 +54,30 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* No scripts here - all analytics scripts are now handled by dedicated components */}
+        {/* Preconnect to domains for faster loading */}
+        <link rel="preconnect" href="https://static.zdassets.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://static.klaviyo.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.clarity.ms" crossOrigin="anonymous" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
-        {/* Analytics components */}
-        <ClarityProvider />
+        {/* Critical analytics that should load early */}
         <GoogleAnalytics />
-        <KlaviyoProvider />
         <GoogleAdsTag />
         
         <ApolloProvider client={client}>
           <MyProvider>
-            <CustomerProvider> {/* Add CustomerProvider to wrap CartProvider */}
+            <CustomerProvider>
               <CartProvider>
                 {children}
                 <CartDrawer />
-                <ZendeskWidget /> {/* Add Zendesk Widget component */}
+                
+                {/* Non-critical components that can be lazy loaded */}
+                <ZendeskWidget />
+                <ClarityProvider />
+                <KlaviyoProvider />
               </CartProvider>
             </CustomerProvider>
           </MyProvider>
@@ -66,6 +86,5 @@ export default function RootLayout({
     </html>
   );
 }
-
 
 

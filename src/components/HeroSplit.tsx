@@ -1,11 +1,13 @@
 // src/components/HeroSplit.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 export default function HeroSplit() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     // Function to determine if viewport is mobile
@@ -25,8 +27,25 @@ export default function HeroSplit() {
     };
   }, []);
 
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    
+    if (videoElement) {
+      const handleCanPlayThrough = () => {
+        setIsVideoLoaded(true);
+      };
+      
+      videoElement.addEventListener('canplaythrough', handleCanPlayThrough);
+      
+      return () => {
+        videoElement.removeEventListener('canplaythrough', handleCanPlayThrough);
+      };
+    }
+  }, []);
+
   return (
     <section className="w-full flex flex-col md:flex-row">
+      
       {/* Image Section */}
       <div className="relative w-full aspect-square md:aspect-auto md:w-1/2">
         <Image
@@ -60,13 +79,16 @@ export default function HeroSplit() {
         ) : (
           // Video for tablet and desktop
           <video
+            ref={videoRef}
             className="w-full h-full object-cover"
             autoPlay
             muted
             loop
             playsInline
+            poster="/images/grapefruit-poster.jpg"
+            onLoadedData={() => setIsVideoLoaded(true)}
           >
-            <source src="/GrapefruitSD.mp4" type="video/mp4" />
+            <source src="/GrapefruitSD.webm" type="video/webm" />
             Your browser does not support the video tag.
           </video>
         )}

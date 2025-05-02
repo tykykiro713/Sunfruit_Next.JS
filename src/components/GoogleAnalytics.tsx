@@ -11,15 +11,23 @@ function GoogleAnalyticsInner() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Ensure we have a valid GA Measurement ID and pathname
-    if (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
-      // Construct the full path with search params
-      const fullPath = pathname + (searchParams ? `?${searchParams.toString()}` : '');
-
-      window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
-        page_path: fullPath,
-      });
-    }
+    // Only track page views once the page is fully interactive
+    const trackPageView = () => {
+      // Ensure we have a valid GA Measurement ID and pathname
+      if (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
+        // Construct the full path with search params
+        const fullPath = pathname + (searchParams ? `?${searchParams.toString()}` : '');
+        
+        window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
+          page_path: fullPath,
+          // Set transport_type to 'beacon' for more reliable analytics
+          transport_type: 'beacon',
+        });
+      }
+    };
+    
+    // Track page view when the component mounts
+    trackPageView();
   }, [pathname, searchParams]);
 
   return null;
@@ -41,7 +49,11 @@ export function GoogleAnalytics() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+              page_location: window.location.href,
+              page_title: document.title,
+              send_page_view: false
+            });
           `,
         }}
       />
