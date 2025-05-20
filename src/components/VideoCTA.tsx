@@ -92,7 +92,7 @@ export default function OptimizedVideoCTA() {
             poster="/images/video-poster.jpg"  // Same as Image src
             preload="metadata"                 // Only load metadata initially
             data-src="/Lemonade_Creation.mp4"  // Desktop video source
-            data-src-mobile="/Lemonade_Creation_Mobile.mp4"  // Mobile-optimized video
+            data-src-mobile="/Lemonade_Creation_Mobile.webm"  // Mobile-optimized video
             data-ll-status="loading"
             aria-label="Lemonade creation process video"
           />
