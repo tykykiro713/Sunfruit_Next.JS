@@ -241,16 +241,13 @@ export default function Navigation() {
                     </div>
                   </div>
 
-                  {/* Logo - center, optimized with Next.js Image */}
+                  {/* Logo - simplified approach using img tag */}
                   <div className="flex flex-1 justify-center md:w-1/3 lg:w-1/3">
-                    <Link href="/" className="relative h-6 w-auto sm:h-7 lg:h-8">
-                      <Image 
-                        alt="Sunfruit" 
-                        src="/images/Sunfruit_Green_Logo.svg" 
-                        width={120}
-                        height={32}
+                    <Link href="/" className="flex items-center justify-center">
+                      <img 
+                        src="/images/Sunfruit_Green_Logo.svg"
+                        alt="Sunfruit"
                         className="h-6 w-auto sm:h-7 lg:h-8"
-                        priority={true}
                       />
                     </Link>
                   </div>

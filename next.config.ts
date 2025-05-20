@@ -25,6 +25,8 @@ const config = {
     SHOPIFY_API_URL: process.env.SHOPIFY_API_URL,
     SHOPIFY_STOREFRONT_ACCESS_TOKEN: process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
   },
+  // Note: We're no longer using webpack configuration for SVG imports
+  // since we're using inline SVG components instead
 };
 
 export default config;
