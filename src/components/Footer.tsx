@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const navigation = {
   solutions: [
@@ -57,9 +58,9 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
-            <Link href="/" className="inline-block">
+          <Link href="/" className="inline-block">
               <img
-                alt="Sunfruit"
+                alt="Company name"
                 src="/images/Logo_Trans.png"
                 className="h-10 w-auto sm:h-12"
               />

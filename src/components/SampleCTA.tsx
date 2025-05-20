@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { fetchProductByHandle } from '@/lib/shopify';
 import { createCart, addToCart } from '@/lib/cart';
 import { trackSampleRequest } from '@/lib/analytics';
+import Image from 'next/image';
 
 // Define Klaviyo window object
 declare global {
@@ -15,6 +16,7 @@ declare global {
 export default function SampleCTA() {
   const [isLoading, setIsLoading] = useState(false);
   const [samplePackProduct, setSamplePackProduct] = useState<any>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
   
   // Sample pack product handle - update this to your actual sample pack handle
   const SAMPLE_PACK_HANDLE = 'sunfruit-sample-pack';
@@ -115,11 +117,23 @@ export default function SampleCTA() {
                 )}
               </button>
             </div>
-            <img
-              src="/images/Samples.png"
-              alt="Stick Packs"
-              className="aspect-[3/2] w-full rounded-lg bg-gray-50 object-cover"
-            />
+
+            {/* Optimized image section with Next.js Image */}
+            <div className="relative aspect-[3/2] w-full rounded-lg overflow-hidden">
+              {!imageLoaded && (
+                <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg" />
+              )}
+              <Image
+                src="/images/Samples.png" 
+                alt="Stick Packs"
+                width={800}
+                height={533}
+                className={`rounded-lg object-cover ${imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
+                onLoad={() => setImageLoaded(true)}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority={true}
+              />
+            </div>
           </div>
         </div>
       </div>

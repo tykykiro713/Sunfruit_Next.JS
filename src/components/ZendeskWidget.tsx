@@ -103,4 +103,4 @@ export default function ZendeskWidget() {
   }, [pathname, zendeskLoaded]);
 
   return null; // This component doesn't render any visible elements
-}
+} 

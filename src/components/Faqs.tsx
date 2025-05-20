@@ -13,10 +13,10 @@ export default function Faqs() {
     {
       question: "What are the health benefits of Sunfruit?",
       answer:
-        "The Sunfruit differnce is that you can stay hydrated with 100% organic ingredients without sugar, sodium, preservatives or fillers.",
+        "Stay hydrated with certified organic ingredients without sugar, sodium, preservatives or fillers.",
     },
     {
-      question: "Is Sunfruit safe for my dietary restricions?",
+      question: "Is Sunfruit safe for my dietary restrictions?",
       answer:
         "Sunfruit is certified organic, keto and paleo frindly, Whole30, kosher, and non-GMO. We are also soy-free, dairy-free, and gluten-free. For addtional dietary questions, please contact our friendly customer service team.",
     },

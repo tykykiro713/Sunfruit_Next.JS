@@ -12,12 +12,10 @@ import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import GoogleAdsTag from "@/components/GoogleAdsTag";
 import dynamic from 'next/dynamic';
 
-// Lazy load non-critical components
-const ZendeskWidget = dynamic(
-  () => import('@/components/ZendeskWidget'),
-  { ssr: false, loading: () => null }
-);
+// Import ZendeskLauncher directly - NOT lazy loaded
+import ZendeskLauncher from '@/components/ZendeskLauncher';
 
+// Lazy load other non-critical components
 const ClarityProvider = dynamic(
   () => import('@/components/ClarityProvider').then(mod => ({ default: mod.ClarityProvider })),
   { ssr: false, loading: () => null }
@@ -63,9 +61,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
-        {/* Critical analytics that should load early */}
+        {/* Critical analytics and our ZendeskLauncher component */}
         <GoogleAnalytics />
         <GoogleAdsTag />
+        <ZendeskLauncher />
         
         <ApolloProvider client={client}>
           <MyProvider>
@@ -75,7 +74,6 @@ export default function RootLayout({
                 <CartDrawer />
                 
                 {/* Non-critical components that can be lazy loaded */}
-                <ZendeskWidget />
                 <ClarityProvider />
                 <KlaviyoProvider />
               </CartProvider>
@@ -86,5 +84,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-

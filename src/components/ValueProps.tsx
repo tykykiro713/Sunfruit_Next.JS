@@ -1,7 +1,7 @@
 import React from 'react';
 
 const valueProps = [
-  { text: '100% ORGANIC' },
+  { text: 'ORGANIC' },
   { text: 'SUGAR-FREE' },
   { text: 'SODIUM-FREE' },
   { text: 'NON-GMO' },

@@ -20,6 +20,10 @@ import { fetchProducts, ProductNode } from "@/lib/shopify";
 import { useCart } from "@/context/CartContext";
 import { useCustomer } from "@/context/CustomerContext"; // Import customer context
 import Link from "next/link";
+import Image from "next/image"; // Import Next.js Image component
+
+// Import the optimized image component
+import OptimizedImage from "./OptimizedImage";
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
@@ -103,11 +107,13 @@ export default function Navigation() {
                     <div className="grid grid-cols-2 gap-x-4 gap-y-10">
                       {category.featured.map((item) => (
                         <div key={item.name} className="group relative">
-                          <Link href={item.href}>
-                            <img
+                          <Link href={item.href} className="block relative aspect-square w-full rounded-md bg-gray-100 overflow-hidden">
+                            <Image
                               alt={item.imageAlt}
                               src={item.imageSrc}
-                              className="aspect-square w-full rounded-md bg-gray-100 object-cover group-hover:opacity-75 transition duration-200"
+                              className="object-cover group-hover:opacity-75 transition duration-200"
+                              fill
+                              sizes="(max-width: 640px) 50vw, 25vw"
                             />
                           </Link>
                           <Link href={item.href} className="mt-6 block text-sm font-medium text-gray-900">
@@ -181,11 +187,13 @@ export default function Navigation() {
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10 py-16">
                                   {category.featured.map((item) => (
                                     <div key={item.name} className="group relative">
-                                      <Link href={item.href}>
-                                        <img
+                                      <Link href={item.href} className="relative block aspect-square w-full rounded-md bg-gray-100 overflow-hidden">
+                                        <Image
                                           alt={item.imageAlt}
                                           src={item.imageSrc}
-                                          className="aspect-square w-full rounded-md bg-gray-100 object-cover group-hover:opacity-75 transition duration-200"
+                                          className="object-cover group-hover:opacity-75 transition duration-200"
+                                          fill
+                                          sizes="(max-width: 768px) 50vw, 25vw"
                                         />
                                       </Link>
                                       <Link href={item.href} className="mt-4 block font-medium text-gray-900">
@@ -233,13 +241,16 @@ export default function Navigation() {
                     </div>
                   </div>
 
-                  {/* Logo - center */}
+                  {/* Logo - center, optimized with Next.js Image */}
                   <div className="flex flex-1 justify-center md:w-1/3 lg:w-1/3">
-                    <Link href="/">
-                      <img 
+                    <Link href="/" className="relative h-6 w-auto sm:h-7 lg:h-8">
+                      <Image 
                         alt="Sunfruit" 
-                        src="/images/Sunfruit_Green_Logo.png" 
-                        className="h-6 w-auto sm:h-7 lg:h-8" 
+                        src="/images/Sunfruit_Green_Logo.svg" 
+                        width={120}
+                        height={32}
+                        className="h-6 w-auto sm:h-7 lg:h-8"
+                        priority={true}
                       />
                     </Link>
                   </div>

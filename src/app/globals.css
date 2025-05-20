@@ -34,5 +34,78 @@ body {
   }
 }
 
+/* Navigation spacing fixes */
+.nav-container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Ensure consistent spacing across viewports */
+@media (min-width: 640px) {
+  .nav-container {
+    max-width: 1536px; /* 2xl */
+  }
+}
+
+/* Adjust spacing in tablet view */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Force navigation to use less horizontal space */
+  header nav .px-4.sm\:px-6.md\:px-8.lg\:px-12.xl\:px-16 {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  
+  /* Reduce space between navigation items on tablet */
+  header nav .space-x-4.md\:space-x-5 {
+    gap: 0.75rem !important;
+  }
+  
+  /* Make action buttons (sign in/cart) more compact */
+  header nav .md\:space-x-3 {
+    gap: 0.5rem !important;
+  }
+  
+  /* Ensure text doesn't get too large on tablet */
+  header nav .text-base.md\:text-lg, 
+  header nav .text-sm.md\:text-base {
+    font-size: 0.875rem !important; /* 14px */
+  }
+}
+
+/* Make sure navigation stays in view on all screen sizes */
+header nav .whitespace-nowrap {
+  white-space: nowrap !important;
+}
+
+/* Ensure SVG icons don't get too large */
+header nav svg {
+  flex-shrink: 0;
+}
+
+/* Prevent cart icon from pushing other elements */
+header nav button.relative {
+  flex-shrink: 0;
+}
+
+/* Ensure logo maintains proper sizing */
+header nav .h-6.w-auto.sm\:h-7.lg\:h-8 {
+  display: block;
+  height: auto;
+  max-height: 1.75rem;
+  width: auto;
+}
+
+/* Override the large padding on larger screens that's causing layout issues */
+@media (min-width: 1024px) {
+  header nav .lg\:space-x-12 {
+    gap: 2rem !important;
+  }
+  
+  header nav .lg\:px-12 {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+
 
 
