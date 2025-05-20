@@ -66,7 +66,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-base text-white">
-              100% organic fruit and botanicals.
+              Certified organic fruit and botanicals.
             </p>
             <div className="flex gap-x-6">
               {navigation.social.map((item) => (
