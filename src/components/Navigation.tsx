@@ -21,6 +21,7 @@ import { useCart } from "@/context/CartContext";
 import { useCustomer } from "@/context/CustomerContext"; // Import customer context
 import Link from "next/link";
 import Image from "next/image"; // Import Next.js Image component
+import { useRouter } from 'next/navigation';
 
 // Import the custom logo component
 import SunfruitLogo from "./SunfruitLogo";
@@ -33,6 +34,13 @@ export default function Navigation() {
   const [products, setProducts] = useState<ProductNode[]>([]);
   const { openCart, cartCount } = useCart();
   const { isLoggedIn, customer } = useCustomer(); // Use customer context
+  const router = useRouter();
+
+  // Function to handle logo click and force navigation to home
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default to ensure our handling works
+    router.push('/');   // Use Next.js Router for client-side navigation
+  };
 
   useEffect(() => {
     async function loadProducts() {
@@ -245,11 +253,26 @@ export default function Navigation() {
                     </div>
                   </div>
 
-                  {/* Logo - center, restored layout structure */}
+                  {/* Logo - center, with OVERLAY DIV to handle clicks */}
                   <div className="flex flex-1 justify-center md:w-1/3 lg:w-1/3">
-                    <Link href="/" className="flex items-center justify-center">
-                      <SunfruitLogo />
-                    </Link>
+                    <div className="relative">
+                      {/* Keep your original Link and SunfruitLogo */}
+                      <Link href="/" className="flex items-center justify-center">
+                        <SunfruitLogo />
+                      </Link>
+                      
+                      {/* Add overlay div that will actually capture clicks */}
+                      <div 
+                        className="absolute inset-0 cursor-pointer z-10" 
+                        onClick={handleLogoClick}
+                        role="link"
+                        tabIndex={0}
+                        aria-label="Go to homepage"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleLogoClick(e as any);
+                        }}
+                      />
+                    </div>
                   </div>
 
                   {/* User and Cart icons - right, restored original structure */}

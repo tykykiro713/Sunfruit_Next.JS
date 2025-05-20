@@ -6,8 +6,7 @@ import Image from 'next/image';
 
 export default function HeroSplit() {
   const [isMobile, setIsMobile] = useState(false);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
     // Function to determine if viewport is mobile
@@ -27,25 +26,27 @@ export default function HeroSplit() {
     };
   }, []);
 
+  // Preload hero images for better performance
   useEffect(() => {
-    const videoElement = videoRef.current;
+    // Preload the most critical images
+    const preloadImages = () => {
+      const imagesToPreload = [
+        '/images/Grapefruit_3.png',
+        isMobile ? '/images/Grapefruit.png' : '/images/grapefruit-poster.jpg'
+      ];
+      
+      imagesToPreload.forEach(src => {
+        // Fix: Create the Image with proper HTML image element
+        const img = new window.Image();
+        img.src = src;
+      });
+    };
     
-    if (videoElement) {
-      const handleCanPlayThrough = () => {
-        setIsVideoLoaded(true);
-      };
-      
-      videoElement.addEventListener('canplaythrough', handleCanPlayThrough);
-      
-      return () => {
-        videoElement.removeEventListener('canplaythrough', handleCanPlayThrough);
-      };
-    }
-  }, []);
+    preloadImages();
+  }, [isMobile]);
 
   return (
     <section className="w-full flex flex-col md:flex-row">
-      
       {/* Image Section */}
       <div className="relative w-full aspect-square md:aspect-auto md:w-1/2">
         <Image
@@ -54,6 +55,8 @@ export default function HeroSplit() {
           width={800}
           height={600}
           className="w-full h-full object-cover"
+          priority={true}
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
         <div className="absolute bottom-4 inset-x-0 text-center md:text-right md:bottom-6 md:right-6 md:left-auto text-black z-10">
           <a
@@ -65,32 +68,30 @@ export default function HeroSplit() {
         </div>
       </div>
 
-      {/* Video/Image Section - Conditionally rendered based on device */}
+      {/* Video/Image Section - Updated to use static image for all devices */}
       <div className="relative w-full aspect-square md:aspect-auto md:w-1/2">
         {isMobile ? (
-          // Image for mobile
+          // Image for mobile (unchanged)
           <Image
             src="/images/Grapefruit.png"
+            alt="Grapefruit Product"
+            width={500}
+            height={500}
+            className="w-full h-full object-cover"
+            priority={true}
+            sizes="100vw"
+          />
+        ) : (
+          // Static image for tablet and desktop (replacing video)
+          <Image
+            src="/images/grapefruit-poster.jpg"
             alt="Grapefruit Product"
             width={800}
             height={600}
             className="w-full h-full object-cover"
+            priority={true}
+            sizes="50vw"
           />
-        ) : (
-          // Video for tablet and desktop
-          <video
-            ref={videoRef}
-            className="w-full h-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="/images/grapefruit-poster.jpg"
-            onLoadedData={() => setIsVideoLoaded(true)}
-          >
-            <source src="/GrapefruitSD.webm" type="video/webm" />
-            Your browser does not support the video tag.
-          </video>
         )}
         <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 text-white z-10">
           {/* Empty container for potential future content */}
