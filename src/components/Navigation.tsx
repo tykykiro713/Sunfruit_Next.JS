@@ -158,6 +158,7 @@ export default function Navigation() {
           <div className="bg-white w-full">
             <div className="px-4 sm:px-6 lg:px-32 xl:px-40">
               <div className="border-b border-gray-200 w-full">
+                {/* Preserve the original layout structure */}
                 <div className="flex h-16 items-center">
                   {/* Mobile menu button - taking up equal space as cart on mobile */}
                   <div className="flex w-10 lg:hidden">
@@ -244,14 +245,14 @@ export default function Navigation() {
                     </div>
                   </div>
 
-                  {/* Logo - center, using the custom SunfruitLogo component */}
+                  {/* Logo - center, restored layout structure */}
                   <div className="flex flex-1 justify-center md:w-1/3 lg:w-1/3">
                     <Link href="/" className="flex items-center justify-center">
-                      <SunfruitLogo className="sm:transform-none" />
+                      <SunfruitLogo />
                     </Link>
                   </div>
 
-                  {/* User and Cart icons - right */}
+                  {/* User and Cart icons - right, restored original structure */}
                   <div className="flex w-10 md:w-1/3 lg:w-1/3 items-center justify-center md:justify-end lg:justify-end">
                     <div className="md:pr-6 flex items-center space-x-4">
                       {/* User Icon - updated without pulsing green dot */}

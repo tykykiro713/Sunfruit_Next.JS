@@ -9,11 +9,12 @@ interface SunfruitLogoProps {
 export default function SunfruitLogo({ className = "" }: SunfruitLogoProps) {
   return (
     <div 
-      className={`relative ${className}`}
+      className={`inline-block ${className}`}
       style={{ 
-        // Fixed height to ensure consistent size
-        height: '32px',
-        width: 'auto',
+        // Preserve dimensions while ensuring crisp rendering
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         // Force high-quality rendering
         transform: 'translateZ(0)',
         backfaceVisibility: 'hidden',
@@ -23,7 +24,7 @@ export default function SunfruitLogo({ className = "" }: SunfruitLogoProps) {
       <object
         type="image/svg+xml"
         data="/images/Sunfruit_Green_Logo.svg"
-        className="w-auto h-full"
+        className="h-6 w-auto sm:h-7 lg:h-8"
         aria-label="Sunfruit"
         style={{
           // Additional rendering optimizations
@@ -35,7 +36,7 @@ export default function SunfruitLogo({ className = "" }: SunfruitLogoProps) {
         <img
           src="/images/Sunfruit_Green_Logo.svg"
           alt="Sunfruit"
-          className="w-auto h-full"
+          className="h-6 w-auto sm:h-7 lg:h-8"
           style={{
             imageRendering: 'crisp-edges',
             filter: 'none'
