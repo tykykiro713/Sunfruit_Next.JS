@@ -151,7 +151,7 @@ export default function AboutHero() {
             <div className="w-full h-full flex justify-center md:justify-end md:order-1">
               <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] rounded-full overflow-hidden border-4 border-emeraldgreen-100 shadow-lg">
                 <Image
-                  src="/images/family.png"
+                  src="/images/Drexel_Harper3.png"
                   alt="Who drinks Sunfruit"
                   fill
                   className="object-cover"
