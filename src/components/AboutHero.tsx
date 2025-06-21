@@ -65,7 +65,7 @@ export default function AboutHero() {
             {/* Content container - left side */}
             <div className="flex flex-col space-y-4 md:space-y-6">
               <h2 className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-emeraldgreen-500 sm:text-5xl">
-                What&apos;s the Problem
+                What&apos;s the Fuss?
               </h2>
               
               <p className="mt-6 text-xl/8 text-gray-700">

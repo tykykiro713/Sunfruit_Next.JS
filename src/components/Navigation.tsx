@@ -164,7 +164,7 @@ export default function Navigation() {
       <header className="relative z-40 lg:z-50">
         <nav aria-label="Top">
           <div className="bg-white w-full">
-            <div className="px-4 sm:px-6 lg:px-32 xl:px-40">
+            <div className="px-4 sm:px-6 md:px-6 lg:px-32 xl:px-40">
               <div className="border-b border-gray-200 w-full">
                 {/* Preserve the original layout structure */}
                 <div className="flex h-16 items-center">
@@ -232,12 +232,12 @@ export default function Navigation() {
                     </div>
                   </div>
 
-                  {/* Add tablet navigation */}
-                  <div className="hidden md:flex lg:hidden justify-start w-1/3 pl-4 sm:pl-6">
-                    <div className="flex space-x-6">
+                  {/* Tablet navigation - fixed spacing and proper link */}
+                  <div className="hidden md:flex lg:hidden justify-start w-1/3">
+                    <div className="flex space-x-3 md:space-x-4">
                       <Link
-                        href="#"
-                        className="flex items-center text-lg font-bold text-black hover:text-emeraldgreen-500 whitespace-nowrap transition-colors duration-200 ease-out focus:outline-none"
+                        href="/shop"
+                        className="flex items-center text-sm md:text-base font-bold text-black hover:text-emeraldgreen-500 whitespace-nowrap transition-colors duration-200 ease-out focus:outline-none"
                       >
                         Shop
                       </Link>
@@ -245,7 +245,7 @@ export default function Navigation() {
                         <Link
                           key={page.name}
                           href={page.href}
-                          className="flex items-center text-lg font-bold text-black hover:text-emeraldgreen-500 whitespace-nowrap"
+                          className="flex items-center text-sm md:text-base font-bold text-black hover:text-emeraldgreen-500 whitespace-nowrap"
                         >
                           {page.name}
                         </Link>
