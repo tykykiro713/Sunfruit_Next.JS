@@ -104,9 +104,9 @@ export default function ProductList() {
                   >
                     {productImages.length > 0 ? (
                       <>
-                        {/* First image (always visible when not hovering) */}
+                        {/* First image (always visible when not hovering on desktop) */}
                         <div
-                          className="w-full h-full transition-opacity duration-300"
+                          className="w-full h-full transition-opacity duration-300 lg:absolute lg:inset-0"
                           style={{
                             opacity: isHovered && hasMultipleImages ? 0 : 1
                           }}
@@ -118,10 +118,10 @@ export default function ProductList() {
                           />
                         </div>
 
-                        {/* Second image (visible on hover if available) */}
+                        {/* Second image (visible on hover for desktop only) */}
                         {hasMultipleImages && (
                           <div
-                            className="absolute inset-0 w-full h-full transition-opacity duration-300"
+                            className="hidden lg:block absolute inset-0 w-full h-full transition-opacity duration-300 pointer-events-none lg:pointer-events-auto"
                             style={{
                               opacity: isHovered ? 1 : 0
                             }}

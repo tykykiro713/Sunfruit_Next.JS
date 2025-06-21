@@ -163,9 +163,9 @@ export default function Navigation() {
 
       <header className="relative z-40 lg:z-50">
         <nav aria-label="Top">
-          <div className="bg-white w-full">
+          <div className="bg-white w-full border-b border-gray-200">
             <div className="px-4 sm:px-6 md:px-6 lg:px-32 xl:px-40">
-              <div className="border-b border-gray-200 w-full">
+              <div className="w-full">
                 {/* Preserve the original layout structure */}
                 <div className="flex h-16 items-center">
                   {/* Mobile menu button - taking up equal space as cart on mobile */}
@@ -233,7 +233,7 @@ export default function Navigation() {
                   </div>
 
                   {/* Tablet navigation - fixed spacing and proper link */}
-                  <div className="hidden md:flex lg:hidden justify-start w-1/3">
+                  <div className="hidden md:flex lg:hidden justify-start w-1/3 pl-4">
                     <div className="flex space-x-3 md:space-x-4">
                       <Link
                         href="/shop"

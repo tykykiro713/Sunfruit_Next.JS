@@ -63,7 +63,7 @@ export default function OptimizedVideoCTA() {
   }, [isMobile]);
 
   return (
-    <section className="relative overflow-hidden bg-gray-50 py-8 md:py-20 min-h-[600px] sm:grid sm:grid-cols-2 sm:items-center z-10">
+    <section className="relative overflow-hidden bg-gray-50 py-8 md:py-10 lg:py-20 min-h-[400px] md:min-h-[500px] lg:min-h-[600px] sm:grid sm:grid-cols-2 sm:items-center z-10">
       {/* Video Section - Will show first on mobile, second on desktop */}
       <div className="order-first mb-6 sm:mb-0 sm:order-last relative">
         {/* Use a more rectangular aspect ratio on mobile, closer to 16:9 */}

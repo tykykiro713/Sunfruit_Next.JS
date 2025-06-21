@@ -14,6 +14,23 @@ import Footer from "@/components/Footer";
 import { getProductTestimonial } from "@/data/productTestimonials";
 import { getProductAccordionData } from "@/data/productAccordionData";
 
+// Generate dynamic metadata for each product
+export async function generateMetadata({ params }: { params: { handle: string } }) {
+  const product = await fetchProductByHandle(params.handle);
+  
+  if (!product) {
+    return {
+      title: 'Product Not Found - Sunfruit',
+      description: 'The product you are looking for could not be found.',
+    };
+  }
+  
+  return {
+    title: `${product.title} - Sunfruit`,
+    description: product.description || `Shop ${product.title} from Sunfruit. Organic, zero sugar beverage mix made from real fruits and botanicals.`,
+  };
+}
+
 // @ts-expect-error - Next.js App Router typing issue
 export default async function ProductPage({ params, searchParams }) {
   if (!params?.handle) {
