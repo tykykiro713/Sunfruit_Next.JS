@@ -1,29 +1,15 @@
-"use client";
-
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
-import { ApolloProvider } from "@apollo/client";
-import client from "@/lib/apollo-client";
-import { MyProvider } from "@/context/MyContext";
-import { CartProvider } from "@/context/CartContext";
-import { CustomerProvider } from "@/context/CustomerContext";
-import CartDrawer from "@/components/CartDrawer";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import GoogleAdsTag from "@/components/GoogleAdsTag";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import ClientProviders from "@/components/ClientProviders";
 
-// Import non-critical components directly to avoid dynamic type issues
-import ZendeskLauncher from '@/components/ZendeskLauncher';
-import { ClarityProvider } from '@/components/ClarityProvider';
-import { KlaviyoProvider } from '@/components/KlaviyoProvider';
-
-// Load fonts with optimized display strategy
+// Font loading with optimized display strategy - works perfectly in server components
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   weight: ["400", "500", "700"],
-  display: "swap", // Use font-display: swap for faster text display
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -45,79 +31,28 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const [loadThirdParty, setLoadThirdParty] = useState(false);
-  
-  // Delay loading of non-critical resources
-  useEffect(() => {
-    // Load third-party scripts after a delay
-    const timer = setTimeout(() => {
-      setLoadThirdParty(true);
-    }, 3000);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
-  // Add preconnect for critical domains
-  useEffect(() => {
-    // Add preconnect to critical domains
-    const preconnectDomains = [
-      'https://cdn.shopify.com',
-      'https://www.googletagmanager.com',
-      'https://fonts.googleapis.com',
-      'https://fonts.gstatic.com'
-    ];
-    
-    preconnectDomains.forEach(domain => {
-      const link = document.createElement('link');
-      link.rel = 'preconnect';
-      link.href = domain;
-      link.crossOrigin = 'anonymous';
-      document.head.appendChild(link);
-    });
-    
-    // Preload logo SVG
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'image';
-    preloadLink.type = 'image/svg+xml';
-    preloadLink.href = '/images/Sunfruit_Green_Logo.svg';
-    document.head.appendChild(preloadLink);
-    
-  }, [pathname]);
-
   return (
     <html lang="en">
       <head>
-        {/* Critical preloads and preconnects added programmatically */}
+        {/* Critical preloads and preconnects - can be done directly in server component */}
+        <link rel="preconnect" href="https://cdn.shopify.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preload" as="image" type="image/svg+xml" href="/images/Sunfruit_Green_Logo.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
-        {/* Critical analytics - keep it synchronous */}
+        {/* Critical analytics - these already handle their own client-side logic properly */}
         <GoogleAnalytics />
         <GoogleAdsTag />
         
-        <ApolloProvider client={client}>
-          <MyProvider>
-            <CustomerProvider>
-              <CartProvider>
-                {children}
-                <CartDrawer />
-                
-                {/* Conditionally render third-party components */}
-                {loadThirdParty && (
-                  <>
-                    <ZendeskLauncher />
-                    <ClarityProvider />
-                    <KlaviyoProvider />
-                  </>
-                )}
-              </CartProvider>
-            </CustomerProvider>
-          </MyProvider>
-        </ApolloProvider>
+        {/* All client-side providers and components wrapped in a single client component */}
+        <ClientProviders>
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );
