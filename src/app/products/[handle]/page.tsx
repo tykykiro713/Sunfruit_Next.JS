@@ -14,9 +14,10 @@ import Footer from "@/components/Footer";
 import { getProductTestimonial } from "@/data/productTestimonials";
 import { getProductAccordionData } from "@/data/productAccordionData";
 
-// Generate dynamic metadata for each product
-export async function generateMetadata({ params }: { params: { handle: string } }) {
-  const product = await fetchProductByHandle(params.handle);
+// Generate dynamic metadata for each product - Updated for async params
+export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
+  const resolvedParams = await params;
+  const product = await fetchProductByHandle(resolvedParams.handle);
   
   if (!product) {
     return {
@@ -31,21 +32,29 @@ export async function generateMetadata({ params }: { params: { handle: string } 
   };
 }
 
-// @ts-expect-error - Next.js App Router typing issue
-export default async function ProductPage({ params, searchParams }) {
-  if (!params?.handle) {
+// Main product page component - params is now async
+export default async function ProductPage({ 
+  params,
+  searchParams 
+}: { 
+  params: Promise<{ handle: string }>;
+  searchParams: Promise<any>;
+}) {
+  const resolvedParams = await params;
+  
+  if (!resolvedParams?.handle) {
     throw new Error("❌ Params handle is missing!");
   }
 
-  const product = await fetchProductByHandle(params.handle);
+  const product = await fetchProductByHandle(resolvedParams.handle);
 
   if (!product) {
     notFound();
   }
 
   // Get the testimonial and accordion data for this product
-  const testimonial = getProductTestimonial(params.handle);
-  const accordionData = getProductAccordionData(params.handle);
+  const testimonial = getProductTestimonial(resolvedParams.handle);
+  const accordionData = getProductAccordionData(resolvedParams.handle);
 
   return (
     <div className="bg-white min-h-screen">
