@@ -4,18 +4,6 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 import { usePathname } from "next/navigation";
 
 // Define gtag function type
-declare global {
-  interface Window {
-    gtag: (
-      command: "config" | "event" | "set",
-      targetId: string,
-      config?: {
-        page_path?: string;
-        [key: string]: any;
-      }
-    ) => void;
-  }
-}
 
 interface MyContextType {
   state: string;

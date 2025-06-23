@@ -6,11 +6,6 @@ import { useCart } from '@/context/CartContext';
 import { trackAddToCart } from '@/lib/analytics';
 
 // Define Klaviyo window object
-declare global {
-  interface Window {
-    _klOnsite: any;
-  }
-}
 
 interface AddToCartButtonProps {
   variantId: string;

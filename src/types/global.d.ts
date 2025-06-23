@@ -11,13 +11,33 @@ interface IdleRequestOptions {
   timeout?: number;
 }
 
-interface Window {
-  requestIdleCallback(callback: (deadline: IdleDeadline) => void, options?: IdleRequestOptions): number;
-  cancelIdleCallback(id: number): void;
+// Zendesk types
+declare global {
+  interface Window {
+    // RequestIdleCallback
+    requestIdleCallback(callback: (deadline: IdleDeadline) => void, options?: IdleRequestOptions): number;
+    cancelIdleCallback(id: number): void;
+    
+    // Zendesk
+    openZendeskChat?: () => Promise<boolean> | void;
+    loadZendeskNow?: () => Promise<boolean>;
+    zE?: any;
+    zESettings?: any;
+    $zopim?: any;
+    _zEACLoaded?: boolean;
+    
+    // Analytics
+    gtag?: (
+      command: "config" | "event" | "set",
+      targetId: string,
+      config?: Record<string, any>
+    ) => void;
+    dataLayer?: any[];
+    
+    // Klaviyo
+    klaviyo?: any;
+    _klOnsite?: any;
+  }
 }
 
-// You can add other global type declarations here as needed in the future
-// For example:
-// - Third-party library types that don't have proper declarations
-// - Global variables injected by scripts
-// - Custom window properties
+export {};

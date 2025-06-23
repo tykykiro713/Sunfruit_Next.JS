@@ -16,6 +16,7 @@
     "@heroicons/react": "^2.2.0",
     "@microsoft/clarity": "^1.0.0",
     "@shopify/buy-button-js": "^2.4.0",
+    "critters": "^0.0.23",
     "dotenv": "^16.4.7",
     "graphql": "^16.10.0",
     "keen-slider": "^6.8.6",

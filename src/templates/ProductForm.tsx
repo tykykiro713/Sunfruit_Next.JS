@@ -6,11 +6,6 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 import type { UIProduct } from '@/lib/shopify';
 
 // Use the same type as in ProductDetails.tsx or make it compatible
-declare global {
-  interface Window {
-    _klOnsite: any; // Using 'any' to match ProductDetails.tsx
-  }
-}
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

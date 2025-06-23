@@ -1,3 +1,5 @@
+// Optimized loading with async script
+// ========================================
 'use client';
 
 import Script from 'next/script';
@@ -5,41 +7,39 @@ import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
-// This component contains the part that needs Suspense
 function GoogleAnalyticsInner() {
   const pathname = usePathname() ?? '';
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Only track page views once the page is fully interactive
-    const trackPageView = () => {
-      // Ensure we have a valid GA Measurement ID and pathname
-      if (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
-        // Construct the full path with search params
+    // Delay pageview tracking slightly to not block initial render
+    const timer = setTimeout(() => {
+      if (window.gtag && process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
         const fullPath = pathname + (searchParams ? `?${searchParams.toString()}` : '');
         
         window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
           page_path: fullPath,
-          // Set transport_type to 'beacon' for more reliable analytics
           transport_type: 'beacon',
+          send_page_view: true,
+          anonymize_ip: true,
         });
       }
-    };
+    }, 100);
     
-    // Track page view when the component mounts
-    trackPageView();
+    return () => clearTimeout(timer);
   }, [pathname, searchParams]);
 
   return null;
 }
 
-// Main component with Suspense boundary
 export function GoogleAnalytics() {
   return (
     <>
       <Script
+        id="google-analytics-script"
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+        async
       />
       <Script
         id="google-analytics"
@@ -52,7 +52,9 @@ export function GoogleAnalytics() {
             gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
               page_location: window.location.href,
               page_title: document.title,
-              send_page_view: false
+              send_page_view: false,
+              cookie_flags: 'SameSite=None;Secure',
+              restricted_data_processing: true
             });
           `,
         }}

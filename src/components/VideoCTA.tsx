@@ -68,13 +68,14 @@ export default function OptimizedVideoCTA() {
       <div className="order-first mb-6 sm:mb-0 sm:order-last relative">
         {/* Use a more rectangular aspect ratio on mobile, closer to 16:9 */}
         <div className={`relative w-full overflow-hidden sm:rounded-ss-[30px] sm:rounded-bl-[30px] md:rounded-ss-[60px] md:rounded-bl-[60px] ${isMobile ? 'aspect-[16/9] max-h-[240px]' : 'aspect-video'}`}>
-          {/* High-quality poster image - used as LCP element and video fallback */}
+          {/* High-quality poster image - CRITICAL CHANGE: Removed priority={true} */}
           <Image
             src="/images/video-poster.jpg"
             alt="Sunfruit organic powder drink mix"
             width={854}
             height={480}
-            priority={true}
+            loading="eager" // Use eager for LCP element without render blocking
+            fetchPriority="high" // High priority without render blocking
             sizes="(max-width: 640px) 100vw, 50vw"
             className={`w-full h-full object-cover ${isVideoVisible ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
             placeholder="blur"

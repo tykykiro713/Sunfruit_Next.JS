@@ -7,11 +7,6 @@ import { trackSampleRequest } from '@/lib/analytics';
 import Image from 'next/image';
 
 // Define Klaviyo window object
-declare global {
-  interface Window {
-    _klOnsite: any;
-  }
-}
 
 export default function SampleCTA() {
   const [isLoading, setIsLoading] = useState(false);

@@ -5,11 +5,6 @@ import type { UIProduct, MediaNode } from '@/lib/shopify';  // Import both UIPro
 import { useCart } from '@/context/CartContext';
 
 // Add this to fix the Klaviyo window type issue
-declare global {
-  interface Window {
-    _klOnsite: any; // Or define a more specific type if you know the structure
-  }
-}
 
 export default function ProductDetails({ product }: { product: UIProduct }) {
   // ... [other state and variables]
