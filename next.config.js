@@ -1,69 +1,102 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // React configuration
-  reactStrictMode: true,
+  reactStrictMode: true, // Added back for better error detection
   
   // Performance optimizations
-  productionBrowserSourceMaps: false,
-  
-  // Image optimization - keeping your existing pattern
+  experimental: {
+    optimizeCss: true,
+    optimizeServerReact: true,
+    ppr: false, // Keep false for stability in production
+  },
+
+  // Image optimization
   images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 86400, // 24 hours
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "cdn.shopify.com",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'cdn.shopify.com',
+        port: '',
+        pathname: '/s/files/**',
       },
     ],
-    // Add modern formats for better performance
-    formats: ['image/avif', 'image/webp'],
-    // Optional: Add image size optimizations
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  
-  // Keep your ESLint configuration
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  
-  // Experimental features
-  experimental: {
-    // Keep your existing ESM externals setting
-    esmExternals: true,
-    
-    // Add performance optimizations
-    optimizeCss: true,
-    
-    // Optimize imports for packages you use
-    optimizePackageImports: [
-      '@heroicons/react',
-      '@headlessui/react',
-      '@apollo/client',
-      'graphql',
-    ],
-  },
-  
-  // Environment variables - keeping your existing ones
-  env: {
-    SHOPIFY_API_URL: process.env.SHOPIFY_API_URL,
-    SHOPIFY_STOREFRONT_ACCESS_TOKEN: process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-  },
-  
-  // Optional: Add compiler optimizations
+
+  // Compiler optimizations
   compiler: {
-    // Remove console logs in production (except errors and warnings)
-    removeConsole: process.env.NODE_ENV === 'production' ? {
-      exclude: ['error', 'warn'],
-    } : false,
+    removeConsole: process.env.NODE_ENV === 'production',
   },
-  
-  // Optional: Add caching headers for better performance
+
+  // Source maps for production debugging (optional)
+  productionBrowserSourceMaps: false, // Set to true if you need debugging
+
+  // Bundle analyzer (enable when needed)
+  // webpack: (config, { isServer }) => {
+  //   if (process.env.ANALYZE === 'true') {
+  //     const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+  //     config.plugins.push(
+  //       new BundleAnalyzerPlugin({
+  //         analyzerMode: 'server',
+  //         openAnalyzer: true,
+  //       })
+  //     );
+  //   }
+  //   return config;
+  // },
+
+  // Headers for security and performance
   async headers() {
     return [
       {
-        // Cache static assets
-        source: '/images/:all*(svg|jpg|jpeg|png|gif|ico|webp|avif)',
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin'
+          },
+          {
+            key: 'Link',
+            value: '<https://cdn.shopify.com>; rel=preconnect'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()'
+          }
+        ],
+      },
+      {
+        source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/:path*',
         headers: [
           {
             key: 'Cache-Control',
@@ -73,7 +106,25 @@ const nextConfig = {
       },
     ];
   },
+
+  // Environment variables
+  env: {
+    SHOPIFY_API_URL: process.env.SHOPIFY_API_URL,
+    SHOPIFY_STOREFRONT_ACCESS_TOKEN: process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+  },
+
+  // Output configuration
+  output: 'standalone',
+  
+  // Disable x-powered-by header
+  poweredByHeader: false,
+  
+  // Redirects (if needed)
+  async redirects() {
+    return [
+      // Add any redirects here
+    ];
+  },
 };
 
-// No need to import dotenv here - Next.js handles .env.local automatically
 export default nextConfig;

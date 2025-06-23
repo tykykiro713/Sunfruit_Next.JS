@@ -113,21 +113,39 @@ export default function SampleCTA() {
               </button>
             </div>
 
-            {/* Optimized image section with Next.js Image */}
+            {/* Responsive image section with mobile/desktop variants */}
             <div className="relative aspect-[3/2] w-full rounded-lg overflow-hidden">
               {!imageLoaded && (
                 <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg" />
               )}
-              <Image
-                src="/images/Samples.png" 
-                alt="Stick Packs"
-                width={800}
-                height={533}
-                className={`rounded-lg object-cover ${imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
-                onLoad={() => setImageLoaded(true)}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority={true}
-              />
+              
+              {/* Desktop Image - Hidden on mobile */}
+              <div className="hidden sm:block relative w-full h-full">
+                <Image
+                  src="/images/samples-desktop.jpg"
+                  alt="Sunfruit sample pack - 8 stick packs with badge"
+                  fill
+                  className={`object-cover rounded-lg ${imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
+                  onLoad={() => setImageLoaded(true)}
+                  sizes="(min-width: 640px) 50vw, 0vw"
+                  loading="lazy"
+                  quality={85}
+                />
+              </div>
+              
+              {/* Mobile Image - Hidden on desktop */}
+              <div className="block sm:hidden relative w-full h-full">
+                <Image
+                  src="/images/samples-mobile.jpg"
+                  alt="Sunfruit sample pack - 8 stick packs with badge"
+                  fill
+                  className={`object-cover rounded-lg ${imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
+                  onLoad={() => setImageLoaded(true)}
+                  sizes="(max-width: 639px) 100vw, 0vw"
+                  loading="lazy"
+                  quality={85}
+                />
+              </div>
             </div>
           </div>
         </div>
