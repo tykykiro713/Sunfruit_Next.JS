@@ -59,10 +59,13 @@ export default function Footer() {
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
           <Link href="/" className="inline-block">
-              <img
+              <Image
                 alt="Company name"
                 src="/images/Logo_Trans.png"
+                width={120}
+                height={48}
                 className="h-10 w-auto sm:h-12"
+                loading="lazy"
               />
             </Link>
             <p className="text-base text-white">

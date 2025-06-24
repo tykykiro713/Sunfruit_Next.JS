@@ -125,6 +125,7 @@ export default function Navigation() {
                               className="object-cover group-hover:opacity-75 transition duration-200"
                               fill
                               sizes="(max-width: 640px) 50vw, 25vw"
+                              loading="lazy" // LAZY LOADING: Dropdown images are hidden by default
                             />
                           </Link>
                           <Link href={item.href} className="mt-6 block text-sm font-medium text-gray-900">
@@ -206,6 +207,7 @@ export default function Navigation() {
                                           className="object-cover group-hover:opacity-75 transition duration-200"
                                           fill
                                           sizes="(max-width: 768px) 50vw, 25vw"
+                                          loading="lazy" // LAZY LOADING: Dropdown images are hidden by default
                                         />
                                       </Link>
                                       <Link href={item.href} className="mt-4 block font-medium text-gray-900">

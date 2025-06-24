@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchProducts, ProductNode } from "@/lib/shopify";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ErrorWithMessage {
   message: string;
@@ -88,7 +89,7 @@ export default function ProductList() {
           Sunfruit Flavors
         </h2>
         <div className="mt-16 grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:gap-x-8">
-          {products.map((product) => {
+          {products.map((product, index) => {
             // Get images for this product
             const productImages = getProductImages(product);
             const hasMultipleImages = productImages.length >= 2;
@@ -104,21 +105,28 @@ export default function ProductList() {
                   >
                     {productImages.length > 0 ? (
                       <>
-                        {/* First image (always visible when not hovering on desktop) */}
+                        {/* First image - with optimized lazy loading */}
                         <div
                           className="w-full h-full transition-opacity duration-300 lg:absolute lg:inset-0"
                           style={{
                             opacity: isHovered && hasMultipleImages ? 0 : 1
                           }}
                         >
-                          <img
+                          <Image
                             src={productImages[0]?.url}
                             alt={productImages[0]?.altText || product.title}
+                            width={800}
+                            height={533}
                             className="w-full h-full object-cover rounded-lg"
+                            // LAZY LOADING: All products are below the fold
+                            loading="lazy"
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            placeholder="blur"
+                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAwDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0Dp9R6WxagHJ6PPRgACw2UE7gY+1axTKMYt8K5xUbhqq/HSIZeeOXIy03jBELFYhEchT5c3RmfavhJbAHDUPGkREyLAMR7WNuqxJNK//2Q=="
                           />
                         </div>
 
-                        {/* Second image (visible on hover for desktop only) */}
+                        {/* Second image (visible on hover for desktop only) - always lazy loaded */}
                         {hasMultipleImages && (
                           <div
                             className="hidden lg:block absolute inset-0 w-full h-full transition-opacity duration-300 pointer-events-none lg:pointer-events-auto"
@@ -126,10 +134,14 @@ export default function ProductList() {
                               opacity: isHovered ? 1 : 0
                             }}
                           >
-                            <img
+                            <Image
                               src={productImages[1]?.url}
                               alt={productImages[1]?.altText || `${product.title} - Alternate View`}
+                              width={800}
+                              height={533}
                               className="w-full h-full object-cover rounded-lg"
+                              loading="lazy" // Always lazy load hover images
+                              sizes="(max-width: 1024px) 100vw, 50vw"
                             />
                           </div>
                         )}

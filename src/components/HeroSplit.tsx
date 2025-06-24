@@ -26,28 +26,11 @@ export default function HeroSplit() {
     };
   }, []);
 
-  // Preload hero images for better performance
-  useEffect(() => {
-    // Preload the most critical images
-    const preloadImages = () => {
-      const imagesToPreload = [
-        '/images/Grapefruit_3.png',
-        isMobile ? '/images/Grapefruit.png' : '/images/grapefruit-poster.jpg'
-      ];
-      
-      imagesToPreload.forEach(src => {
-        // Fix: Create the Image with proper HTML image element
-        const img = new window.Image();
-        img.src = src;
-      });
-    };
-    
-    preloadImages();
-  }, [isMobile]);
+  // Removed preload effect since images are now lazy loaded
 
   return (
     <section className="w-full flex flex-col md:flex-row">
-      {/* Image Section */}
+      {/* Image Section - Left side */}
       <div className="relative w-full aspect-square md:aspect-auto md:w-1/2">
         <Image
           src="/images/Grapefruit_3.png"
@@ -55,8 +38,10 @@ export default function HeroSplit() {
           width={800}
           height={600}
           className="w-full h-full object-cover"
-          priority={true}
+          loading="lazy" // LAZY LOADING: This component is below the fold
           sizes="(max-width: 768px) 100vw, 50vw"
+          placeholder="blur"
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="
         />
         <div className="absolute bottom-4 inset-x-0 text-center md:text-right md:bottom-6 md:right-6 md:left-auto text-black z-10">
           <a
@@ -68,18 +53,20 @@ export default function HeroSplit() {
         </div>
       </div>
 
-      {/* Video/Image Section - Updated to use static image for all devices */}
+      {/* Video/Image Section - Right side (now using static image for all devices) */}
       <div className="relative w-full aspect-square md:aspect-auto md:w-1/2">
         {isMobile ? (
-          // Image for mobile (unchanged)
+          // Image for mobile
           <Image
             src="/images/Grapefruit.png"
             alt="Grapefruit Product"
             width={500}
             height={500}
             className="w-full h-full object-cover"
-            priority={true}
+            loading="lazy" // LAZY LOADING: Below the fold
             sizes="100vw"
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="
           />
         ) : (
           // Static image for tablet and desktop (replacing video)
@@ -89,8 +76,10 @@ export default function HeroSplit() {
             width={800}
             height={600}
             className="w-full h-full object-cover"
-            priority={true}
+            loading="lazy" // LAZY LOADING: Below the fold
             sizes="50vw"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAwDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0Dp9R6WxagHJ6PPRgACw2UE7gY+1axTKMYt8K5xUbhqq/HSIZeeOXIy03jBELFYhEchT5c3RmfavhJbAHDUPGkREyLAMR7WNuqxJNK//2Q=="
           />
         )}
         <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 text-white z-10">
