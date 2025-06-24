@@ -12,10 +12,23 @@ export default function SampleCTA() {
   const [isLoading, setIsLoading] = useState(false);
   const [samplePackProduct, setSamplePackProduct] = useState<any>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Sample pack product handle - update this to your actual sample pack handle
   const SAMPLE_PACK_HANDLE = 'sunfruit-sample-pack';
   const KLAVIYO_FORM_ID = 'RU73Kw'; // Your Klaviyo form ID for out-of-stock notifications
+  
+  // Check if mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
   
   // Initialize Klaviyo
   useEffect(() => {
@@ -113,14 +126,14 @@ export default function SampleCTA() {
               </button>
             </div>
 
-            {/* Optimized image section with lazy loading */}
+            {/* Optimized responsive image section */}
             <div className="relative aspect-[3/2] w-full rounded-lg overflow-hidden">
               {!imageLoaded && (
                 <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg" />
               )}
               <Image
-                src="/images/Samples.png" 
-                alt="Stick Packs"
+                src={isMobile ? "/images/samples-mobile.jpg" : "/images/samples-desktop.jpg"}
+                alt="Sunfruit Sample Stick Packs - All 4 Flavors"
                 width={800}
                 height={533}
                 className={`rounded-lg object-cover ${imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
@@ -128,7 +141,7 @@ export default function SampleCTA() {
                 sizes="(max-width: 768px) 100vw, 50vw"
                 loading="lazy" // LAZY LOADING: This component is below the fold
                 placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAwDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0Dp9R6WxagHJ6PPRgACw2UE7gY+1axTKMYt8K5xUbhqq/HSIZeeOXIy03jBELFYhEchT5c3RmfavhJbAHDUPGkREyLAMR7WNuqxJNK//2Q=="
               />
             </div>
           </div>
