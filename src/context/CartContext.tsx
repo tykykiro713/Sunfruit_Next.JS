@@ -92,7 +92,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setCartId(newCartId);
         setInStorage('cartId', newCartId);
       } catch (error) {
-        console.error("Error initializing cart:", error);
       }
     };
 
@@ -151,7 +150,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         openCart();
       }
     } catch (error) {
-      console.error('Error adding item to cart:', error);
     } finally {
       setIsLoading(false);
     }
@@ -170,7 +168,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setCart(updatedCart);
       }
     } catch (error) {
-      console.error('Error updating cart item:', error);
     } finally {
       setIsLoading(false);
     }
@@ -196,7 +193,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }
       }
     } catch (error) {
-      console.error('Error removing item from cart:', error);
     } finally {
       setIsLoading(false);
     }

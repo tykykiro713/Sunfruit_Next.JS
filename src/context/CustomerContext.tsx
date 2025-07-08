@@ -56,49 +56,37 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
   // Check if user is logged in on mount
   useEffect(() => {
     const initializeCustomer = async () => {
-      console.log("CustomerContext: initializing customer");
       setIsLoading(true);
       try {
         const storedToken = getFromStorage('customerAccessToken');
-        console.log("CustomerContext: found stored token?", !!storedToken);
         
         if (storedToken) {
           try {
             const parsedToken = JSON.parse(storedToken);
             const { accessToken, expiresAt } = parsedToken;
-            console.log("CustomerContext: token expires at", new Date(expiresAt));
             
             // Check if token is expired
             if (new Date(expiresAt) > new Date()) {
-              console.log("CustomerContext: token is valid, setting access token");
               setAccessToken(accessToken);
-              console.log("CustomerContext: fetching customer data with stored token");
               const customerData = await getCustomer(accessToken);
-              console.log("CustomerContext: customer data received?", !!customerData);
               
               if (customerData) {
-                console.log("CustomerContext: setting customer data", customerData);
                 setCustomer(customerData);
               } else {
                 // Token valid but customer not found - clear storage
-                console.log("CustomerContext: no customer data found, clearing token");
                 removeFromStorage('customerAccessToken');
               }
             } else {
               // Token expired - clear storage
-              console.log("CustomerContext: token expired, clearing");
               removeFromStorage('customerAccessToken');
             }
           } catch (e) {
             // Invalid token format - clear storage
-            console.error("CustomerContext: invalid token format", e);
             removeFromStorage('customerAccessToken');
           }
         }
       } catch (error) {
-        console.error('CustomerContext: error initializing customer:', error);
       } finally {
-        console.log("CustomerContext: finished initialization, isLoggedIn:", !!customer);
         setIsLoading(false);
       }
     };
@@ -108,7 +96,6 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
 
   // Login function
   const login = async (email: string, password: string) => {
-    console.log("CustomerContext: login called with email", email);
     setIsLoading(true);
     try {
       const { customerAccessToken, errors } = await customerLogin(email, password);
@@ -346,7 +333,6 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  console.log("CustomerContext: rendering with isLoggedIn:", !!customer, "isLoading:", isLoading);
 
   return (
     <CustomerContext.Provider

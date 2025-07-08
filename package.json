@@ -9,6 +9,7 @@
     "start": "next start",
     "start:standalone": "node .next/standalone/server.js",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "test-shopify": "npx ts-node --loader ts-node/esm src/testShopify.ts"
   },
   "dependencies": {
@@ -21,7 +22,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.20",
-    "critters": "^0.0.23",
     "dotenv": "^16.4.7",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
