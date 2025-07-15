@@ -5,7 +5,6 @@ const nextConfig = {
   
   // Performance optimizations
   experimental: {
-    optimizeCss: true,
     optimizeServerReact: true,
     ppr: false, // Keep false for stability in production
   },
@@ -24,6 +23,12 @@ const nextConfig = {
         hostname: 'cdn.shopify.com',
         port: '',
         pathname: '/s/files/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
       },
     ],
   },
