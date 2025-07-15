@@ -7,25 +7,13 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-  recommendedConfig: true
 });
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 const eslintConfig = [
+  ...compat.extends("next/core-web-vitals"),
   {
-    languageOptions: {
-      parserOptions: {
-        project: "./tsconfig.json",
-        ecmaVersion: "latest",
-        sourceType: "module",
-      },
-    },
-  },
-  ...compat.extends(
-    "next/core-web-vitals"
-  ),
-  {
-    ignores: [".next/*", "node_modules/*", "dist/*"]
+    ignores: [".next/*", "node_modules/*", "dist/*", "strapi-cms/*"]
   }
 ];
 
