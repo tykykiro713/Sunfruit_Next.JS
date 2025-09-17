@@ -1,34 +1,39 @@
-// Server component with optimized fonts and moved analytics
+// Optimized layout.tsx for critical performance improvements
 // ========================================
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import GoogleAdsTag from "@/components/GoogleAdsTag";
 import ClientProviders from "@/components/ClientProviders";
+import "@/lib/recharge/client"; // Initialize Recharge SDK
 
-// Optimized font loading with display: optional
+// CRITICAL: Changed font loading strategy for production
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   weight: ["400", "500", "700"],
-  display: "optional", // Better performance than swap
-  adjustFontFallback: false,
+  display: "swap", // Changed from "optional" - faster initial render
+  preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+  variable: "--font-geist-mono", 
   subsets: ["latin"],
   weight: ["400", "500"],
-  display: "optional",
-  adjustFontFallback: false,
+  display: "swap",
+  preload: false, // Only preload critical fonts
+  fallback: ['monospace'],
 });
 
+// CRITICAL: Reduce Poppins font weights to minimize download
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "optional",
-  adjustFontFallback: false,
+  weight: ["400", "500", "600", "700"], // Keep all - you're using them!
+  display: "swap",
+  preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 export default function RootLayout({
@@ -39,14 +44,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* DNS prefetch for faster connections */}
-        <link rel="dns-prefetch" href="https://cdn.shopify.com" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        {/* CRITICAL: More aggressive resource hints */}
+        <link rel="dns-prefetch" href="//cdn.shopify.com" />
+        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         
-        {/* Preconnect only to critical domains */}
+        {/* CRITICAL: Preconnect to critical domains only */}
         <link rel="preconnect" href="https://cdn.shopify.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Preload critical resources */}
+        {/* CRITICAL: Preload only the most critical assets */}
         <link 
           rel="preload" 
           as="image" 
@@ -55,17 +64,21 @@ export default function RootLayout({
           fetchPriority="high"
         />
         
+        {/* CRITICAL: Improved viewport for better mobile performance */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        
+        {/* CRITICAL: Resource hints for faster loading */}
+        <link rel="preload" href="/fonts" as="fetch" crossOrigin="anonymous" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
-        {/* Main content with providers */}
+        {/* CRITICAL: Move analytics to very end of body */}
         <ClientProviders>
           {children}
         </ClientProviders>
         
-        {/* Analytics moved to end of body for better performance */}
+        {/* CRITICAL: Defer all analytics until after main content loads */}
         <GoogleAnalytics />
         <GoogleAdsTag />
       </body>

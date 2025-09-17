@@ -430,15 +430,31 @@ export async function fetchProductByHandle(handle: string): Promise<UIProduct | 
   }
 }
 
-// Helper function to extract subscription options from selling plan groups
-// Simplified to avoid relying on priceAdjustments that might not match the schema
+// Helper function to extract subscription options using Recharge selling plan IDs
+// Updated to use real discount data from selling plans instead of hardcoded values
 export function getSubscriptionOptions(product: UIProduct): {
   subscriptionPlans: SellingPlan[];
   discountPercentage: number;
 } {
+  // Try to use Recharge subscription options first
+  try {
+    const { getRechargeSubscriptionOptions } = require('./recharge/subscription-options');
+    const rechargeOptions = getRechargeSubscriptionOptions(product);
+    
+    // If we have valid Recharge options, use them
+    if (rechargeOptions) {
+      return {
+        subscriptionPlans: rechargeOptions.subscriptionPlans,
+        discountPercentage: rechargeOptions.discountPercentage
+      };
+    }
+  } catch (error) {
+    console.warn('Recharge subscription options not available, using fallback');
+  }
+  
+  // Fallback: Look for any subscription-related selling plans in the product
   const subscriptionPlans: SellingPlan[] = [];
-  // Hardcoded discount percentage since we can't reliably get it from the API without exploring schema
-  const discountPercentage = 15; // Default discount percentage
+  let discountPercentage = 0;
   
   if (product.sellingPlanGroups?.edges) {
     product.sellingPlanGroups.edges.forEach(edge => {
@@ -448,6 +464,12 @@ export function getSubscriptionOptions(product: UIProduct): {
         group.sellingPlans.edges.forEach(planEdge => {
           const plan = planEdge.node;
           subscriptionPlans.push(plan);
+          
+          // Try to get real discount percentage from the first plan
+          if (discountPercentage === 0) {
+            const { getDiscountPercentage } = require('./sellingPlans');
+            discountPercentage = getDiscountPercentage(plan);
+          }
         });
       }
     });

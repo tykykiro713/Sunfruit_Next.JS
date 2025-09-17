@@ -24,6 +24,7 @@ interface CartContextType {
   isCartOpen: boolean;
   isLoading: boolean;
   cartCount: number;
+  subscriptionItems: Record<string, SubscriptionDetails>;
   openCart: () => void;
   closeCart: () => void;
   addItem: (variantId: string, quantity: number, subscriptionDetails?: SubscriptionDetails) => Promise<void>;
@@ -225,6 +226,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         isCartOpen,
         isLoading,
         cartCount,
+        subscriptionItems,
         openCart,
         closeCart,
         addItem,

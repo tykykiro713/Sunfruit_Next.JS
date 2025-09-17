@@ -24,6 +24,7 @@ export default function SubscriptionSelector({
   selectedOption, 
   onChange 
 }: SubscriptionSelectorProps) {
+
   return (
     <div className="mt-8">
       <div className="flex items-center justify-between">
@@ -34,6 +35,7 @@ export default function SubscriptionSelector({
           </span>
         )}
       </div>
+
 
       <RadioGroup value={selectedOption} onChange={onChange} className="mt-2">
         <RadioGroup.Label className="sr-only">Choose a purchase option</RadioGroup.Label>

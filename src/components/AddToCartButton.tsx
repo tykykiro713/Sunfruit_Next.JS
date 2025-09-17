@@ -88,10 +88,6 @@ export default function AddToCartButton({
   const getButtonText = () => {
     if (isLoading) return 'Adding...';
     
-    if (isSubscription && subscriptionDiscount) {
-      return `Subscribe & Save ${subscriptionDiscount}%`;
-    }
-    
     return 'Add to cart';
   };
   

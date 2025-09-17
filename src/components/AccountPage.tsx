@@ -68,7 +68,7 @@ export default function AccountPage() {
               </div>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm font-medium text-white bg-emeraldgreen-500 hover:bg-emeraldgreen-600 rounded-md"
+                className="px-4 py-2 text-sm font-medium text-white bg-gray-500 hover:bg-gray-800 rounded-md"
               >
                 Sign Out
               </button>
@@ -78,25 +78,33 @@ export default function AccountPage() {
           {/* Quick Links */}
           <div className="px-6 py-6 border-b border-gray-200">
             <h2 className="text-lg font-medium text-gray-900">Manage Your Account</h2>
-            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Link
                 href="/account/orders"
-                className="px-4 py-4 bg-gray-50 rounded-md hover:bg-gray-100 flex items-center justify-center"
+                className="px-4 py-4 bg-emeraldgreen-500 hover:bg-brightgreen-500 rounded-md flex items-center justify-center"
               >
-                <span className="text-emeraldgreen-600 font-medium">Order History</span>
+                <span className="text-white font-medium">Order History</span>
               </Link>
               <Link
                 href="/account/addresses"
-                className="px-4 py-4 bg-gray-50 rounded-md hover:bg-gray-100 flex items-center justify-center"
+                className="px-4 py-4 bg-emeraldgreen-500 hover:bg-brightgreen-500 rounded-md flex items-center justify-center"
               >
-                <span className="text-emeraldgreen-600 font-medium">Saved Addresses</span>
+                <span className="text-white font-medium">Saved Addresses</span>
               </Link>
               <Link
                 href="/account/settings"
-                className="px-4 py-4 bg-gray-50 rounded-md hover:bg-gray-100 flex items-center justify-center"
+                className="px-4 py-4 bg-emeraldgreen-500 hover:bg-brightgreen-500 rounded-md flex items-center justify-center"
               >
-                <span className="text-emeraldgreen-600 font-medium">Profile Settings</span>
+                <span className="text-white font-medium">Profile Settings</span>
               </Link>
+              <a
+                href="https://checkout.sunfruit.com/portal/account"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-4 bg-emeraldgreen-500 hover:bg-brightgreen-500 rounded-md flex items-center justify-center text-center"
+              >
+                <span className="text-white font-medium">Manage Subscriptions</span>
+              </a>
             </div>
           </div>
 
