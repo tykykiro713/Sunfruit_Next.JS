@@ -7,14 +7,28 @@ function classNames(...classes: string[]) {
 
 interface ProductInfoProps {
   product: UIProduct;
+  isSubscriptionSelected?: boolean;
+  subscriptionDiscountPercentage?: number;
 }
 
-export default function ProductInfo({ product }: ProductInfoProps) {
-  // Format the price to remove cents and currency code
+export default function ProductInfo({ 
+  product, 
+  isSubscriptionSelected = false, 
+  subscriptionDiscountPercentage = 0 
+}: ProductInfoProps) {
+  // Format the price to remove cents and currency code (for original price)
   const formatPrice = (amount: string) => {
     // Parse amount and round to nearest integer
     const price = parseInt(amount, 10);
     return `$${price}`;
+  };
+
+  // Format discounted price with cents
+  const formatDiscountedPrice = (amount: string, discountPercentage: number) => {
+    const price = parseFloat(amount);
+    const discountMultiplier = (100 - discountPercentage) / 100;
+    const discountedPrice = price * discountMultiplier;
+    return `$${discountedPrice.toFixed(2)}`;
   };
 
   return (
@@ -45,15 +59,6 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         </div>
       </div>
 
-      {/* Price - Formatted to show only dollars, no cents or currency code */}
-      <div className="mt-3">
-        <h2 className="sr-only">Product information</h2>
-        <p className="text-3xl tracking-tight text-gray-900">
-          {product.priceRange
-            ? formatPrice(product.priceRange.minVariantPrice.amount)
-            : "N/A"}
-        </p>
-      </div>
 
       <div className="mt-6">
         <h3 className="sr-only">Description</h3>

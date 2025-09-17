@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import client from "@/lib/apollo-client";
+import browserClient from "@/lib/apollo-client-browser";
 
 // Types for cart operations
 export interface CartCreateData {
@@ -75,6 +76,16 @@ export interface Cart {
       currencyCode: string;
     };
   };
+  cost: {
+    totalAmount: {
+      amount: string;
+      currencyCode: string;
+    };
+    subtotalAmount: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
   lines: {
     edges: CartEdge[];
   };
@@ -132,6 +143,16 @@ export const ADD_TO_CART = gql`
             currencyCode
           }
         }
+        cost {
+          totalAmount {
+            amount
+            currencyCode
+          }
+          subtotalAmount {
+            amount
+            currencyCode
+          }
+        }
         lines(first: 100) {
           edges {
             node {
@@ -185,6 +206,16 @@ export const UPDATE_CART_LINES = gql`
             currencyCode
           }
         }
+        cost {
+          totalAmount {
+            amount
+            currencyCode
+          }
+          subtotalAmount {
+            amount
+            currencyCode
+          }
+        }
         lines(first: 100) {
           edges {
             node {
@@ -234,6 +265,16 @@ export const REMOVE_FROM_CART = gql`
         checkoutUrl
         estimatedCost {
           totalAmount {
+            amount
+            currencyCode
+          }
+        }
+        cost {
+          totalAmount {
+            amount
+            currencyCode
+          }
+          subtotalAmount {
             amount
             currencyCode
           }
