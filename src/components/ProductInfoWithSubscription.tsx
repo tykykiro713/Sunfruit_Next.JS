@@ -5,16 +5,11 @@ import ProductInfo from '@/components/ProductInfo';
 import EnhancedProductForm from '@/components/EnhancedProductForm';
 import ProductAccordion from '@/components/ProductAccordion';
 import type { UIProduct } from '@/lib/shopify';
+import type { ProductAccordionData } from '@/data/productAccordionData';
 
 interface ProductInfoWithSubscriptionProps {
   product: UIProduct;
-  accordionData: {
-    items: Array<{
-      id: string;
-      question: string;
-      answer: string;
-    }>;
-  };
+  accordionData: ProductAccordionData;
 }
 
 export default function ProductInfoWithSubscription({ product, accordionData }: ProductInfoWithSubscriptionProps) {
