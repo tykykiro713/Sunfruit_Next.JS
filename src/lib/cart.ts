@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 import client from "@/lib/apollo-client";
-import browserClient from "@/lib/apollo-client-browser";
 
 // Types for cart operations
 export interface CartCreateData {
