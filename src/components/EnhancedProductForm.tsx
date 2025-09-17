@@ -37,7 +37,7 @@ export default function EnhancedProductForm({ product, onSubscriptionChange }: P
   // Get the first available variant ID
   const firstVariant = product.variants?.edges?.[0]?.node;
   const variantId = firstVariant?.id || '';
-  const availableForSale = firstVariant?.availableForSale || false;
+  const availableForSale = (firstVariant?.availableForSale || false) && (firstVariant?.quantityAvailable || 0) > 0;
   
   // Get the price
   const price = firstVariant?.priceV2?.amount 
