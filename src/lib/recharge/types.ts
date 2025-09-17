@@ -78,6 +78,7 @@ export interface RechargeSession {
   customerId: string;
   email: string;
   token: string;
+  apiToken: string;
   expiresAt: string;
 }
 
