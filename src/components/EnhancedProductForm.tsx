@@ -84,7 +84,7 @@ export default function EnhancedProductForm({ product, onSubscriptionChange }: P
     });
     
     setSubscriptionOptions(options);
-    setSelectedPurchaseOption(options[0]); // Default to one-time purchase
+    setSelectedPurchaseOption(options[0]); // Default to subscription (first option)
   }, [product]);
 
   // Separate effect to notify parent about initial state
@@ -94,7 +94,7 @@ export default function EnhancedProductForm({ product, onSubscriptionChange }: P
       const discount = selectedPurchaseOption.discountPercentage || 0;
       onSubscriptionChange(isSubscription, discount);
     }
-  }, [selectedPurchaseOption]); 
+  }, [selectedPurchaseOption, onSubscriptionChange]); 
 
   // Handle purchase option change
   const handlePurchaseOptionChange = (option: PurchaseOption) => {
