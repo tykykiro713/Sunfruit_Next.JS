@@ -17,6 +17,7 @@
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@microsoft/clarity": "^1.0.0",
+    "@rechargeapps/storefront-client": "^1.48.0",
     "@shopify/buy-button-js": "^2.4.0",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -27,13 +28,15 @@
     "eslint-config-next": "15.1.0",
     "graphql": "^16.10.0",
     "keen-slider": "^6.8.6",
+    "mongodb": "^6.17.0",
     "next": "^15.1.6",
     "postcss": "^8.4.49",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-gtm-module": "^2.0.11",
     "tailwindcss": "^3.4.16",
-    "typescript": "^5"
+    "typescript": "^5",
+    "unsplash-js": "^7.0.19"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

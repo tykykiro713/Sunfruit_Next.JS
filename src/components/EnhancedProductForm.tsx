@@ -7,6 +7,7 @@ import type { UIProduct, SellingPlan } from '@/lib/shopify';
 import { getSubscriptionOptions } from '@/lib/shopify';
 import AddToCartButton from '@/components/AddToCartButton';
 import SubscriptionSelector, { PurchaseOption } from './SubscriptionSelector';
+import SubscriptionSelectorV2, { PurchaseOptionV2 } from './SubscriptionSelectorV2';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -14,6 +15,7 @@ function classNames(...classes: string[]) {
 
 interface ProductFormProps {
   product: UIProduct;
+  onSubscriptionChange?: (isSubscription: boolean, discount: number) => void;
 }
 
 type Color = {
@@ -22,7 +24,7 @@ type Color = {
   selectedColor: string;
 };
 
-export default function EnhancedProductForm({ product }: ProductFormProps) {
+export default function EnhancedProductForm({ product, onSubscriptionChange }: ProductFormProps) {
   const [selectedColor, setSelectedColor] = useState<Color | null>(
     product.colors && product.colors.length > 0 ? product.colors[0] : null
   );
@@ -44,14 +46,7 @@ export default function EnhancedProductForm({ product }: ProductFormProps) {
   
   // Set up subscription options based on product data
   useEffect(() => {
-    const options: PurchaseOption[] = [
-      {
-        id: 'one-time',
-        title: 'One-time purchase',
-        description: 'Single purchase, no recurring charges',
-        value: 'one-time'
-      }
-    ];
+    const options: PurchaseOption[] = [];
     
     // Only show subscription option if the product supports it
     if (product.hasSubscriptionOption) {
@@ -65,9 +60,10 @@ export default function EnhancedProductForm({ product }: ProductFormProps) {
         );
         
         if (monthlyPlan) {
+          // Add subscription option first (will be auto-selected)
           options.push({
             id: 'subscription',
-            title: 'Subscribe & Save',
+            title: 'Subscribe and Save 15%',
             description: `Monthly delivery, save ${discountPercentage}%`,
             value: 'subscription',
             discountPercentage: discountPercentage,
@@ -79,13 +75,37 @@ export default function EnhancedProductForm({ product }: ProductFormProps) {
       }
     }
     
+    // Add one-time option second
+    options.push({
+      id: 'one-time',
+      title: 'One-time purchase',
+      description: 'Single purchase, no recurring charges',
+      value: 'one-time'
+    });
+    
     setSubscriptionOptions(options);
     setSelectedPurchaseOption(options[0]); // Default to one-time purchase
-  }, [product]); 
+  }, [product]);
+
+  // Separate effect to notify parent about initial state
+  useEffect(() => {
+    if (onSubscriptionChange && selectedPurchaseOption) {
+      const isSubscription = selectedPurchaseOption.id === 'subscription';
+      const discount = selectedPurchaseOption.discountPercentage || 0;
+      onSubscriptionChange(isSubscription, discount);
+    }
+  }, [selectedPurchaseOption]); 
 
   // Handle purchase option change
   const handlePurchaseOptionChange = (option: PurchaseOption) => {
     setSelectedPurchaseOption(option);
+    
+    // Notify parent about subscription change
+    if (onSubscriptionChange) {
+      const isSubscription = option.id === 'subscription';
+      const discount = option.discountPercentage || 0;
+      onSubscriptionChange(isSubscription, discount);
+    }
   };
 
   return (
@@ -126,10 +146,11 @@ export default function EnhancedProductForm({ product }: ProductFormProps) {
       
       {/* Subscription Options - Only show if product has subscription option */}
       {product.hasSubscriptionOption && subscriptionOptions.length > 1 && selectedPurchaseOption && (
-        <SubscriptionSelector 
+        <SubscriptionSelectorV2 
           options={subscriptionOptions}
           selectedOption={selectedPurchaseOption}
           onChange={handlePurchaseOptionChange}
+          productPrice={firstVariant?.priceV2?.amount}
         />
       )}
 

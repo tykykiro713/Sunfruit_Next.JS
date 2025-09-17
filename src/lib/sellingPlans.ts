@@ -7,19 +7,11 @@ export interface SellingPlanOption {
   value: string;
 }
 
-export interface SellingPlanPrice {
-  adjustmentType: string;
-  adjustmentValue: {
-    percentage: number;
-  };
-}
-
 export interface SellingPlan {
   id: string;
   name: string;
   description: string;
   options: SellingPlanOption[];
-  priceAdjustments: SellingPlanPrice[];
 }
 
 export interface SellingPlanGroup {
@@ -69,14 +61,6 @@ export const GET_PRODUCT_SELLING_PLANS = gql`
                     name
                     value
                   }
-                  priceAdjustments {
-                    adjustmentType
-                    adjustmentValue {
-                      ... on SellingPlanPercentagePriceAdjustment {
-                        percentage
-                      }
-                    }
-                  }
                 }
               }
             }
@@ -112,12 +96,29 @@ export async function fetchProductSellingPlans(productId: string): Promise<Selli
 }
 
 // Function to get discount percentage from a selling plan
+// Since we can't query priceAdjustments via GraphQL, we'll use plan name/description to infer discount
 export function getDiscountPercentage(sellingPlan: SellingPlan): number {
-  const discountAdjustment = sellingPlan.priceAdjustments.find(
-    adjustment => adjustment.adjustmentType === 'PERCENTAGE'
-  );
+  // Look for discount information in the plan name or description
+  const text = `${sellingPlan.name} ${sellingPlan.description}`.toLowerCase();
   
-  return discountAdjustment?.adjustmentValue?.percentage || 0;
+  // Common patterns for subscription discounts
+  const discountMatch = text.match(/(\d+)%\s*(off|discount|save)/);
+  if (discountMatch) {
+    return parseInt(discountMatch[1]);
+  }
+  
+  // Look for "save X%" pattern
+  const saveMatch = text.match(/save\s*(\d+)%/);
+  if (saveMatch) {
+    return parseInt(saveMatch[1]);
+  }
+  
+  // Default discount for subscription plans (common practice is 10-15%)
+  if (text.includes('subscription') || text.includes('recurring')) {
+    return 10; // Default 10% discount for subscriptions
+  }
+  
+  return 0;
 }
 
 // Function to get delivery frequency from a selling plan

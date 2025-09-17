@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useCart } from '@/context/CartContext';
@@ -17,24 +17,9 @@ export default function CartDrawer() {
     updateItem, 
     removeItem, 
     checkout,
-    cartCount
+    cartCount,
+    subscriptionItems
   } = useCart();
-
-  // Store subscription items in state
-  const [subscriptionItems, setSubscriptionItems] = useState<Record<string, any>>({});
-  
-  // Fetch subscription items from localStorage on client-side only
-  useEffect(() => {
-    const storedData = localStorage.getItem('subscriptionItems');
-    if (storedData) {
-      try {
-        setSubscriptionItems(JSON.parse(storedData));
-      } catch (e) {
-        console.error('Error parsing subscription data:', e);
-        setSubscriptionItems({});
-      }
-    }
-  }, []);
 
   function formatPrice(amount: string, currencyCode: string) {
     return new Intl.NumberFormat('en-US', {
@@ -54,6 +39,17 @@ export default function CartDrawer() {
     if (!item) return null;
     
     return `${item.frequency} delivery${item.discountPercentage ? `, ${item.discountPercentage}% off` : ''}`;
+  }
+
+  // Function to calculate discounted price for subscription items
+  function getDiscountedPrice(originalPrice: string, lineId: string, quantity: number) {
+    const item = subscriptionItems[lineId];
+    if (!item || !item.discountPercentage) {
+      return parseFloat(originalPrice) * quantity;
+    }
+    
+    const discountMultiplier = (100 - item.discountPercentage) / 100;
+    return parseFloat(originalPrice) * quantity * discountMultiplier;
   }
 
   return (
@@ -145,12 +141,31 @@ export default function CartDrawer() {
                                             {node.merchandise.product.title}
                                           </Link>
                                         </h3>
-                                        <p className="ml-4">
-                                          {formatPrice(
-                                            (parseFloat(node.merchandise.priceV2.amount) * node.quantity).toString(),
-                                            node.merchandise.priceV2.currencyCode
+                                        <div className="ml-4 text-right">
+                                          {isSubscription(node.id) && subscriptionItems[node.id]?.discountPercentage ? (
+                                            <div className="flex flex-col">
+                                              <p className="text-sm text-gray-500 line-through">
+                                                {formatPrice(
+                                                  (parseFloat(node.merchandise.priceV2.amount) * node.quantity).toString(),
+                                                  node.merchandise.priceV2.currencyCode
+                                                )}
+                                              </p>
+                                              <p className="text-base font-medium text-gray-900">
+                                                {formatPrice(
+                                                  getDiscountedPrice(node.merchandise.priceV2.amount, node.id, node.quantity).toString(),
+                                                  node.merchandise.priceV2.currencyCode
+                                                )}
+                                              </p>
+                                            </div>
+                                          ) : (
+                                            <p className="text-base font-medium text-gray-900">
+                                              {formatPrice(
+                                                (parseFloat(node.merchandise.priceV2.amount) * node.quantity).toString(),
+                                                node.merchandise.priceV2.currencyCode
+                                              )}
+                                            </p>
                                           )}
-                                        </p>
+                                        </div>
                                       </div>
                                       <p className="mt-1 text-sm text-gray-500">
                                         {node.merchandise.title !== 'Default Title' ? node.merchandise.title : ''}
@@ -200,14 +215,14 @@ export default function CartDrawer() {
                       )}
                     </div>
 
-                    {cartCount > 0 && cart?.estimatedCost?.totalAmount && (
+                    {cartCount > 0 && (cart?.cost?.subtotalAmount || cart?.estimatedCost?.totalAmount) && (
                       <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                         <div className="flex justify-between text-base font-medium text-gray-900">
                           <p>Subtotal</p>
                           <p>
                             {formatPrice(
-                              cart.estimatedCost.totalAmount.amount,
-                              cart.estimatedCost.totalAmount.currencyCode
+                              cart?.cost?.subtotalAmount?.amount || cart.estimatedCost.totalAmount.amount,
+                              cart?.cost?.subtotalAmount?.currencyCode || cart.estimatedCost.totalAmount.currencyCode
                             )}
                           </p>
                         </div>

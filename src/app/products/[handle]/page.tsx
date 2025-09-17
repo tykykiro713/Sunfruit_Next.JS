@@ -2,9 +2,7 @@ import { notFound } from "next/navigation";
 import Navigation from "@/components/Navigation";
 import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
 import ProductMedia from "@/components/ProductMedia";
-import ProductInfo from "@/components/ProductInfo";
-import EnhancedProductForm from "@/components/EnhancedProductForm";
-import ProductAccordion from "@/components/ProductAccordion";
+import ProductInfoWithSubscription from "@/components/ProductInfoWithSubscription";
 import ProductTestimonial from "@/components/ProductTestimonial";
 import ProductHeroSplit from "@/components/ProductHeroSplit";
 import ProductRecirculation from "@/components/ProductRecirculation";
@@ -69,9 +67,7 @@ export default async function ProductPage({
 
               {/* Right column - Product Info & Form */}
               <div className="mt-10 px-4 sm:mt-16 sm:px-6 lg:mt-0 lg:px-8 xl:px-12">
-                <ProductInfo product={product} />
-                <EnhancedProductForm product={product} />
-                <ProductAccordion items={accordionData.items} />
+                <ProductInfoWithSubscription product={product} accordionData={accordionData} />
               </div>
             </div>
           </div>
