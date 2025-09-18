@@ -15,7 +15,6 @@ import {
 
 interface CustomerContextType {
   customer: Customer | null;
-  accessToken: string | null;
   isLoggedIn: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
@@ -339,7 +338,6 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
     <CustomerContext.Provider
       value={{
         customer,
-        accessToken,
         isLoggedIn: !!customer,
         isLoading,
         login,
