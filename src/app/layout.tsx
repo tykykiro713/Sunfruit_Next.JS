@@ -5,7 +5,6 @@ import "./globals.css";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import GoogleAdsTag from "@/components/GoogleAdsTag";
 import ClientProviders from "@/components/ClientProviders";
-import "@/lib/recharge/client"; // Initialize Recharge SDK
 
 // CRITICAL: Changed font loading strategy for production
 const geistSans = Geist({
@@ -54,6 +53,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://cdn.shopify.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://static.rechargecdn.com" crossOrigin="anonymous" />
         
         {/* CRITICAL: Preload only the most critical assets */}
         <link 
@@ -69,6 +69,28 @@ export default function RootLayout({
         
         {/* CRITICAL: Resource hints for faster loading */}
         <link rel="preload" href="/fonts" as="fetch" crossOrigin="anonymous" />
+        
+        {/* Recharge SDK for subscription management */}
+        <script 
+          src="https://static.rechargecdn.com/assets/storefront/recharge-client-1.46.0.min.js"
+          async
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.addEventListener('load', function() {
+                if (window.recharge) {
+                  window.recharge.init({
+                    storeIdentifier: 'checkout.sunfruit.com',
+                    storefrontAccessToken: '${process.env.NEXT_PUBLIC_RECHARGE_STOREFRONT_TOKEN}',
+                    appName: 'Sunfruit',
+                    appVersion: '1.0.0'
+                  });
+                }
+              });
+            `
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
