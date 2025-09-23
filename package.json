@@ -17,7 +17,7 @@
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@microsoft/clarity": "^1.0.0",
-    "@rechargeapps/storefront-client": "^1.48.0",
+    "@rechargeapps/storefront-client": "^1.49.0",
     "@shopify/buy-button-js": "^2.4.0",
     "@types/node": "^20",
     "@types/react": "^19",
