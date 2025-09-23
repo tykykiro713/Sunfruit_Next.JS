@@ -15,18 +15,21 @@ export class RechargeAuth {
       });
       
       // The response might be a string directly or have a session_token property
-      return response.session_token || response;
+      return (response as any).session_token || response;
     } catch (error) {
       
       // More specific error handling
-      if (error?.message?.includes('network') || error?.message?.includes('fetch')) {
+      const errorMessage = error instanceof Error ? error.message : '';
+      const errorStatus = (error as any)?.status;
+      
+      if (errorMessage?.includes('network') || errorMessage?.includes('fetch')) {
         throw new Error('Network connection error. Please check your internet connection.');
-      } else if (error?.status === 404) {
+      } else if (errorStatus === 404) {
         throw new Error('Customer not found. Please verify your email address.');
-      } else if (error?.status === 401) {
+      } else if (errorStatus === 401) {
         throw new Error('Authentication failed. Please contact support.');
       } else {
-        throw new Error(`Failed to send verification code: ${error?.message || 'Unknown error'}`);
+        throw new Error(`Failed to send verification code: ${errorMessage || 'Unknown error'}`);
       }
     }
   }
@@ -35,7 +38,7 @@ export class RechargeAuth {
     email: string, 
     sessionToken: string, 
     code: string,
-    pageDestination: string = 'overview'
+    pageDestination: 'overview' | 'subscriptions' | 'delivery_schedule' | 'orders' | 'shipping' | 'payment_methods' = 'overview'
   ) {
     try {
       if (!sessionToken) {

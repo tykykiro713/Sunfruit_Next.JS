@@ -24,7 +24,7 @@ export const rechargeConfig = {
 };
 
 // Environment-specific configuration
-export const environmentConfig = {
+const environments = {
   development: {
     logLevel: 'debug',
     enableDebugTools: true,
@@ -39,5 +39,12 @@ export const environmentConfig = {
     logLevel: 'error',
     enableDebugTools: false,
     sessionDuration: 55 * 60 * 1000,
+  },
+  test: {
+    logLevel: 'error',
+    enableDebugTools: false,
+    sessionDuration: 55 * 60 * 1000,
   }
-}[process.env.NODE_ENV || 'development'];
+};
+
+export const environmentConfig = environments[process.env.NODE_ENV as keyof typeof environments] || environments.development;
