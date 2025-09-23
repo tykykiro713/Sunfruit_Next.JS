@@ -37,6 +37,9 @@ declare global {
     // Klaviyo
     klaviyo?: any;
     _klOnsite?: any;
+    
+    // Recharge
+    _rechargeInitialized?: boolean;
   }
 }
 
