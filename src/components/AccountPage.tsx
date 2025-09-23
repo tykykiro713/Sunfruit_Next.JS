@@ -1,14 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useCustomer } from '@/context/CustomerContext';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import RechargePortalAccess from './account/RechargePortalAccess';
 
 export default function AccountPage() {
   const { customer, isLoggedIn, isLoading, logout } = useCustomer();
   const router = useRouter();
+  const [subscriptionError, setSubscriptionError] = useState('');
 
   // Handle logout
   const handleLogout = () => {
@@ -97,15 +99,15 @@ export default function AccountPage() {
               >
                 <span className="text-white font-medium">Profile Settings</span>
               </Link>
-              <a
-                href="https://checkout.sunfruit.com/portal/account"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-4 bg-emeraldgreen-500 hover:bg-brightgreen-500 rounded-md flex items-center justify-center text-center"
-              >
-                <span className="text-white font-medium">Manage Subscriptions</span>
-              </a>
+              <RechargePortalAccess />
             </div>
+            
+            {/* Subscription Error Message */}
+            {subscriptionError && (
+              <div className="mt-4 p-3 rounded-md bg-yellow-50 border border-yellow-200 text-center">
+                <p className="text-sm text-yellow-800">{subscriptionError}</p>
+              </div>
+            )}
           </div>
 
           {/* Recent Orders */}

@@ -8,6 +8,7 @@ import { CustomerProvider } from "@/context/CustomerContext";
 import CartDrawer from "@/components/CartDrawer";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import RechargeSDKProvider from "@/components/RechargeSDKProvider";
 
 // Priority 2: Customer Support (load ONLY on interaction or after 10 seconds)
 const ZendeskLauncher = dynamic(
@@ -159,6 +160,7 @@ export default function ClientProviders({
       <MyProvider>
         <CustomerProvider>
           <CartProvider>
+            <RechargeSDKProvider />
             {children}
             <CartDrawer />
             
