@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Vine content management (exclude from deployment)
+src/app/vine/
+src/app/api/vine/
+src/app/api/seed-vine/
+src/content/
+src/lib/content-tracker.ts
+src/lib/mongodb.ts
+src/lib/unsplash.ts
+src/lib/mock-unsplash.ts
+*vine*.md
+*VINE*.md
