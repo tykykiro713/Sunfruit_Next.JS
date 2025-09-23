@@ -41,8 +41,8 @@ export default function RechargeSDKProvider() {
         console.error('❌ Failed to initialize Recharge SDK:', error);
         console.error('❌ Config used:', rechargeConfig);
         console.error('❌ Error details:', {
-          message: error?.message,
-          stack: error?.stack
+          message: error instanceof Error ? error.message : 'Unknown error',
+          stack: error instanceof Error ? error.stack : undefined
         });
       }
     }
