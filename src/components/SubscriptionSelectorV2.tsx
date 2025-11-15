@@ -62,7 +62,7 @@ export default function SubscriptionSelectorV2({
         
         {options.map((option) => {
           const isSubscription = option.value === 'subscription';
-          const originalPrice = productPrice || '29.00';
+          const originalPrice = productPrice || '36.00';
           const discountedPrice = isSubscription && option.discountPercentage 
             ? getDiscountedPrice(originalPrice, option.discountPercentage)
             : originalPrice;
@@ -144,7 +144,7 @@ export default function SubscriptionSelectorV2({
                           <div className="space-y-2 mb-3">
                             <div className="flex items-center gap-2">
                               <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">Save $4.35 per pack</span>
+                              <span className="text-sm text-gray-700">Save $11.88 per pack</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
