@@ -36,13 +36,14 @@ export interface AccordionItem {
         name: "Shipping & Returns",
         content: [
           "Free Shipping on all orders",
+          "Delivered in 2-3 business days",
           "We are unable to accept returns on opened product",
         ],
       },
       {
         name: "Subscription",
         content: [
-            "Subscribe and save 15%",
+            "Subscribe and save 33%",
             "Pause or cancel your subscription at any time",
             "Easy to change your flavors or shipping frequency",
         ],
@@ -78,13 +79,14 @@ export interface AccordionItem {
           name: "Shipping & Returns",
           content: [
             "Free Shipping on all orders",
+            "Delivered in 2-3 business days",
             "We are unable to accept returns on opened product",
           ],
         },
         {
           name: "Subscription",
           content: [
-            "Subscribe and save 15%",
+            "Subscribe and save 33%",
             "Pause or cancel your subscription at any time",
             "Easy to change your flavors or shipping frequency",
           ],
@@ -118,13 +120,14 @@ export interface AccordionItem {
           name: "Shipping & Returns",
           content: [
             "Free Shipping on all orders",
+            "Delivered in 2-3 business days",
             "We are unable to accept returns on opened product",
           ],
         },
         {
           name: "Subscription",
           content: [
-            "Subscribe and save 15%",
+            "Subscribe and save 33%",
             "Pause or cancel your subscription at any time",
             "Easy to change your flavors or shipping frequency",
           ],
@@ -158,13 +161,14 @@ export interface AccordionItem {
           name: "Shipping & Returns",
           content: [
             "Free Shipping on all orders",
+            "Delivered in 2-3 business days",
             "We are unable to accept returns on opened product",
           ],
         },
         {
           name: "Subscription",
           content: [
-            "Subscribe and save 15%",
+            "Subscribe and save 33%",
             "Pause or cancel your subscription at any time",
             "Easy to change your flavors or shipping frequency",
           ],
@@ -198,13 +202,14 @@ export interface AccordionItem {
           name: "Shipping & Returns",
           content: [
             "Free Shipping on all orders",
+            "Delivered in 2-3 business days",
             "We are unable to accept returns on opened product",
           ],
         },
         {
           name: "Subscription",
           content: [
-            "Subscribe and save 15%",
+            "Subscribe and save 33%",
             "Pause or cancel your subscription at any time",
             "Easy to change your flavors or shipping frequency",
           ],
