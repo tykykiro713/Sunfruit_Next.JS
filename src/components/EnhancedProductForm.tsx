@@ -63,7 +63,7 @@ export default function EnhancedProductForm({ product, onSubscriptionChange }: P
           // Add subscription option first (will be auto-selected)
           options.push({
             id: 'subscription',
-            title: 'Subscribe and Save 15%',
+            title: 'Subscribe and Save 33%',
             description: `Monthly delivery, save ${discountPercentage}%`,
             value: 'subscription',
             discountPercentage: discountPercentage,
