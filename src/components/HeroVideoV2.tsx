@@ -98,7 +98,7 @@ export default function HeroVideoV2() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
       </div>
 
-      {/* Content Overlay */}
+      {/* Content Overlay - No bounce arrow */}
       <div className="relative z-10 flex h-full items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center mt-16">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-poppins font-bold tracking-tight text-white">
