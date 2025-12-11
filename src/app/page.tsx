@@ -1,5 +1,5 @@
-import Navigation from "@/components/Navigation";
-import VideoCTA from "@/components/VideoCTA"; 
+import NavigationV2 from "@/components/NavigationV2";
+import HeroVideoV2 from "@/components/HeroVideoV2"; 
 import ValueProps from "@/components/ValueProps";
 import ProductList from "@/components/ProductList";
 import { SectionWave } from "@/components/SectionWave";
@@ -17,8 +17,8 @@ export const metadata = {
 export default function Home() {
   return (
     <div>
-      <Navigation />
-      <VideoCTA />
+      <NavigationV2 />
+      <HeroVideoV2 />
       <ValueProps />
       <ProductList />
       <SectionWave />
