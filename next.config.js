@@ -1,13 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Allow ngrok domain for development
+  allowedDevOrigins: ['https://apteral-ouida-bloomingly.ngrok-free.dev'],
   // React configuration
   reactStrictMode: true, // Added back for better error detection
-  
-  // Performance optimizations
-  experimental: {
-    optimizeServerReact: true,
-    ppr: false, // Keep false for stability in production
-  },
 
   // Image optimization
   images: {
