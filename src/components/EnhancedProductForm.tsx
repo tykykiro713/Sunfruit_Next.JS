@@ -6,8 +6,8 @@ import { Radio, RadioGroup } from "@headlessui/react";
 import type { UIProduct, SellingPlan } from '@/lib/shopify';
 import { getSubscriptionOptions } from '@/lib/shopify';
 import AddToCartButton from '@/components/AddToCartButton';
-import SubscriptionSelector, { PurchaseOption } from './SubscriptionSelector';
-import SubscriptionSelectorV2, { PurchaseOptionV2 } from './SubscriptionSelectorV2';
+import { PurchaseOption } from './SubscriptionSelector';
+import SubscriptionSelectorV2 from './SubscriptionSelectorV2';
 import QuantitySelector from './QuantitySelector';
 
 function classNames(...classes: string[]) {
@@ -65,7 +65,7 @@ export default function EnhancedProductForm({ product, onSubscriptionChange }: P
           // Add subscription option first (will be auto-selected)
           options.push({
             id: 'subscription',
-            title: 'Subscribe and Save 33%',
+            title: `Subscribe and Save ${discountPercentage}%`,
             description: `Monthly delivery, save ${discountPercentage}%`,
             value: 'subscription',
             discountPercentage: discountPercentage,

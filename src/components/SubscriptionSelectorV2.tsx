@@ -65,19 +65,22 @@ export default function SubscriptionSelectorV2({
         {options.map((option) => {
           const isSubscription = option.value === 'subscription';
           
-          // Fixed price per stick
-          const pricePerStick = isSubscription ? 1.09 : 1.56;
+          // Use actual product price from Shopify
+          const unitPrice = productPrice ? parseFloat(productPrice) : 23.40;
+          const oneTimePrice = unitPrice * quantity;
           
-          // Calculate total based on sticks
+          // Apply subscription discount if applicable (30% off)
+          const discountPercentage = isSubscription ? (option.discountPercentage || 30) : 0;
+          const totalPrice = isSubscription 
+            ? oneTimePrice * (1 - discountPercentage / 100)
+            : oneTimePrice;
+          
+          // Calculate per stick pricing for display
           const sticksPerTin = 15;
-          const totalSticks = quantity * sticksPerTin;
-          const totalPrice = totalSticks * pricePerStick;
-          
-          // For display purposes (crossed out price on subscription)
-          const oneTimeTotalPrice = totalSticks * 1.56;
+          const pricePerStick = totalPrice / (quantity * sticksPerTin);
           
           const savingsAmount = isSubscription 
-            ? oneTimeTotalPrice - totalPrice
+            ? oneTimePrice - totalPrice
             : 0;
 
           return (
@@ -131,7 +134,7 @@ export default function SubscriptionSelectorV2({
                               {isSubscription ? (
                                 <>
                                   <span className="text-gray-500 line-through text-base">
-                                    ${oneTimeTotalPrice.toFixed(2)}
+                                    ${oneTimePrice.toFixed(2)}
                                   </span>
                                   <span className="text-lg font-semibold text-emeraldgreen-500">
                                     ${totalPrice.toFixed(2)}

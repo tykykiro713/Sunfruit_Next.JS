@@ -40,9 +40,7 @@ export default function ClientProviders({
   
   useEffect(() => {
     // Load scripts based on priority and user interaction
-    let zendeskTimeout: NodeJS.Timeout;
-    let clarityTimeout: NodeJS.Timeout;
-    let klaviyoTimeout: NodeJS.Timeout;
+    const zendeskTimeout: NodeJS.Timeout = setTimeout(() => {
     
     // More aggressive interaction handler for Zendesk
     const handleZendeskInteraction = () => {
@@ -122,24 +120,23 @@ export default function ClientProviders({
     window.addEventListener('keydown', handleGeneralInteraction, { once: true, passive: true });
     
     // Fallback loading schedule (much later than before)
-    zendeskTimeout = setTimeout(() => {
       if (!loadZendesk) {
         console.log('Loading Zendesk after timeout');
         setLoadZendesk(true);
       }
     }, 10000);  // 10 seconds (was 2 seconds)
     
-    clarityTimeout = setTimeout(() => {
+    const clarityTimeout = setTimeout(() => {
       if (!loadClarity) {
         setLoadClarity(true);
       }
     }, 5000);  // 5 seconds (was 4 seconds)
     
-    klaviyoTimeout = setTimeout(() => {
+    const klaviyoTimeout = setTimeout(() => {
       if (!loadKlaviyo) {
         setLoadKlaviyo(true);
       }
-    }, 15000);  // 15 seconds - much later since it's for specific actions
+    }, 3000);  // 3 seconds - loads after initial page load
     
     return () => {
       clearTimeout(zendeskTimeout);
