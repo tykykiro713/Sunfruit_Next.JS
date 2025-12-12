@@ -20,15 +20,13 @@ interface SubscriptionSelectorV2Props {
   selectedOption: PurchaseOptionV2;
   onChange: (option: PurchaseOptionV2) => void;
   productPrice?: string;
-  quantity?: number;
 }
 
 export default function SubscriptionSelectorV2({ 
   options, 
   selectedOption, 
   onChange,
-  productPrice,
-  quantity = 1 
+  productPrice 
 }: SubscriptionSelectorV2Props) {
   
   // Format price to currency
@@ -64,21 +62,14 @@ export default function SubscriptionSelectorV2({
         
         {options.map((option) => {
           const isSubscription = option.value === 'subscription';
-          
-          // Fixed price per stick
-          const pricePerStick = isSubscription ? 1.09 : 1.56;
-          
-          // Calculate total based on sticks
-          const sticksPerTin = 15;
-          const totalSticks = quantity * sticksPerTin;
-          const totalPrice = totalSticks * pricePerStick;
-          
-          // For display purposes (crossed out price on subscription)
-          const oneTimeTotalPrice = totalSticks * 1.56;
-          
-          const savingsAmount = isSubscription 
-            ? oneTimeTotalPrice - totalPrice
-            : 0;
+          const originalPrice = productPrice || '36.00';
+          const discountedPrice = isSubscription && option.discountPercentage 
+            ? getDiscountedPrice(originalPrice, option.discountPercentage)
+            : originalPrice;
+          const perServingPrice = getPerServingPrice(discountedPrice);
+          const savingsAmount = isSubscription && option.discountPercentage 
+            ? getSavingsAmount(originalPrice, option.discountPercentage)
+            : '0';
 
           return (
             <RadioGroup.Option
@@ -128,25 +119,22 @@ export default function SubscriptionSelectorV2({
                               {option.title}
                             </RadioGroup.Label>
                             <div className="flex items-center gap-2 mt-1">
-                              {isSubscription ? (
+                              {isSubscription && option.discountPercentage ? (
                                 <>
                                   <span className="text-gray-500 line-through text-base">
-                                    ${oneTimeTotalPrice.toFixed(2)}
+                                    {formatPrice(originalPrice)}
                                   </span>
-                                  <span className="text-lg font-semibold text-emeraldgreen-500">
-                                    ${totalPrice.toFixed(2)}
+                                  <span className="text-lg font-semibold text-gray-900">
+                                    {formatPrice(discountedPrice)}
                                   </span>
                                 </>
                               ) : (
                                 <>
-                                  <span className="text-lg font-semibold text-emeraldgreen-500">
-                                    ${totalPrice.toFixed(2)}
+                                  <span className="text-lg font-semibold text-gray-900">
+                                    {formatPrice(originalPrice)}
                                   </span>
                                 </>
                               )}
-                              <span className="text-xs text-gray-500">
-                                (${pricePerStick.toFixed(2)} / Stick)
-                              </span>
                             </div>
                           </div>
                         </div>
@@ -156,7 +144,7 @@ export default function SubscriptionSelectorV2({
                           <div className="space-y-2 mb-3">
                             <div className="flex items-center gap-2">
                               <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">Save ${savingsAmount.toFixed(2)}</span>
+                              <span className="text-sm text-gray-700">Save $11.88 per pack</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
