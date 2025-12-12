@@ -40,7 +40,6 @@ export default function ClientProviders({
   
   useEffect(() => {
     // Load scripts based on priority and user interaction
-    const zendeskTimeout: NodeJS.Timeout = setTimeout(() => {
     
     // More aggressive interaction handler for Zendesk
     const handleZendeskInteraction = () => {
@@ -120,6 +119,7 @@ export default function ClientProviders({
     window.addEventListener('keydown', handleGeneralInteraction, { once: true, passive: true });
     
     // Fallback loading schedule (much later than before)
+    const zendeskTimeout = setTimeout(() => {
       if (!loadZendesk) {
         console.log('Loading Zendesk after timeout');
         setLoadZendesk(true);
