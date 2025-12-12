@@ -14,6 +14,7 @@ interface AddToCartButtonProps {
   productHandle?: string;
   price?: number;
   availableForSale?: boolean;
+  quantity?: number;
   isSubscription?: boolean;
   subscriptionFrequency?: string;
   subscriptionDiscount?: number;
@@ -28,13 +29,13 @@ export default function AddToCartButton({
   productHandle = '',
   price = 0,
   availableForSale = true,
+  quantity = 1,
   isSubscription = false,
   subscriptionFrequency = 'monthly',
   subscriptionDiscount = 0,
   sellingPlanId,
   klaviyoFormId = 'RU73Kw'
 }: AddToCartButtonProps) {
-  const [quantity, setQuantity] = useState(1);
   const { addItem, isLoading } = useCart();
   
   // Initialize Klaviyo
@@ -93,36 +94,10 @@ export default function AddToCartButton({
   
   return (
     <div>
-      {/* Quantity selector - only show when product is in stock */}
-      {availableForSale && (
-        <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-900">Quantity</h3>
-          <div className="mt-2 inline-flex items-center border border-gray-900 rounded">
-            <button
-              type="button"
-              className="text-black px-4 py-2 text-lg"
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              disabled={quantity <= 1}
-            >
-              -
-            </button>
-            <span className="text-black px-4 py-2 text-base">
-              {quantity}
-            </span>
-            <button
-              type="button"
-              className="text-black px-4 py-2 text-lg"
-              onClick={() => setQuantity(quantity + 1)}
-            >
-              +
-            </button>
-          </div>
-        </div>
-      )}
       
       <button
         type="button"
-        className={`md:w-1/2 w-full flex items-center justify-center rounded-md border border-transparent px-16 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-emeraldgreen-500 focus:ring-offset-2 ${
+        className={`md:w-1/2 sm:w-1/2 w-full flex items-center justify-center rounded-md border border-transparent px-16 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-emeraldgreen-500 focus:ring-offset-2 whitespace-nowrap ${
           'bg-emeraldgreen-500 hover:bg-brightgreen-500'
         }`}
         onClick={handleAddToCart}
