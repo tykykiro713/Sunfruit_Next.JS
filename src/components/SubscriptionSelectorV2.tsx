@@ -20,15 +20,13 @@ interface SubscriptionSelectorV2Props {
   selectedOption: PurchaseOptionV2;
   onChange: (option: PurchaseOptionV2) => void;
   productPrice?: string;
-  quantity?: number;
 }
 
 export default function SubscriptionSelectorV2({ 
   options, 
   selectedOption, 
   onChange,
-  productPrice,
-  quantity = 1 
+  productPrice 
 }: SubscriptionSelectorV2Props) {
   
   // Format price to currency
@@ -131,25 +129,22 @@ export default function SubscriptionSelectorV2({
                               {option.title}
                             </RadioGroup.Label>
                             <div className="flex items-center gap-2 mt-1">
-                              {isSubscription ? (
+                              {isSubscription && option.discountPercentage ? (
                                 <>
                                   <span className="text-gray-500 line-through text-base">
                                     ${oneTimePrice.toFixed(2)}
                                   </span>
-                                  <span className="text-lg font-semibold text-emeraldgreen-500">
-                                    ${totalPrice.toFixed(2)}
+                                  <span className="text-lg font-semibold text-gray-900">
+                                    {formatPrice(discountedPrice)}
                                   </span>
                                 </>
                               ) : (
                                 <>
-                                  <span className="text-lg font-semibold text-emeraldgreen-500">
-                                    ${totalPrice.toFixed(2)}
+                                  <span className="text-lg font-semibold text-gray-900">
+                                    {formatPrice(originalPrice)}
                                   </span>
                                 </>
                               )}
-                              <span className="text-xs text-gray-500">
-                                (${pricePerStick.toFixed(2)} / Stick)
-                              </span>
                             </div>
                           </div>
                         </div>
@@ -159,7 +154,7 @@ export default function SubscriptionSelectorV2({
                           <div className="space-y-2 mb-3">
                             <div className="flex items-center gap-2">
                               <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">Save ${savingsAmount.toFixed(2)}</span>
+                              <span className="text-sm text-gray-700">Save $11.88 per pack</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
