@@ -62,6 +62,7 @@ export default function SubscriptionSelectorV2({
         
         {options.map((option) => {
           const isSubscription = option.value === 'subscription';
+<<<<<<< HEAD
           const originalPrice = productPrice || '36.00';
           const discountedPrice = isSubscription && option.discountPercentage 
             ? getDiscountedPrice(originalPrice, option.discountPercentage)
@@ -70,6 +71,26 @@ export default function SubscriptionSelectorV2({
           const savingsAmount = isSubscription && option.discountPercentage 
             ? getSavingsAmount(originalPrice, option.discountPercentage)
             : '0';
+=======
+          
+          // Use actual product price from Shopify
+          const unitPrice = productPrice ? parseFloat(productPrice) : 23.40;
+          const oneTimePrice = unitPrice * quantity;
+          
+          // Apply subscription discount if applicable (30% off)
+          const discountPercentage = isSubscription ? (option.discountPercentage || 30) : 0;
+          const totalPrice = isSubscription 
+            ? oneTimePrice * (1 - discountPercentage / 100)
+            : oneTimePrice;
+          
+          // Calculate per stick pricing for display
+          const sticksPerTin = 15;
+          const pricePerStick = totalPrice / (quantity * sticksPerTin);
+          
+          const savingsAmount = isSubscription 
+            ? oneTimePrice - totalPrice
+            : 0;
+>>>>>>> feature/product-quantity-selector
 
           return (
             <RadioGroup.Option
@@ -122,7 +143,11 @@ export default function SubscriptionSelectorV2({
                               {isSubscription && option.discountPercentage ? (
                                 <>
                                   <span className="text-gray-500 line-through text-base">
+<<<<<<< HEAD
                                     {formatPrice(originalPrice)}
+=======
+                                    ${oneTimePrice.toFixed(2)}
+>>>>>>> feature/product-quantity-selector
                                   </span>
                                   <span className="text-lg font-semibold text-gray-900">
                                     {formatPrice(discountedPrice)}
