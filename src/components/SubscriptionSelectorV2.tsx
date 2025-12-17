@@ -20,13 +20,15 @@ interface SubscriptionSelectorV2Props {
   selectedOption: PurchaseOptionV2;
   onChange: (option: PurchaseOptionV2) => void;
   productPrice?: string;
+  quantity?: number;
 }
 
 export default function SubscriptionSelectorV2({ 
   options, 
   selectedOption, 
   onChange,
-  productPrice 
+  productPrice,
+  quantity = 1 
 }: SubscriptionSelectorV2Props) {
   
   // Format price to currency
@@ -62,16 +64,6 @@ export default function SubscriptionSelectorV2({
         
         {options.map((option) => {
           const isSubscription = option.value === 'subscription';
-<<<<<<< HEAD
-          const originalPrice = productPrice || '36.00';
-          const discountedPrice = isSubscription && option.discountPercentage 
-            ? getDiscountedPrice(originalPrice, option.discountPercentage)
-            : originalPrice;
-          const perServingPrice = getPerServingPrice(discountedPrice);
-          const savingsAmount = isSubscription && option.discountPercentage 
-            ? getSavingsAmount(originalPrice, option.discountPercentage)
-            : '0';
-=======
           
           // Use actual product price from Shopify
           const unitPrice = productPrice ? parseFloat(productPrice) : 23.40;
@@ -90,7 +82,6 @@ export default function SubscriptionSelectorV2({
           const savingsAmount = isSubscription 
             ? oneTimePrice - totalPrice
             : 0;
->>>>>>> feature/product-quantity-selector
 
           return (
             <RadioGroup.Option
@@ -143,23 +134,22 @@ export default function SubscriptionSelectorV2({
                               {isSubscription && option.discountPercentage ? (
                                 <>
                                   <span className="text-gray-500 line-through text-base">
-<<<<<<< HEAD
-                                    {formatPrice(originalPrice)}
-=======
                                     ${oneTimePrice.toFixed(2)}
->>>>>>> feature/product-quantity-selector
                                   </span>
-                                  <span className="text-lg font-semibold text-gray-900">
-                                    {formatPrice(discountedPrice)}
+                                  <span className="text-lg font-semibold text-emeraldgreen-500">
+                                    ${totalPrice.toFixed(2)}
                                   </span>
                                 </>
                               ) : (
                                 <>
-                                  <span className="text-lg font-semibold text-gray-900">
-                                    {formatPrice(originalPrice)}
+                                  <span className="text-lg font-semibold text-emeraldgreen-500">
+                                    ${totalPrice.toFixed(2)}
                                   </span>
                                 </>
                               )}
+                              <span className="text-xs text-gray-500">
+                                (${pricePerStick.toFixed(2)} / Stick)
+                              </span>
                             </div>
                           </div>
                         </div>

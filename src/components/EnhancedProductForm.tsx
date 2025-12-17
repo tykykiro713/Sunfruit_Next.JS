@@ -6,14 +6,9 @@ import { Radio, RadioGroup } from "@headlessui/react";
 import type { UIProduct, SellingPlan } from '@/lib/shopify';
 import { getSubscriptionOptions } from '@/lib/shopify';
 import AddToCartButton from '@/components/AddToCartButton';
-<<<<<<< HEAD
-import SubscriptionSelector, { PurchaseOption } from './SubscriptionSelector';
-import SubscriptionSelectorV2, { PurchaseOptionV2 } from './SubscriptionSelectorV2';
-=======
 import { PurchaseOption } from './SubscriptionSelector';
 import SubscriptionSelectorV2 from './SubscriptionSelectorV2';
 import QuantitySelector from './QuantitySelector';
->>>>>>> feature/product-quantity-selector
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -39,6 +34,7 @@ export default function EnhancedProductForm({ product, onSubscriptionChange }: P
   const [selectedPurchaseOption, setSelectedPurchaseOption] = useState<PurchaseOption | null>(null);
   const [subscriptionOptions, setSubscriptionOptions] = useState<PurchaseOption[]>([]);
   const [selectedSellingPlan, setSelectedSellingPlan] = useState<SellingPlan | null>(null);
+  const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
   
   // Get the first available variant ID
   const firstVariant = product.variants?.edges?.[0]?.node;
@@ -150,6 +146,12 @@ export default function EnhancedProductForm({ product, onSubscriptionChange }: P
         </div>
       )}
       
+      {/* Quantity Selector */}
+      <QuantitySelector 
+        selectedQuantity={selectedQuantity}
+        onChange={setSelectedQuantity}
+      />
+      
       {/* Subscription Options - Only show if product has subscription option */}
       {product.hasSubscriptionOption && subscriptionOptions.length > 1 && selectedPurchaseOption && (
         <SubscriptionSelectorV2 
@@ -157,6 +159,7 @@ export default function EnhancedProductForm({ product, onSubscriptionChange }: P
           selectedOption={selectedPurchaseOption}
           onChange={handlePurchaseOptionChange}
           productPrice={firstVariant?.priceV2?.amount}
+          quantity={selectedQuantity}
         />
       )}
 
@@ -168,6 +171,7 @@ export default function EnhancedProductForm({ product, onSubscriptionChange }: P
           productHandle={product.handle}
           price={price}
           availableForSale={availableForSale}
+          quantity={selectedQuantity}
           isSubscription={selectedPurchaseOption?.value === 'subscription'}
           subscriptionFrequency={selectedPurchaseOption?.deliveryFrequency}
           subscriptionDiscount={selectedPurchaseOption?.discountPercentage}
