@@ -64,7 +64,7 @@ export default function NavigationV2({ className = "" }: NavigationV2Props) {
     })),
     pages: [
       { name: "About Us", href: "/aboutus" },
-      { name: "Find Us", href: "/vine" },
+      { name: "Find Us", href: "/findus" },
     ],
   };
 
