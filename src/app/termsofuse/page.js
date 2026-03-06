@@ -421,6 +421,51 @@ export default function AboutPage() {
               Department of Consumer Affairs may be contacted by telephone at (800)
               952-5210.
             </p>
+
+            <h3 className="text-xl font-semibold mb-3 text-emeraldgreen-500 mt-6">17. SMS Terms.</h3>
+            <p className="mb-4">
+              By enrolling in or using our SMS service, you agree to these SMS Terms.
+              We may change or discontinue the service or its features at any time
+              without notice. Continued use after any change to these SMS Terms means
+              you accept them.
+            </p>
+            <p className="mb-4">
+              By opting in, you agree to receive recurring SMS/text messages from or
+              on behalf of Sunfruit Inc at the number you provided. Messages may be
+              sent using an automatic dialing system or other automated technology and
+              are powered by Recharge, Inc. Messages may include transactional (e.g.,
+              order updates, account alerts) and promotional content (e.g., special
+              offers, product launches, cart reminders).
+            </p>
+            <p className="mb-4">
+              Your consent is not required to make a purchase. Participation is
+              voluntary. Message frequency may vary. Standard message and data rates
+              may apply; check with your carrier for details.
+            </p>
+            <p className="mb-4">
+              To opt out, reply &quot;STOP&quot; to any message. For help, contact us
+              at support@sunfruit.com.
+            </p>
+            <p className="mb-4">
+              Sunfruit Inc is not responsible for delayed or undelivered messages.
+              Carriers are not liable for message delays or failures. If your mobile
+              number changes, you must re-enroll to continue receiving messages.
+            </p>
+            <p className="mb-4">
+              If your number is on a Do Not Call registry, your consent still allows
+              us to message you, as permitted by law.
+            </p>
+            <p className="mb-4">
+              For details on how we collect, use, and protect your data, see
+              our{" "}
+              <a
+                href="/privacypolicy"
+                className="text-emeraldgreen-500 underline hover:text-emeraldgreen-700"
+              >
+                Privacy Policy
+              </a>
+              .
+            </p>
           </div>
         </div>
       </div>
