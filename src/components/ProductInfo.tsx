@@ -9,12 +9,14 @@ interface ProductInfoProps {
   product: UIProduct;
   isSubscriptionSelected?: boolean;
   subscriptionDiscountPercentage?: number;
+  displayTitle?: string;
 }
 
-export default function ProductInfo({ 
-  product, 
-  isSubscriptionSelected = false, 
-  subscriptionDiscountPercentage = 0 
+export default function ProductInfo({
+  product,
+  isSubscriptionSelected = false,
+  subscriptionDiscountPercentage = 0,
+  displayTitle
 }: ProductInfoProps) {
   // Format the price to remove cents and currency code (for original price)
   const formatPrice = (amount: string) => {
@@ -34,7 +36,7 @@ export default function ProductInfo({
   return (
     <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
       <h1 className="text-3xl font-bold tracking-tight text-emeraldgreen-500">
-        {product.title}
+        {displayTitle || product.title}
       </h1>
 
       {/* Reviews - Moved before price */}

@@ -39,6 +39,7 @@ export interface MediaNode {
 export interface Variant {
   id: string;
   title: string;
+  sku?: string;
   availableForSale: boolean;
   quantityAvailable: number;
   priceV2: {
@@ -83,6 +84,7 @@ export interface ProductNode {
   description: string;
   handle: string;
   availableForSale: boolean;
+  tags?: string[];
   variants: {
     edges: {
       node: Variant;
@@ -136,6 +138,7 @@ export interface UIProduct {
   description: string;
   handle?: string;
   availableForSale?: boolean;
+  tags?: string[];
   variants?: {
     edges: {
       node: Variant;
@@ -283,11 +286,13 @@ export const GET_PRODUCT_BY_HANDLE = gql`
       description
       handle
       availableForSale
+      tags
       variants(first: 10) {
         edges {
           node {
             id
             title
+            sku
             availableForSale
             quantityAvailable
             priceV2: price {
@@ -402,6 +407,7 @@ export async function fetchProductByHandle(handle: string): Promise<UIProduct | 
     const { data } = await client.query<ProductByHandleData>({
       query: GET_PRODUCT_BY_HANDLE,
       variables: { handle },
+      fetchPolicy: 'no-cache',
     });
     
     if (!data.productByHandle) return null;
@@ -413,6 +419,7 @@ export async function fetchProductByHandle(handle: string): Promise<UIProduct | 
       description: data.productByHandle.description,
       handle: data.productByHandle.handle,
       availableForSale: data.productByHandle.availableForSale,
+      tags: data.productByHandle.tags,
       variants: data.productByHandle.variants,
       priceRange: data.productByHandle.priceRange,
       images: data.productByHandle.images,
@@ -479,4 +486,161 @@ export function getSubscriptionOptions(product: UIProduct): {
     subscriptionPlans,
     discountPercentage
   };
+}
+
+// GraphQL query for fetching products by tags
+export const GET_PRODUCTS_BY_QUERY = gql`
+  query GetProductsByQuery($query: String!, $first: Int!) {
+    products(first: $first, query: $query) {
+      edges {
+        node {
+          id
+          title
+          description
+          handle
+          availableForSale
+          tags
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                sku
+                availableForSale
+                quantityAvailable
+                priceV2: price {
+                  amount
+                  currencyCode
+                }
+                selectedOptions {
+                  name
+                  value
+                }
+              }
+            }
+          }
+          media(first: 5) {
+            edges {
+              node {
+                ... on Video {
+                  id
+                  mediaContentType
+                  sources {
+                    format
+                    url
+                    mimeType
+                  }
+                  previewImage {
+                    url
+                    altText
+                  }
+                }
+                ... on ExternalVideo {
+                  id
+                  mediaContentType
+                  embeddedUrl
+                  previewImage {
+                    url
+                    altText
+                  }
+                }
+                ... on MediaImage {
+                  id
+                  mediaContentType
+                  image {
+                    url
+                    altText
+                  }
+                }
+              }
+            }
+          }
+          images(first: 5) {
+            edges {
+              node {
+                url
+                altText
+              }
+            }
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          sellingPlanGroups(first: 5) {
+            edges {
+              node {
+                name
+                options {
+                  name
+                  values
+                }
+                sellingPlans(first: 10) {
+                  edges {
+                    node {
+                      id
+                      name
+                      description
+                      options {
+                        name
+                        value
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+// Extended Variant interface with SKU for product identification
+export interface VariantWithSku extends Variant {
+  sku?: string;
+}
+
+// Fetch products by tags - returns all products that have ALL specified tags
+export async function fetchProductsByTags(tags: string[], first = 20): Promise<UIProduct[]> {
+  try {
+    // Build Shopify query string: tag:value AND tag:value2
+    const queryString = tags.map(tag => `tag:${tag}`).join(' AND ');
+
+    const { data } = await client.query<ProductsData>({
+      query: GET_PRODUCTS_BY_QUERY,
+      variables: { query: queryString, first },
+      fetchPolicy: 'no-cache',
+    });
+
+    // Transform ProductNodes to UIProducts
+    return data.products.edges.map(edge => {
+      const node = edge.node;
+      return {
+        id: node.id,
+        title: node.title,
+        description: node.description,
+        handle: node.handle,
+        availableForSale: node.availableForSale,
+        tags: node.tags,
+        variants: node.variants,
+        priceRange: node.priceRange,
+        images: node.images,
+        media: node.media,
+        rating: 5,
+        sellingPlanGroups: node.sellingPlanGroups,
+        hasSubscriptionOption: (node.sellingPlanGroups?.edges?.length ?? 0) > 0
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching products by tags:", error);
+    return [];
+  }
 }
