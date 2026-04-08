@@ -1,25 +1,36 @@
 'use client';
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { CartEdge } from '@/lib/cart'; // Import the CartEdge type
 
 export default function CartDrawer() {
-  const { 
-    isCartOpen, 
-    closeCart, 
-    cart, 
-    isLoading, 
-    updateItem, 
-    removeItem, 
+  const {
+    isCartOpen,
+    closeCart,
+    openCart,
+    cart,
+    isLoading,
+    updateItem,
+    removeItem,
     checkout,
     cartCount,
     subscriptionItems
   } = useCart();
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('cart') === 'open') {
+      openCart();
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, [searchParams, openCart]);
 
   function formatPrice(amount: string, currencyCode: string) {
     return new Intl.NumberFormat('en-US', {
