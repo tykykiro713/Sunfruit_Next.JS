@@ -6,7 +6,7 @@ import { MyProvider } from "@/context/MyContext";
 import { CartProvider } from "@/context/CartContext";
 import { CustomerProvider } from "@/context/CustomerContext";
 import CartDrawer from "@/components/CartDrawer";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import RechargeSDKProvider from "@/components/RechargeSDKProvider";
 
@@ -159,7 +159,9 @@ export default function ClientProviders({
           <CartProvider>
             <RechargeSDKProvider />
             {children}
-            <CartDrawer />
+            <Suspense fallback={null}>
+              <CartDrawer />
+            </Suspense>
             
             {/* Staggered third-party script loading with error boundaries */}
             <div style={{ display: 'none' }}>

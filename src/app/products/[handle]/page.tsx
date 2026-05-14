@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import Navigation from "@/components/Navigation";
-import { fetchProductByHandle, fetchProducts } from "@/lib/shopify";
+import { fetchProductByHandle, fetchProducts, fetchProductsByTags } from "@/lib/shopify";
 import ProductMedia from "@/components/ProductMedia";
 import ProductInfoWithSubscription from "@/components/ProductInfoWithSubscription";
+import ProductPageNewLayout from "@/components/ProductPageNewLayout";
 import ProductTestimonial from "@/components/ProductTestimonial";
 import ProductHeroSplit from "@/components/ProductHeroSplit";
 import ProductRecirculation from "@/components/ProductRecirculation";
@@ -11,6 +12,7 @@ import Faqs from "@/components/Faqs";
 import Footer from "@/components/Footer";
 import { getProductTestimonial } from "@/data/productTestimonials";
 import { getProductAccordionData } from "@/data/productAccordionData";
+import { hasNewLayoutTag, getFlavorTags, determineInitialSize, ProductSize } from "@/lib/productUtils";
 
 // Generate dynamic metadata for each product - Updated for async params
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
@@ -31,15 +33,16 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
 }
 
 // Main product page component - params is now async
-export default async function ProductPage({ 
+export default async function ProductPage({
   params,
-  searchParams 
-}: { 
+  searchParams
+}: {
   params: Promise<{ handle: string }>;
-  searchParams: Promise<any>;
+  searchParams: Promise<{ size?: string }>;
 }) {
   const resolvedParams = await params;
-  
+  const resolvedSearchParams = await searchParams;
+
   if (!resolvedParams?.handle) {
     throw new Error("❌ Params handle is missing!");
   }
@@ -48,6 +51,26 @@ export default async function ProductPage({
 
   if (!product) {
     notFound();
+  }
+
+  // Get flavor tags for recirculation filtering
+  const flavorTags = getFlavorTags(product);
+
+  // Check if this product uses the new layout
+  const useNewLayout = hasNewLayoutTag(product);
+
+  // Variables for new layout
+  let relatedProducts: typeof product[] = [];
+  let initialSize: ProductSize = '24pack';
+
+  if (useNewLayout) {
+    if (flavorTags.length > 0) {
+      // Fetch all related products with the same flavor tags
+      relatedProducts = await fetchProductsByTags(flavorTags);
+    }
+
+    // Determine initial size from URL param or product SKU
+    initialSize = determineInitialSize(resolvedSearchParams?.size, product);
   }
 
   // Get the testimonial and accordion data for this product
@@ -61,15 +84,27 @@ export default async function ProductPage({
         {/* Product details section - constrained width on mobile, full width on desktop */}
         <div className="px-4 py-8 sm:px-6 sm:py-16 md:py-24 lg:py-32 lg:px-0">
           <div className="mx-auto max-w-2xl lg:max-w-none lg:px-8 xl:px-16">
-            <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
-              {/* Left column - Product Media */}
-              <ProductMedia product={product} />
+            {useNewLayout ? (
+              <ProductPageNewLayout
+                product={product}
+                relatedProducts={relatedProducts}
+                initialSize={initialSize}
+                accordionData={accordionData}
+              />
+            ) : (
+              <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+                {/* Left column - Product Media */}
+                <ProductMedia product={product} />
 
-              {/* Right column - Product Info & Form */}
-              <div className="mt-10 px-4 sm:mt-16 sm:px-6 lg:mt-0 lg:px-8 xl:px-12">
-                <ProductInfoWithSubscription product={product} accordionData={accordionData} />
+                {/* Right column - Product Info & Form */}
+                <div className="mt-10 px-4 sm:mt-16 sm:px-6 lg:mt-0 lg:px-8 xl:px-12">
+                  <ProductInfoWithSubscription
+                    product={product}
+                    accordionData={accordionData}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -90,7 +125,7 @@ export default async function ProductPage({
         
         {/* Product recirculation section - constrained width on mobile, full width on desktop */}
         <div className="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-8 xl:px-16">
-          <ProductRecirculation />
+          <ProductRecirculation currentFlavorTags={flavorTags} />
         </div>
 
         {/* Faqs and Footer section - constrained width on mobile, full width on desktop */}

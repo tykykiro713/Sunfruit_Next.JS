@@ -13,23 +13,34 @@ export type PurchaseOptionV2 = {
   deliveryFrequency?: string;
   savings?: string;
   perServing?: string;
+  // Per-option overrides (used when an option references a different variant
+  // than the default `productPrice`/`stickCount` props — e.g. 3-Month uses 72-pack).
+  basePrice?: string;
+  stickCount?: number;
+  hideBenefits?: boolean;
+  badgeLabel?: string;
+  // First bullet in the benefits list — e.g. "1 Tin delivered monthly",
+  // "3 Tins delivered every 3 months". Per-option so each cadence shows accurate copy.
+  deliveryLabel?: string;
 };
 
-interface SubscriptionSelectorV2Props {
+interface SubscriptionMonthly3MonthCardsProps {
   options: PurchaseOptionV2[];
   selectedOption: PurchaseOptionV2;
   onChange: (option: PurchaseOptionV2) => void;
   productPrice?: string;
   quantity?: number;
+  stickCount?: number;
 }
 
-export default function SubscriptionSelectorV2({ 
-  options, 
-  selectedOption, 
+export default function SubscriptionMonthly3MonthCards({
+  options,
+  selectedOption,
   onChange,
   productPrice,
-  quantity = 1 
-}: SubscriptionSelectorV2Props) {
+  quantity = 1,
+  stickCount = 24,
+}: SubscriptionMonthly3MonthCardsProps) {
   
   // Format price to currency
   const formatPrice = (amount: string) => {
@@ -45,7 +56,7 @@ export default function SubscriptionSelectorV2({
   };
 
   // Calculate per serving price
-  const getPerServingPrice = (totalPrice: string, servings: number = 20) => {
+  const getPerServingPrice = (totalPrice: string, servings: number = 24) => {
     const price = parseFloat(totalPrice);
     return (price / servings).toFixed(2);
   };
@@ -64,22 +75,26 @@ export default function SubscriptionSelectorV2({
         
         {options.map((option) => {
           const isSubscription = option.value === 'subscription';
-          
-          // Use actual product price from Shopify
-          const unitPrice = productPrice ? parseFloat(productPrice) : 23.40;
+          const showBenefits = isSubscription && !option.hideBenefits;
+
+          // Use per-option basePrice/stickCount if set (e.g. 3-Month uses 72-pack price),
+          // otherwise fall back to the component-level props.
+          const effectiveBasePrice = option.basePrice ?? productPrice;
+          const effectiveStickCount = option.stickCount ?? stickCount;
+
+          const unitPrice = effectiveBasePrice ? parseFloat(effectiveBasePrice) : 38.40;
           const oneTimePrice = unitPrice * quantity;
-          
-          // Apply subscription discount if applicable (30% off)
+
+          // Apply subscription discount if applicable
           const discountPercentage = isSubscription ? (option.discountPercentage || 30) : 0;
-          const totalPrice = isSubscription 
+          const totalPrice = isSubscription
             ? oneTimePrice * (1 - discountPercentage / 100)
             : oneTimePrice;
-          
+
           // Calculate per stick pricing for display
-          const sticksPerTin = 15;
-          const pricePerStick = totalPrice / (quantity * sticksPerTin);
-          
-          const savingsAmount = isSubscription 
+          const pricePerStick = totalPrice / effectiveStickCount;
+
+          const savingsAmount = isSubscription
             ? oneTimePrice - totalPrice
             : 0;
 
@@ -97,11 +112,12 @@ export default function SubscriptionSelectorV2({
             >
               {({ checked }) => (
                 <>
-                  {/* Best Value Badge */}
-                  {isSubscription && (
+                  {/* Per-option badge — only rendered on the currently-checked option,
+                      so the badge always reflects the user's active selection. */}
+                  {checked && option.badgeLabel && (
                     <div className="absolute -top-2 right-4">
-                      <span className="inline-flex items-center rounded-md bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 border border-amber-200">
-                        Best value
+                      <span className="inline-flex items-center rounded-md bg-brightgreen-500 px-3 py-1 text-xs font-medium text-emeraldgreen-800 border border-brightgreen-600">
+                        {option.badgeLabel}
                       </span>
                     </div>
                   )}
@@ -154,28 +170,24 @@ export default function SubscriptionSelectorV2({
                           </div>
                         </div>
 
-                        {/* Benefits for Subscription */}
-                        {isSubscription && (
+                        {/* Benefits for Subscription (per-option opt-out via hideBenefits).
+                            First bullet is option-specific (delivery cadence + quantity),
+                            remaining bullets are shared across all subscription cadences. */}
+                        {showBenefits && (
                           <div className="space-y-2 mb-3">
+                            {option.deliveryLabel && (
+                              <div className="flex items-center gap-2">
+                                <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
+                                <span className="text-sm text-gray-700">{option.deliveryLabel}</span>
+                              </div>
+                            )}
                             <div className="flex items-center gap-2">
                               <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">Save $11.88 per pack</span>
+                              <span className="text-sm text-gray-700">Free Shipping</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">Convenient monthly delivery</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">Easily change your flavors or quantities</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">Cancel any time</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckIcon className="w-4 h-4 text-emeraldgreen-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">Pre-shipment reminders (no surprise charges)</span>
+                              <span className="text-sm text-gray-700">Pause or cancel anytime</span>
                             </div>
                           </div>
                         )}

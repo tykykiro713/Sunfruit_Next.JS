@@ -103,6 +103,7 @@ export interface CartLinesAddData {
 export interface CartLinesUpdateData {
   cartLinesUpdate: {
     cart: Cart;
+    userErrors: Array<{ field: string[] | null; message: string; code: string | null }>;
   };
 }
 
@@ -196,6 +197,11 @@ export const ADD_TO_CART = gql`
 export const UPDATE_CART_LINES = gql`
   mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
     cartLinesUpdate(cartId: $cartId, lines: $lines) {
+      userErrors {
+        field
+        message
+        code
+      }
       cart {
         id
         checkoutUrl
@@ -435,14 +441,21 @@ export async function updateCartLines(
       lineUpdateInput.sellingPlanId = sellingPlanId;
     }
     
-    const { data } = await client.mutate<CartLinesUpdateData>({
+    const { data, errors } = await client.mutate<CartLinesUpdateData>({
       mutation: UPDATE_CART_LINES,
       variables: {
         cartId,
         lines: [lineUpdateInput],
       },
     });
-    
+
+    if (errors?.length) {
+      console.error("cartLinesUpdate GraphQL errors:", errors);
+    }
+    if (data?.cartLinesUpdate.userErrors?.length) {
+      console.error("cartLinesUpdate userErrors:", data.cartLinesUpdate.userErrors);
+    }
+
     return data?.cartLinesUpdate.cart || null;
   } catch (error) {
     console.error("Error updating cart lines:", error);

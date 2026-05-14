@@ -7,7 +7,7 @@ import type { UIProduct, SellingPlan } from '@/lib/shopify';
 import { getSubscriptionOptions } from '@/lib/shopify';
 import AddToCartButton from '@/components/AddToCartButton';
 import { PurchaseOption } from './SubscriptionSelector';
-import SubscriptionSelectorV2 from './SubscriptionSelectorV2';
+import SubscriptionMonthly3MonthCards from './SubscriptionMonthly3MonthCards';
 import QuantitySelector from './QuantitySelector';
 
 function classNames(...classes: string[]) {
@@ -154,7 +154,7 @@ export default function EnhancedProductForm({ product, onSubscriptionChange }: P
       
       {/* Subscription Options - Only show if product has subscription option */}
       {product.hasSubscriptionOption && subscriptionOptions.length > 1 && selectedPurchaseOption && (
-        <SubscriptionSelectorV2 
+        <SubscriptionMonthly3MonthCards
           options={subscriptionOptions}
           selectedOption={selectedPurchaseOption}
           onChange={handlePurchaseOptionChange}

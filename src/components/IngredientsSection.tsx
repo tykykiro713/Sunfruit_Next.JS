@@ -53,15 +53,15 @@ export default function IngredientsSection() {
   // Define the lists upfront to ensure stable rendering
   const ingredients = [
     "Organic Fruits",
-    "Organic Botanicals",
-    "Organic Inulin (Prebiotic)",
-    "Organic Monk Fruit"
+    "Organic Botanical Extracts",
+    "Organic Fruits & Vegetables (color)",
+    "Organic Stevia Leaf Extract"
   ];
 
   const nonIngredients = [
-    "NO Sugar or Salt",
+    "NO Sugar Added or Salt",
     "NO Artificial Sweeteners",
-    "NO Preservatives",
+    "NO Artificial Preservatives",
     "NO Artificial Colors",
   ];
 

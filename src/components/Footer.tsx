@@ -62,14 +62,14 @@ export default function Footer() {
               <Image
                 alt="Company name"
                 src="/images/Logo_Trans.png"
-                width={120}
-                height={48}
+                width={240}
+                height={96}
                 className="h-10 w-auto sm:h-12"
                 loading="lazy"
               />
             </Link>
             <p className="text-base text-white">
-              Certified organic fruit and botanicals.
+              Drink. Organic. Now.<sup className="text-[0.6em]">TM</sup>
             </p>
             <div className="flex gap-x-6">
               {navigation.social.map((item) => (
@@ -136,7 +136,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24">
-          <p className="text-base text-white">&copy; 2025 Sunfruit, Inc. All rights reserved.</p>
+          <p className="text-base text-white">&copy; 2026 Sunfruit, Inc. All rights reserved.</p>
         </div>
       </div>
     </footer>

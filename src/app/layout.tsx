@@ -1,5 +1,6 @@
 // Optimized layout.tsx for critical performance improvements
 // ========================================
+import { Suspense } from "react";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
@@ -78,8 +79,12 @@ export default function RootLayout({
           {children}
         </ClientProviders>
         
-        {/* CRITICAL: Defer all analytics until after main content loads */}
-        <GoogleAnalytics />
+        {/* CRITICAL: Defer all analytics until after main content loads.
+            GoogleAnalytics uses useSearchParams() which requires a Suspense
+            boundary for static prerendering of /_not-found. */}
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
         <GoogleAdsTag />
       </body>
     </html>

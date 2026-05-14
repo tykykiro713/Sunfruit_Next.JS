@@ -1,5 +1,27 @@
 # Sunfruit E-commerce TODO List
 
+## Post-Deploy Follow-Ups (feature/new-product-layout)
+
+### Recharge subscription plan robustness
+- [ ] Refactor `src/lib/recharge/subscription-options.ts` to find the monthly plan from the product's actual `sellingPlanGroups` by attribute (cadence + discount) instead of looking up hardcoded IDs in `src/lib/recharge/types.ts`
+- [ ] Reason: hardcoded IDs in `SELLING_PLAN_IDS` are stale (e.g. LEMON_MINT `7288389839` doesn't exist on the live store anymore — current ID is `7394689231`). Fallback path works but emits warnings on every PDP load
+- [ ] Pomegranate Rose has no entry in `SELLING_PLAN_IDS` — falls through to the LEMON_MINT default
+- [ ] New 48-pack products (LM/RH/PR) have no entries either — will hit the fallback for every subscription on the new 3-card layout
+
+### Performance / robustness debts from new-layout branch
+- [ ] `fetchProductByHandle` uses `fetchPolicy: 'no-cache'` (`src/lib/shopify.ts`) — bypasses Apollo cache on every PDP load. Reconsider `cache-and-network` or short TTL to protect Core Web Vitals under paid traffic
+- [ ] `ProductRecirculation` filters by `handle.includes('24')` — fragile. Switch to SKU suffix `-24PK` or tag-based filter
+- [ ] V2 form path orphaned: `EnhancedProductFormV2`, `SizeSelector2Cards`, `SubscriptionMonthly3MonthCards` retained for A/B but no caller wires `useNewLayout=true` on `ProductInfoWithSubscription`. Decide whether to wire up or delete
+
+### Pre-existing console.log noise (pre-dates this branch)
+- [ ] `LoginForm.tsx`, `RegisterForm.tsx` — 8 + 8 debug logs in auth flow
+- [ ] `CustomerContext.tsx` — 25+ debug logs across login/register/reset/update flows
+- [ ] `ClientProviders.tsx`, `ZendeskLauncher.tsx`, `ZendeskButton.tsx` — third-party script load logs
+- [ ] `RechargeSDKProvider.tsx`, `src/lib/recharge/config.ts` — SDK init logs
+- [ ] `src/lib/recharge/subscription-options.ts` — selling plan debug logs (will go once Recharge refactor lands)
+- [ ] `UnsplashImage.tsx`, `VideoCTA.tsx`, `HeroVideoV2.tsx` — misc logs
+- [ ] TODO claims "Remove all console.log statements (Phase 1)" was completed — clearly not done; update or re-do
+
 ## High Priority Features
 
 ### 1. Full Order Details Implementation

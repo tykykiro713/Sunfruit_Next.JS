@@ -13,17 +13,17 @@ export default function Faqs() {
     {
       question: "What are the health benefits of Sunfruit?",
       answer:
-        "Stay hydrated with certified organic ingredients without sugar, sodium, preservatives or fillers.",
+        "Sunfruit is USDA Certified Organic with no sugar added, no sodium, and no artificial ingredients. We believe the best ingredient list is a short one. Just real ingredients you can actually pronounce.",
     },
     {
       question: "Is Sunfruit safe for my dietary restrictions?",
       answer:
-        "Sunfruit is certified organic, keto and paleo frindly, Whole30, kosher, and non-GMO. We are also soy-free, dairy-free, and gluten-free. For addtional dietary questions, please contact our friendly customer service team.",
+        "Sunfruit is certified organic, non-GMO and keto friendly. Sunfruit is also soy-free, dairy-free, and gluten-free. For additional dietary questions, please contact our friendly customer service team.",
     },
     {
       question: "How do I prepare Sunfruit organic beverage mixes?",
       answer:
-        "To prepare, simply add the contents of one stick pack to 16 oz of hot or cold water. For more intense flavor, you can add more organic drink mix or use less water.",
+        "To prepare, simply add the contents of one stick pack to 12-16 oz water. Find your preferred flavor intensity by adding more or less water.",
     },
     {
       question: "How long does shipping take?",
@@ -33,7 +33,7 @@ export default function Faqs() {
     {
       question: "How do I manage my subscription?",
       answer:
-        "You can modify or cancel your subscription at any time by contacting us.",
+        "You can modify or cancel your subscription at any time through text messages, your customer account on our website, or by contacting us.",
     },
   ];
 

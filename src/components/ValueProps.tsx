@@ -1,12 +1,12 @@
 import React from 'react';
 
 const valueProps = [
-  { text: 'ORGANIC' },
-  { text: 'SUGAR-FREE' },
-  { text: 'SODIUM-FREE' },
+  { text: 'USDA ORGANIC' },
+  { text: 'NO SUGAR ADDED' },
+  { text: 'NO SODIUM' },
   { text: 'NON-GMO' },
   { text: 'PREBIOTIC' },
-  { text: 'NO PRESERVATIVES' },
+  { text: 'NOTHING ARTIFICIAL' },
 ];
 
 export default function ValueProps() {

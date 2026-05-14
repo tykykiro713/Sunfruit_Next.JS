@@ -1,14 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { fetchProductByHandle } from '@/lib/shopify';
+import { fetchProductByHandle, type UIProduct } from '@/lib/shopify';
 import { createCart, addToCart } from '@/lib/cart';
 import { trackSampleRequest } from '@/lib/analytics';
 import Image from 'next/image';
 
 export default function SampleCTA() {
   const [isLoading, setIsLoading] = useState(false);
-  const [samplePackProduct, setSamplePackProduct] = useState<any>(null);
+  const [samplePackProduct, setSamplePackProduct] = useState<UIProduct | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   
@@ -107,7 +107,7 @@ export default function SampleCTA() {
               
               {/* Description text - using template literal to avoid entity issues */}
               <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-gray-600">
-                {`*We'll ship you 8 samples for free. Receive 2 stick packs of each flavor, just pay $4 shipping. Samples ship today!`}
+                {`*We'll ship you samples for free. Receive one of each flavor, just pay $5 shipping. Samples ship today!`}
               </p>
               
               {/* Button matching VideoCTA styling */}
@@ -140,7 +140,7 @@ export default function SampleCTA() {
                 )}
                 <Image
                   src={isMobile ? "/images/samples-mobile.jpg" : "/images/samples-desktop.jpg"}
-                  alt="Sunfruit Sample Stick Packs - All 4 Flavors"
+                  alt="Sunfruit Sample Stick Packs - All 3 Flavors"
                   fill
                   className={`object-cover rounded-lg ${imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
                   onLoad={() => setImageLoaded(true)}

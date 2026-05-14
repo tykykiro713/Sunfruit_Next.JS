@@ -51,3 +51,7 @@ src/lib/unsplash.ts
 src/lib/mock-unsplash.ts
 *vine*.md
 *VINE*.md
+
+# Strategy & integration docs (reference only, not deployed)
+LOOX_INTEGRATION_GUIDE.md
+sunfruit-*.md
