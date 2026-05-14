@@ -4,99 +4,58 @@ import React from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 
-export type PurchaseOptionV2 = {
+export type PurchaseOption = {
   id: string;
   title: string;
   description: string;
   value: 'one-time' | 'subscription';
   discountPercentage?: number;
   deliveryFrequency?: string;
-  savings?: string;
-  perServing?: string;
-  // Per-option overrides (used when an option references a different variant
-  // than the default `productPrice`/`stickCount` props — e.g. 3-Month uses 72-pack).
   basePrice?: string;
   stickCount?: number;
-  hideBenefits?: boolean;
   badgeLabel?: string;
-  // First bullet in the benefits list — e.g. "1 Tin delivered monthly",
-  // "3 Tins delivered every 3 months". Per-option so each cadence shows accurate copy.
   deliveryLabel?: string;
+  hideBenefits?: boolean;
 };
 
-interface SubscriptionMonthly3MonthCardsProps {
-  options: PurchaseOptionV2[];
-  selectedOption: PurchaseOptionV2;
-  onChange: (option: PurchaseOptionV2) => void;
+interface SubscriptionMonthlyOneTimeCardsProps {
+  options: PurchaseOption[];
+  selectedOption: PurchaseOption;
+  onChange: (option: PurchaseOption) => void;
   productPrice?: string;
   quantity?: number;
   stickCount?: number;
 }
 
-export default function SubscriptionMonthly3MonthCards({
+export default function SubscriptionMonthlyOneTimeCards({
   options,
   selectedOption,
   onChange,
   productPrice,
   quantity = 1,
   stickCount = 24,
-}: SubscriptionMonthly3MonthCardsProps) {
-  
-  // Format price to currency
-  const formatPrice = (amount: string) => {
-    const price = parseFloat(amount);
-    return `$${price.toFixed(2)}`;
-  };
-
-  // Calculate discounted price
-  const getDiscountedPrice = (originalPrice: string, discountPercentage: number) => {
-    const price = parseFloat(originalPrice);
-    const discountMultiplier = (100 - discountPercentage) / 100;
-    return (price * discountMultiplier).toFixed(2);
-  };
-
-  // Calculate per serving price
-  const getPerServingPrice = (totalPrice: string, servings: number = 24) => {
-    const price = parseFloat(totalPrice);
-    return (price / servings).toFixed(2);
-  };
-
-  // Calculate savings amount
-  const getSavingsAmount = (originalPrice: string, discountPercentage: number) => {
-    const price = parseFloat(originalPrice);
-    const savings = price * (discountPercentage / 100);
-    return savings.toFixed(0);
-  };
-
+}: SubscriptionMonthlyOneTimeCardsProps) {
   return (
     <div className="mt-8">
       <RadioGroup value={selectedOption} onChange={onChange} className="space-y-3">
         <RadioGroup.Label className="sr-only">Choose a purchase option</RadioGroup.Label>
-        
+
         {options.map((option) => {
           const isSubscription = option.value === 'subscription';
           const showBenefits = isSubscription && !option.hideBenefits;
 
-          // Use per-option basePrice/stickCount if set (e.g. 3-Month uses 72-pack price),
-          // otherwise fall back to the component-level props.
           const effectiveBasePrice = option.basePrice ?? productPrice;
           const effectiveStickCount = option.stickCount ?? stickCount;
 
           const unitPrice = effectiveBasePrice ? parseFloat(effectiveBasePrice) : 38.40;
           const oneTimePrice = unitPrice * quantity;
 
-          // Apply subscription discount if applicable
           const discountPercentage = isSubscription ? (option.discountPercentage || 30) : 0;
           const totalPrice = isSubscription
             ? oneTimePrice * (1 - discountPercentage / 100)
             : oneTimePrice;
 
-          // Calculate per stick pricing for display
           const pricePerStick = totalPrice / effectiveStickCount;
-
-          const savingsAmount = isSubscription
-            ? oneTimePrice - totalPrice
-            : 0;
 
           return (
             <RadioGroup.Option
@@ -112,8 +71,6 @@ export default function SubscriptionMonthly3MonthCards({
             >
               {({ checked }) => (
                 <>
-                  {/* Per-option badge — only rendered on the currently-checked option,
-                      so the badge always reflects the user's active selection. */}
                   {checked && option.badgeLabel && (
                     <div className="absolute -top-2 right-4">
                       <span className="inline-flex items-center rounded-md bg-brightgreen-500 px-3 py-1 text-xs font-medium text-emeraldgreen-800 border border-brightgreen-600">
@@ -124,7 +81,6 @@ export default function SubscriptionMonthly3MonthCards({
 
                   <div className="flex w-full items-start justify-between">
                     <div className="flex items-start">
-                      {/* Radio Button */}
                       <div className="flex items-center h-5">
                         <div
                           className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
@@ -133,14 +89,11 @@ export default function SubscriptionMonthly3MonthCards({
                               : 'border-gray-300 bg-white'
                           }`}
                         >
-                          {checked && (
-                            <div className="w-2 h-2 rounded-full bg-white" />
-                          )}
+                          {checked && <div className="w-2 h-2 rounded-full bg-white" />}
                         </div>
                       </div>
 
                       <div className="ml-3 flex-1">
-                        {/* Title and Price */}
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
                           <div className="flex-1">
                             <RadioGroup.Label className="text-lg font-semibold text-gray-900">
@@ -157,11 +110,9 @@ export default function SubscriptionMonthly3MonthCards({
                                   </span>
                                 </>
                               ) : (
-                                <>
-                                  <span className="text-lg font-semibold text-emeraldgreen-500">
-                                    ${totalPrice.toFixed(2)}
-                                  </span>
-                                </>
+                                <span className="text-lg font-semibold text-emeraldgreen-500">
+                                  ${totalPrice.toFixed(2)}
+                                </span>
                               )}
                               <span className="text-xs text-gray-500">
                                 (${pricePerStick.toFixed(2)} / Stick)
@@ -170,9 +121,6 @@ export default function SubscriptionMonthly3MonthCards({
                           </div>
                         </div>
 
-                        {/* Benefits for Subscription (per-option opt-out via hideBenefits).
-                            First bullet is option-specific (delivery cadence + quantity),
-                            remaining bullets are shared across all subscription cadences. */}
                         {showBenefits && (
                           <div className="space-y-2 mb-3">
                             {option.deliveryLabel && (
@@ -200,7 +148,6 @@ export default function SubscriptionMonthly3MonthCards({
           );
         })}
       </RadioGroup>
-
     </div>
   );
 }

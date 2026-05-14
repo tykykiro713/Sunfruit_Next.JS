@@ -19,6 +19,11 @@ interface NavigationV2Props {
   className?: string;
 }
 
+// Strip size suffix from product titles for display (e.g., "Lemon Mint - 30 Pack" → "Lemon Mint")
+function cleanProductTitle(title: string): string {
+  return title.replace(/\s*-\s*(Sample|(\d+)\s*Pack)$/i, '');
+}
+
 export default function NavigationV2({ className = "" }: NavigationV2Props) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -41,7 +46,7 @@ export default function NavigationV2({ className = "" }: NavigationV2Props) {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const fetchedProducts = await fetchProducts(4);
+        const fetchedProducts = await fetchProducts(4, 'navigation');
         setProducts(fetchedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -57,7 +62,7 @@ export default function NavigationV2({ className = "" }: NavigationV2Props) {
 
   const navigation = {
     shop: products.map((product) => ({
-      name: product.title,
+      name: cleanProductTitle(product.title),
       href: `/products/${product.handle}`,
       imageSrc: product.images?.edges[0]?.node.url || "/placeholder-image.png",
       imageAlt: product.images?.edges[0]?.node.altText || product.title,

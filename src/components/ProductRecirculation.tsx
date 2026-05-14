@@ -9,7 +9,16 @@ interface ProductImage {
   altText: string | null;
 }
 
-export default function ProductRecirculation() {
+interface ProductRecirculationProps {
+  currentFlavorTags?: string[];
+}
+
+// Strip size suffix from product titles for display (e.g., "Lemon Mint - 20 Pack" → "Lemon Mint")
+function cleanProductTitle(title: string): string {
+  return title.replace(/\s*-\s*(Sample|(Sample\s*Pack)|(\d+)\s*Pack)$/i, '');
+}
+
+export default function ProductRecirculation({ currentFlavorTags = [] }: ProductRecirculationProps) {
   const [products, setProducts] = useState<ProductNode[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<{ message: string } | null>(null);
@@ -18,13 +27,15 @@ export default function ProductRecirculation() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const fetchedProducts = await fetchProducts(12); // Fetch up to 12 products
-        
-        // Filter out the Sunfruit Sample Pack and limit to 4 products
+        const fetchedProducts = await fetchProducts(20);
+
+        // Show only 24 pack flavors
         const filteredProducts = fetchedProducts
-          .filter(product => !product.title.toLowerCase().includes('sample pack'))
-          .slice(0, 4);
-        
+          .filter(product => {
+            const handle = product.handle.toLowerCase();
+            return handle.includes('24');
+          });
+
         setProducts(filteredProducts);
         setLoading(false);
       } catch (err) {
@@ -35,7 +46,7 @@ export default function ProductRecirculation() {
       }
     }
     loadProducts();
-  }, []);
+  }, [currentFlavorTags]);
 
   // Helper function to get product images
   const getProductImages = (product: ProductNode): ProductImage[] => {
@@ -149,7 +160,7 @@ export default function ProductRecirculation() {
                       <h3 className="text-sm sm:text-base text-gray-700 text-center">
                         <Link href={`/products/${product.handle}`}>
                           <span aria-hidden="true" className="absolute inset-0" />
-                          {product.title}
+                          {cleanProductTitle(product.title)}
                         </Link>
                       </h3>
                     </div>

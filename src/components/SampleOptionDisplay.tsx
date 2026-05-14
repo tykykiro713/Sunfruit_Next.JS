@@ -13,7 +13,7 @@ export default function SampleOptionDisplay({ flavorName }: SampleOptionDisplayP
       <div className="relative rounded-lg border-2 border-emeraldgreen-500 bg-emeraldgreen-50 p-4">
         {/* FREE Badge */}
         <div className="absolute -top-2 right-4">
-          <span className="inline-flex items-center rounded-md bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 border border-amber-200">
+          <span className="inline-flex items-center rounded-md bg-brightgreen-500 px-3 py-1 text-xs font-medium text-emeraldgreen-800 border border-brightgreen-600">
             FREE
           </span>
         </div>
@@ -23,10 +23,10 @@ export default function SampleOptionDisplay({ flavorName }: SampleOptionDisplayP
             {/* Title */}
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                FREE SAMPLE PACK
+                FREE Sample Pack
               </h3>
               <p className="text-sm text-gray-600 mt-1">
-                Try our delicious {flavorName} before committing
+                Try Organic {flavorName} for free
               </p>
             </div>
 

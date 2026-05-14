@@ -11,7 +11,7 @@ import { getProductFlavorName, type ProductSize } from '@/lib/productUtils';
 
 interface ProductInfoWithSubscriptionProps {
   product: UIProduct;
-  accordionData: ProductAccordionData;
+  accordionData: ProductAccordionData | null;
   useNewLayout?: boolean;
   relatedProducts?: UIProduct[];
   initialSize?: ProductSize;
@@ -22,7 +22,7 @@ export default function ProductInfoWithSubscription({
   accordionData,
   useNewLayout = false,
   relatedProducts = [],
-  initialSize = '30pack'
+  initialSize = '24pack'
 }: ProductInfoWithSubscriptionProps) {
   const [isSubscriptionSelected, setIsSubscriptionSelected] = useState(false);
   const [subscriptionDiscount, setSubscriptionDiscount] = useState(0);
@@ -56,7 +56,7 @@ export default function ProductInfoWithSubscription({
           onSubscriptionChange={handleSubscriptionChange}
         />
       )}
-      <ProductAccordion items={accordionData.items} />
+      {accordionData && <ProductAccordion items={accordionData.items} />}
     </>
   );
 }

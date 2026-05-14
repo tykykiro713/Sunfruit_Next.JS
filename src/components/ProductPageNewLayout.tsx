@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import ProductMedia from '@/components/ProductMedia';
 import ProductInfo from '@/components/ProductInfo';
-import EnhancedProductFormV2 from '@/components/EnhancedProductFormV2';
+import EnhancedProductFormV3 from '@/components/EnhancedProductFormV3';
 import ProductAccordion from '@/components/ProductAccordion';
 import type { UIProduct } from '@/lib/shopify';
 import type { ProductAccordionData } from '@/data/productAccordionData';
@@ -13,7 +13,7 @@ interface ProductPageNewLayoutProps {
   product: UIProduct;
   relatedProducts: UIProduct[];
   initialSize: ProductSize;
-  accordionData: ProductAccordionData;
+  accordionData: ProductAccordionData | null;
 }
 
 export default function ProductPageNewLayout({
@@ -51,14 +51,14 @@ export default function ProductPageNewLayout({
           subscriptionDiscountPercentage={subscriptionDiscount}
           displayTitle={flavorName}
         />
-        <EnhancedProductFormV2
+        <EnhancedProductFormV3
           product={product}
           relatedProducts={relatedProducts}
           initialSize={initialSize}
           onSubscriptionChange={handleSubscriptionChange}
           onProductChange={handleProductChange}
         />
-        <ProductAccordion items={accordionData.items} />
+        {accordionData && <ProductAccordion items={accordionData.items} />}
       </div>
     </div>
   );

@@ -179,8 +179,8 @@ export interface UIProduct {
 
 // GraphQL Queries - Updated to include selling plan groups with simplified structure
 export const GET_PRODUCTS = gql`
-  query GetProducts($first: Int!) {
-    products(first: $first) {
+  query GetProducts($first: Int!, $query: String) {
+    products(first: $first, query: $query) {
       edges {
         node {
           id
@@ -389,11 +389,15 @@ export const GET_PRODUCT_BY_HANDLE = gql`
 `;
 
 // API Functions
-export async function fetchProducts(first = 10): Promise<ProductNode[]> {
+export async function fetchProducts(first = 10, tag?: string): Promise<ProductNode[]> {
   try {
+    const variables: { first: number; query?: string } = { first };
+    if (tag) {
+      variables.query = `tag:${tag}`;
+    }
     const { data } = await client.query<ProductsData>({
       query: GET_PRODUCTS,
-      variables: { first },
+      variables,
     });
     return data.products.edges.map((edge) => edge.node);
   } catch (error) {

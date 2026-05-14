@@ -4,16 +4,20 @@ import { UIProduct } from './shopify';
 const UTILITY_TAGS = ['new-layout'];
 
 // Known flavor tags (used for matching related products)
-const FLAVOR_TAGS = ['lemon-mint', 'raspberry-hibiscus', 'grapefruit-ginger', 'blueberry-lavender'];
+const FLAVOR_TAGS = ['lemon-mint', 'raspberry-hibiscus', 'grapefruit-ginger', 'blueberry-lavender', 'pomegranate-rose'];
 
-// Size type for the new product form
-export type ProductSize = 'sample' | '30pack' | '60pack';
+// Size type for the new product form.
+// '72pack' has no tile of its own in the 2-card layout — it's reachable only
+// via the 3-Month radio option inside SubscriptionMonthly3MonthCards.
+// '48pack' is a real, user-facing tile in the 3-card layout.
+export type ProductSize = 'sample' | '24pack' | '48pack' | '72pack';
 
 // SKU suffix to size mapping
 const SKU_SIZE_MAP: Record<string, ProductSize> = {
   '-SAM': 'sample',
-  '-30PK': '30pack',
-  '-60PK': '60pack',
+  '-24PK': '24pack',
+  '-48PK': '48pack',
+  '-72PK': '72pack',
 };
 
 /**
@@ -108,9 +112,13 @@ export interface SizeOption {
 }
 
 export const SIZE_OPTIONS: SizeOption[] = [
-  { id: 'sample', name: 'Sample', stickCount: 3, description: '3 sticks' },
-  { id: '30pack', name: '1 Tin', stickCount: 30, description: '30 sticks' },
-  { id: '60pack', name: '2 Tins', stickCount: 60, description: '60 sticks' },
+  { id: 'sample', name: 'Free Samples', stickCount: 3, description: '3 sticks' },
+  { id: '24pack', name: '1 Tin', stickCount: 24, description: '24 sticks' },
+  { id: '48pack', name: '2 Tins', stickCount: 48, description: '48 sticks' },
+  // 72pack has no tile of its own in the 2-card layout. It lives here so
+  // SizeSelector2Cards can swap the 1-Tin tile's label to "3 Tins / 72 sticks"
+  // when the 3-Month radio is selected inside SubscriptionMonthly3MonthCards.
+  { id: '72pack', name: '3 Tins', stickCount: 72, description: '72 sticks' },
 ];
 
 /**
@@ -128,7 +136,7 @@ export function determineInitialSize(
   product: UIProduct
 ): ProductSize {
   // First, check URL param
-  if (searchParamSize && ['sample', '30pack', '60pack'].includes(searchParamSize)) {
+  if (searchParamSize && ['sample', '24pack', '48pack', '72pack'].includes(searchParamSize)) {
     return searchParamSize as ProductSize;
   }
 
@@ -138,6 +146,6 @@ export function determineInitialSize(
     return productSize;
   }
 
-  // Default to 30pack
-  return '30pack';
+  // Default to 24pack
+  return '24pack';
 }

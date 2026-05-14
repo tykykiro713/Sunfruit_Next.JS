@@ -53,17 +53,17 @@ export default async function ProductPage({
     notFound();
   }
 
+  // Get flavor tags for recirculation filtering
+  const flavorTags = getFlavorTags(product);
+
   // Check if this product uses the new layout
   const useNewLayout = hasNewLayoutTag(product);
 
   // Variables for new layout
   let relatedProducts: typeof product[] = [];
-  let initialSize: ProductSize = '30pack';
+  let initialSize: ProductSize = '24pack';
 
   if (useNewLayout) {
-    // Get flavor tags (excluding "new-layout")
-    const flavorTags = getFlavorTags(product);
-
     if (flavorTags.length > 0) {
       // Fetch all related products with the same flavor tags
       relatedProducts = await fetchProductsByTags(flavorTags);
@@ -125,7 +125,7 @@ export default async function ProductPage({
         
         {/* Product recirculation section - constrained width on mobile, full width on desktop */}
         <div className="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-8 xl:px-16">
-          <ProductRecirculation />
+          <ProductRecirculation currentFlavorTags={flavorTags} />
         </div>
 
         {/* Faqs and Footer section - constrained width on mobile, full width on desktop */}

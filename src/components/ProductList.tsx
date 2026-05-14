@@ -14,6 +14,11 @@ interface ProductImage {
   altText: string | null;
 }
 
+// Strip size suffix from product titles for display (e.g., "Lemon Mint - 30 Pack" → "Lemon Mint")
+function cleanProductTitle(title: string): string {
+  return title.replace(/\s*-\s*(Sample|(\d+)\s*Pack)$/i, '');
+}
+
 export default function ProductList() {
   const [products, setProducts] = useState<ProductNode[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,15 +28,9 @@ export default function ProductList() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const fetchedProducts = await fetchProducts();
-        console.log("Fetched products:", fetchedProducts);
+        const fetchedProducts = await fetchProducts(4, 'home-page');
         
-        // Filter out the Sunfruit Sample Pack and limit to 4 products
-        const filteredProducts = fetchedProducts
-          .filter(product => !product.title.toLowerCase().includes('sample pack'))
-          .slice(0, 4);
-        
-        setProducts(filteredProducts);
+        setProducts(fetchedProducts);
         setLoading(false);
       } catch (err) {
         const error = err as ErrorWithMessage;
@@ -159,7 +158,7 @@ export default function ProductList() {
                     href={`/products/${product.handle}`}
                     className="text-lg font-bold text-gray-900 hover:underline"
                   >
-                    {product.title}
+                    {cleanProductTitle(product.title)}
                   </Link>
                   <p className="mt-2 text-base text-gray-600">
                     {product.description}
