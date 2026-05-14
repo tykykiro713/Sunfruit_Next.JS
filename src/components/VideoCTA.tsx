@@ -92,7 +92,7 @@ export default function OptimizedVideoCTA() {
       <div className="p-4 sm:p-8 md:p-12 lg:px-16 lg:py-24 order-last sm:order-first">
         <div className="mx-auto max-w-xl text-center sm:text-left">
           <h2 className="text-3xl sm:text-4xl font-poppins font-semibold tracking-tight text-emeraldgreen-500 md:text-5xl">
-            Zero Sugar, Organic Powder Drink Mix
+            Organic Powdered Beverages
           </h2>
 
           <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-gray-600">
