@@ -46,7 +46,11 @@ export default function ProductRecirculation({ currentFlavorTags = [] }: Product
       }
     }
     loadProducts();
-  }, [currentFlavorTags]);
+    // currentFlavorTags is reserved for future flavor-based filtering;
+    // intentionally excluded from deps to avoid an infinite refetch loop
+    // when the prop defaults to a fresh [] on each render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Helper function to get product images
   const getProductImages = (product: ProductNode): ProductImage[] => {
