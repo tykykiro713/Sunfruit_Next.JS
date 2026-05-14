@@ -159,16 +159,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // Function to update item in cart
   const updateItem = async (lineId: string, quantity: number) => {
     if (!cartId) return;
-    
+
     setIsLoading(true);
-    
+
     try {
-      const updatedCart = await updateCartLines(cartId, lineId, quantity);
-      
+      const existingLine = cart?.lines?.edges?.find(
+        (edge: CartEdge) => edge.node.id === lineId
+      );
+      const sellingPlanId = existingLine?.node.sellingPlanAllocation?.sellingPlan?.id;
+
+      const updatedCart = await updateCartLines(cartId, lineId, quantity, sellingPlanId);
+
       if (updatedCart) {
         setCart(updatedCart);
       }
     } catch (error) {
+      console.error("updateItem error:", error);
     } finally {
       setIsLoading(false);
     }
