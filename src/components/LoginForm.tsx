@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useCustomer } from '@/context/CustomerContext';
+import { debugLog } from '@/lib/debugLog';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -13,11 +14,11 @@ export default function LoginForm() {
   const { login, isLoading, isLoggedIn } = useCustomer();
   const router = useRouter();
 
-  console.log("LoginForm rendered, isLoggedIn:", isLoggedIn, "isLoading:", isLoading);
+  debugLog("LoginForm rendered, isLoggedIn:", isLoggedIn, "isLoading:", isLoading);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login form submitted with email:", email);
+    debugLog("Login form submitted with email:", email);
     
     setError('');
     setSuccess('');
@@ -28,25 +29,25 @@ export default function LoginForm() {
     }
     
     try {
-      console.log("Calling login function...");
+      debugLog("Calling login function...");
       const result = await login(email, password);
-      console.log("Login result:", result);
-      
+      debugLog("Login result:", result);
+
       if (result.success) {
-        console.log("Login successful, showing success message");
+        debugLog("Login successful, showing success message");
         setSuccess('Logged in successfully!');
-        
+
         // Check login status after login
-        console.log("Login status after login - isLoggedIn:", isLoggedIn);
-        
+        debugLog("Login status after login - isLoggedIn:", isLoggedIn);
+
         // Use both router.push and window.location as fallbacks for each other
         setTimeout(() => {
-          console.log("Attempting to redirect to account page...");
+          debugLog("Attempting to redirect to account page...");
           try {
             router.push('/account');
             // Add a fallback in case router.push doesn't trigger navigation
             setTimeout(() => {
-              console.log("Fallback redirect using window.location");
+              debugLog("Fallback redirect using window.location");
               window.location.href = '/account';
             }, 1000);
           } catch (navError) {

@@ -140,36 +140,26 @@ export default function ZendeskLauncher() {
       
       // Now try to open the widget using all possible methods
       if (window.zE) {
-        // Log to help debug which method actually works
-        console.log('Attempting to open Zendesk widget...');
-        
         // Try classic web widget first (most common)
         try {
-          console.log('Trying webWidget.open...');
           window.zE('webWidget', 'open');
           return true;
         } catch (e1) {
-          console.log('webWidget.open failed, trying alternative methods...');
-          
           try {
-            console.log('Trying webWidget:open...');
             window.zE('webWidget:open');
             return true;
           } catch (e2) {
             try {
-              console.log('Trying messenger:open...');
               window.zE('messenger:open');
               return true;
             } catch (e3) {
               try {
-                console.log('Trying zE.activate...');
                 if (typeof window.zE.activate === 'function') {
                   window.zE.activate();
                   return true;
                 }
               } catch (e4) {
                 try {
-                  console.log('Trying $zopim.livechat...');
                   if (window.$zopim && window.$zopim.livechat) {
                     window.$zopim.livechat.window.show();
                     return true;

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useCustomer } from '@/context/CustomerContext';
+import { debugLog } from '@/lib/debugLog';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -15,11 +16,11 @@ export default function RegisterForm() {
   const { register, isLoading, isLoggedIn } = useCustomer();
   const router = useRouter();
 
-  console.log("RegisterForm rendered, isLoggedIn:", isLoggedIn, "isLoading:", isLoading);
+  debugLog("RegisterForm rendered, isLoggedIn:", isLoggedIn, "isLoading:", isLoading);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Register form submitted with:", { firstName, lastName, email });
+    debugLog("Register form submitted with:", { firstName, lastName, email });
     
     setError('');
     setSuccess('');
@@ -35,25 +36,25 @@ export default function RegisterForm() {
     }
     
     try {
-      console.log("Calling register function...");
+      debugLog("Calling register function...");
       const result = await register(email, password, firstName, lastName);
-      console.log("Register result:", result);
-      
+      debugLog("Register result:", result);
+
       if (result.success) {
-        console.log("Registration successful, showing success message");
+        debugLog("Registration successful, showing success message");
         setSuccess('Account created and logged in successfully!');
-        
+
         // Check login status after registration
-        console.log("Login status after registration - isLoggedIn:", isLoggedIn);
-        
+        debugLog("Login status after registration - isLoggedIn:", isLoggedIn);
+
         // Use both router.push and window.location as fallbacks for each other
         setTimeout(() => {
-          console.log("Attempting to redirect to account page...");
+          debugLog("Attempting to redirect to account page...");
           try {
             router.push('/account');
             // Add a fallback in case router.push doesn't trigger navigation
             setTimeout(() => {
-              console.log("Fallback redirect using window.location");
+              debugLog("Fallback redirect using window.location");
               window.location.href = '/account';
             }, 1000);
           } catch (navError) {

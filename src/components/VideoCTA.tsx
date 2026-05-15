@@ -40,7 +40,9 @@ export default function OptimizedVideoCTA() {
             videoRef.current.addEventListener('loadeddata', () => {
               videoRef.current?.play().then(() => {
                 setIsVideoVisible(true);
-              }).catch(console.log);
+              }).catch(() => {
+                // Autoplay can be blocked by the browser; nothing actionable.
+              });
             });
           }
           observer.disconnect();

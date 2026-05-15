@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { useEffect } from 'react';
 
 interface AttributionData {
   html: string;
@@ -43,15 +42,6 @@ export default function UnsplashImage({
   onLoad
 }: UnsplashImageProps) {
   
-  // Track download when image is actually used/displayed
-  useEffect(() => {
-    if (downloadLocation && onLoad) {
-      // This would normally call the download tracking endpoint
-      // For now, we'll just log it
-      console.log('Image displayed, tracking download:', downloadLocation);
-    }
-  }, [downloadLocation, onLoad]);
-
   const handleImageLoad = () => {
     // Call download tracking when image loads (simulates "download" event)
     if (downloadLocation) {
