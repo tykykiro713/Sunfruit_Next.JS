@@ -9,7 +9,10 @@ const FLAVOR_TAGS = ['lemon-mint', 'raspberry-hibiscus', 'grapefruit-ginger', 'b
 // Size type for the new product form.
 // '72pack' has no tile of its own in the 2-card layout — it's reachable only
 // via the 3-Month radio option inside SubscriptionMonthly3MonthCards.
-// '48pack' is a real, user-facing tile in the 3-card layout.
+// '48pack' is a real product (live in Shopify) but no longer rendered as a
+// PDP tile (Phase 1 of launch offer stack — Hick's Law cleanup). Existing
+// 48-pack subscriptions remain accessible via the account portal; new buyers
+// who want 48 sticks can add 24-pack with quantity 2 in the cart.
 export type ProductSize = 'sample' | '24pack' | '48pack' | '72pack';
 
 // SKU suffix to size mapping
