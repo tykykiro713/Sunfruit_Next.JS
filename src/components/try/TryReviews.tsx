@@ -1,73 +1,91 @@
 import Image from 'next/image';
 import StarRatingInline from './StarRatingInline';
-import TryCheckoutButton from './TryCheckoutButton';
 
-const reviews = [
+interface Review {
+  quote: string;
+  author: string;
+  location: string;
+  badge: string;
+  image: string;
+}
+
+const reviews: Review[] = [
   {
+    badge: 'Switched from Crystal Light',
     quote:
-      "I read every label. Sunfruit actually passes the test. No bloating, no weird additives. My body just feels good with it.",
+      "I've been a Crystal Light person for twenty years. Then I read the back of the package and realized I was drinking Yellow 5 and aspartame three times a day. Sunfruit was the first replacement I tried where the flavor was actually better, not just cleaner. I switched and never looked back.",
     author: 'Sarah M.',
-    location: 'California',
+    location: 'Austin, TX',
     image: '/images/Woman.jpg',
   },
   {
+    badge: 'Switched from Liquid I.V.',
     quote:
-      "I finally found something organic that doesn't taste like a compromise. I drink way more water now. Sunfruit makes it easy.",
+      "I used Liquid I.V. for hydration but the sodium load started giving me headaches. Sunfruit was a revelation — real hydration without 510mg of salt per stick pack. The Grapefruit Ginger is my new daily.",
     author: 'David K.',
-    location: 'New York',
+    location: 'Brooklyn, NY',
     image: '/images/Kayak.jpg',
   },
   {
+    badge: 'Parent of two',
     quote:
-      "Our family loves Sunfruit. Tastes great, real ingredients, and I feel good giving it to my kids.",
-    author: 'Brad R.',
-    location: 'Maine',
-    image: '/images/Testimonial.jpg',
+      "Finding a clean drink mix the whole family can have was honestly impossible until Sunfruit. No artificial colors means my kids can have it, no aspartame means I'm comfortable giving it to them, and the flavors are sophisticated enough that I actually want it too.",
+    author: 'Maya R.',
+    location: 'Portland, OR',
+    image: '/images/family.png',
   },
 ];
 
 export default function TryReviews() {
   return (
-    <section className="bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+    <section className="bg-custombeige-500">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-poppins text-3xl font-semibold tracking-tight text-emeraldgreen-500 sm:text-4xl md:text-5xl">
-            What people who got the pack said.
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emeraldgreen-500">
+            The long story
+          </p>
+          <h2 className="mt-3 font-poppins text-3xl font-semibold tracking-tight text-emeraldgreen-500 sm:text-4xl md:text-5xl">
+            What made them switch.
           </h2>
-          <div className="mt-4 flex justify-center">
-            <StarRatingInline rating={5} reviewCount={2300} />
-          </div>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-          {reviews.map((review) => (
+        <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
+          {reviews.map((r) => (
             <figure
-              key={review.author}
-              className="flex flex-col items-center rounded-2xl bg-gray-50 p-8 text-center"
+              key={r.author}
+              className="flex flex-col rounded-3xl bg-white p-8 shadow-sm"
             >
-              <div className="relative h-20 w-20 overflow-hidden rounded-full">
-                <Image
-                  src={review.image}
-                  alt={review.author}
-                  fill
-                  sizes="80px"
-                  className="object-cover"
-                />
-              </div>
+              <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-emeraldgreen-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-emeraldgreen-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-emeraldgreen-500" />
+                {r.badge}
+              </span>
               <StarRatingInline rating={5} showCount={false} className="mt-4" />
-              <blockquote className="mt-4 text-base text-gray-800 sm:text-lg">
-                &ldquo;{review.quote}&rdquo;
+              <blockquote className="mt-5 flex-1 text-base leading-relaxed text-gray-800 sm:text-lg">
+                &ldquo;{r.quote}&rdquo;
               </blockquote>
-              <figcaption className="mt-4 text-sm font-semibold text-gray-900">
-                {review.author}
-                <span className="font-normal text-gray-500"> · {review.location}</span>
+              <figcaption className="mt-6 flex items-center gap-3 border-t border-gray-100 pt-5">
+                <div className="relative h-12 w-12 overflow-hidden rounded-full bg-chewsyskin-500">
+                  <Image
+                    src={r.image}
+                    alt={r.author}
+                    fill
+                    sizes="48px"
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">{r.author}</p>
+                  <p className="text-xs text-gray-500">
+                    {r.location}
+                    <span className="mx-1.5 text-gray-300">·</span>
+                    <span className="font-medium text-emeraldgreen-700">
+                      Verified Buyer
+                    </span>
+                  </p>
+                </div>
               </figcaption>
             </figure>
           ))}
-        </div>
-
-        <div className="mt-12 flex justify-center">
-          <TryCheckoutButton id="try-reviews-cta" label="Get my free samples" />
         </div>
       </div>
     </section>

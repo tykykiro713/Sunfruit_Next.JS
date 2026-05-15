@@ -1,26 +1,32 @@
 const trustItems = [
-  'USDA ORGANIC',
-  'NO SUGAR ADDED',
-  'NO ARTIFICIAL ANYTHING',
-  'NON-GMO',
+  { label: 'USDA Organic', sub: 'Certified' },
+  { label: '0g Sugar', sub: 'Added' },
+  { label: '0mg Sodium', sub: 'Per serving' },
+  { label: 'Non-GMO', sub: 'Verified' },
+  { label: 'Keto + Paleo', sub: 'Friendly' },
+  { label: 'Made in USA', sub: 'Always' },
 ];
 
 export default function TryTrustStrip() {
   return (
-    <div className="bg-yellow-300 py-6 px-4">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:justify-between">
-        {trustItems.map((item) => (
-          <div
-            key={item}
-            className="flex items-center gap-2 whitespace-nowrap text-base font-semibold text-gray-900 sm:text-lg"
-          >
-            <span className="text-emeraldgreen-500" aria-hidden="true">
-              &#10003;
-            </span>
-            {item}
-          </div>
-        ))}
+    <section className="border-y border-emeraldgreen-500/10 bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <ul className="grid grid-cols-3 divide-x divide-emeraldgreen-500/10 md:grid-cols-6">
+          {trustItems.map((item) => (
+            <li
+              key={item.label}
+              className="flex flex-col items-center justify-center px-2 py-5 text-center"
+            >
+              <span className="text-sm font-bold uppercase tracking-wider text-emeraldgreen-500 sm:text-base">
+                {item.label}
+              </span>
+              <span className="mt-0.5 text-[10px] uppercase tracking-[0.18em] text-gray-500 sm:text-xs">
+                {item.sub}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
+    </section>
   );
 }
