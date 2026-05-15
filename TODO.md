@@ -23,6 +23,22 @@ decisions live in `docs/integrations/appstle-subscriptions/` — **start with `s
 
 This **supersedes** the standalone Recharge selling-plan refactor item below.
 
+## Launch Offer Stack
+
+### Phase 1: PDP simplification ✅
+- [x] Remove 48-pack tile from V3 PDP size selector — shipped in v0.1.2 (PR `feature/pdp-remove-48pack`, design doc at `~/.gstack/projects/tykykiro713-Sunfruit_Next.JS/tysonrohde-feature-pdp-remove-48pack-design-20260515-133504.md`). 48-pack product remains live in Shopify; buyers who want 48 sticks add 24-pack with quantity 2.
+
+### Phase 2: Post-purchase upsell to the quarterly (90-day) plan
+**= the Appstle "v2" upgrade.** Reconciled with the Recharge→Appstle pivot (see the migration block above + `docs/integrations/appstle-subscriptions/sunfruit-fit-and-decisions.md` §B5). Supersedes the old Recharge/3-month-prepaid framing.
+- [ ] Offer monthly subscribers a one-click upgrade to the **90-day** plan (qty 3, % off TBD) on the **Shopify thank-you page** → backend swaps the live contract in place via **Appstle's API** (plan 1mo→3mo, qty 1→3). NOT a Shopify post-purchase extension (dead for sub-on-sub), NOT Recharge, NOT prepaid.
+- [ ] Re-derive the unit economics before committing the discount % (§B2 flag).
+- [ ] Confirm with Appstle: plan change re-anchors next charge to +90 days; thank-you-page trigger surface in headless. Needs the Appstle REST API add-on.
+- [ ] Out of scope for v1; needs its own design doc + plan-eng-review before implementing.
+
+### Post-launch operator assignment
+- [ ] **Talk to 5 actual sample buyers in the first 30 days post-launch.** Real conversations, not surveys. Find out what specifically convinced them to subscribe (or not). This is the input for Phase 2 design and for refining the email sequence. Source: `/office-hours` session 2026-05-15.
+- [ ] Instrument PDP-to-cart conversion and sub take rate before Phase 2 ships, otherwise lift can't be attributed.
+
 ## Post-Deploy Follow-Ups (feature/new-product-layout)
 
 ### Recharge subscription plan robustness
