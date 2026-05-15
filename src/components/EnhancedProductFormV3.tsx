@@ -35,7 +35,12 @@ export default function EnhancedProductFormV3({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [selectedSize, setSelectedSize] = useState<ProductSize>(initialSize);
+  // '48pack' is no longer a PDP-visible tile (Phase 1 of launch offer stack).
+  // Clamp incoming initialSize so direct-links to ?size=48pack don't land on
+  // a missing tile. The 48-pack product itself remains live in Shopify.
+  const [selectedSize, setSelectedSize] = useState<ProductSize>(
+    initialSize === '48pack' ? '24pack' : initialSize
+  );
   const [purchaseMode, setPurchaseMode] = useState<'subscription' | 'one-time'>('subscription');
 
   const flavorName = useMemo(() => getProductFlavorName(product), [product]);
@@ -51,7 +56,7 @@ export default function EnhancedProductFormV3({
 
   const availableSizes = useMemo(() => {
     return (Object.keys(productsBySize) as ProductSize[]).filter(s =>
-      s === 'sample' || s === '24pack' || s === '48pack'
+      s === 'sample' || s === '24pack'
     );
   }, [productsBySize]);
 
@@ -78,8 +83,7 @@ export default function EnhancedProductFormV3({
 
     const sizeOption = getSizeOption(selectedSize);
     const stickCount = sizeOption?.stickCount ?? 24;
-    const tinLabel =
-      selectedSize === '48pack' ? '2 Tins delivered monthly' : '1 Tin delivered monthly';
+    const tinLabel = '1 Tin delivered monthly';
     const basePrice = firstVariant?.priceV2?.amount;
 
     let monthlyDiscount = DEFAULT_MONTHLY_DISCOUNT;

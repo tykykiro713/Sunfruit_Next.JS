@@ -24,7 +24,7 @@ export default function SizeSelector3Cards({
         onChange={(option: SizeOption) => onChange(option.id)}
       >
         <RadioGroup.Label className="sr-only">Choose size</RadioGroup.Label>
-        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        <div className={`grid gap-2 sm:gap-3 ${displayOptions.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
           {displayOptions.map((option) => (
             <RadioGroup.Option
               key={option.id}

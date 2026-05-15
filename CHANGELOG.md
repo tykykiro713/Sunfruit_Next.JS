@@ -5,6 +5,12 @@ All notable changes to the Sunfruit storefront are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-05-15
+
+### Changed
+- Product detail pages now show two purchase options instead of three: Sample and 1 Tin (24-pack). The 2 Tin (48-pack) tile was removed to simplify the discovery decision (Phase 1 of launch offer stack — Hick's Law cleanup).
+- Buyers who want 48 sticks can add the 24-pack to cart and increase the quantity. The 48-pack product itself remains live in Shopify and stays accessible to existing subscribers via the account portal.
+
 ## [0.1.1] - 2026-05-14
 
 ### Added
