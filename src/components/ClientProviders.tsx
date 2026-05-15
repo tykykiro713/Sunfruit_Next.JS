@@ -44,7 +44,6 @@ export default function ClientProviders({
     // More aggressive interaction handler for Zendesk
     const handleZendeskInteraction = () => {
       if (!loadZendesk) {
-        console.log('User interaction detected - loading Zendesk');
         setLoadZendesk(true);
         setHasInteracted(true);
       }
@@ -63,7 +62,6 @@ export default function ClientProviders({
     // Klaviyo-specific triggers (for e-commerce actions)
     const handleKlaviyoInteraction = () => {
       if (!loadKlaviyo) {
-        console.log('E-commerce interaction detected - loading Klaviyo');
         setLoadKlaviyo(true);
       }
     };
@@ -121,7 +119,6 @@ export default function ClientProviders({
     // Fallback loading schedule (much later than before)
     const zendeskTimeout = setTimeout(() => {
       if (!loadZendesk) {
-        console.log('Loading Zendesk after timeout');
         setLoadZendesk(true);
       }
     }, 10000);  // 10 seconds (was 2 seconds)

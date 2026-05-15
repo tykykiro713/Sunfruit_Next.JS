@@ -12,6 +12,7 @@ import {
   updateCustomerInfo as updateCustomerInfoAPI,
   Customer
 } from '@/lib/customer';
+import { debugLog } from '@/lib/debugLog';
 
 interface CustomerContextType {
   customer: Customer | null;
@@ -99,7 +100,7 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     try {
       const { customerAccessToken, errors } = await customerLogin(email, password);
-      console.log("CustomerContext: login API response", { hasToken: !!customerAccessToken, errors });
+      debugLog("CustomerContext: login API response", { hasToken: !!customerAccessToken, errors });
       
       if (errors && errors.length > 0) {
         console.error("CustomerContext: login errors", errors);
@@ -107,16 +108,16 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
       }
       
       if (customerAccessToken) {
-        console.log("CustomerContext: setting access token", customerAccessToken);
+        debugLog("CustomerContext: setting access token", customerAccessToken);
         setAccessToken(customerAccessToken.accessToken);
         setInStorage('customerAccessToken', JSON.stringify(customerAccessToken));
         
-        console.log("CustomerContext: fetching customer data with token");
+        debugLog("CustomerContext: fetching customer data with token");
         const customerData = await getCustomer(customerAccessToken.accessToken);
-        console.log("CustomerContext: customer data received", !!customerData);
+        debugLog("CustomerContext: customer data received", !!customerData);
         
         if (customerData) {
-          console.log("CustomerContext: setting customer data");
+          debugLog("CustomerContext: setting customer data");
           setCustomer(customerData);
           return { success: true };
         }
@@ -134,21 +135,21 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
 
   // Logout function
   const logout = () => {
-    console.log("CustomerContext: logging out user");
+    debugLog("CustomerContext: logging out user");
     removeFromStorage('customerAccessToken');
     setAccessToken(null);
     setCustomer(null);
     customerLogout();
-    console.log("CustomerContext: user logged out");
+    debugLog("CustomerContext: user logged out");
   };
 
   // Register function
   const register = async (email: string, password: string, firstName?: string, lastName?: string) => {
-    console.log("CustomerContext: register called", { email, firstName, lastName });
+    debugLog("CustomerContext: register called", { email, firstName, lastName });
     setIsLoading(true);
     try {
       const { customer, customerUserErrors } = await customerRegister(email, password, firstName, lastName);
-      console.log("CustomerContext: register API response", { hasCustomer: !!customer, errors: customerUserErrors });
+      debugLog("CustomerContext: register API response", { hasCustomer: !!customer, errors: customerUserErrors });
       
       if (customerUserErrors && customerUserErrors.length > 0) {
         console.error("CustomerContext: register errors", customerUserErrors);
@@ -157,9 +158,9 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
       
       if (customer) {
         // Automatically log in the user after successful registration
-        console.log("CustomerContext: register success, attempting login");
+        debugLog("CustomerContext: register success, attempting login");
         const loginResult = await login(email, password);
-        console.log("CustomerContext: auto-login after registration result", loginResult);
+        debugLog("CustomerContext: auto-login after registration result", loginResult);
         return loginResult;
       }
       
@@ -175,18 +176,18 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
 
   // Request password reset
   const requestReset = async (email: string) => {
-    console.log("CustomerContext: requesting password reset for", email);
+    debugLog("CustomerContext: requesting password reset for", email);
     setIsLoading(true);
     try {
       const { customerUserErrors } = await requestPasswordReset(email);
-      console.log("CustomerContext: password reset request response", { errors: customerUserErrors });
+      debugLog("CustomerContext: password reset request response", { errors: customerUserErrors });
       
       if (customerUserErrors && customerUserErrors.length > 0) {
         console.error("CustomerContext: password reset request errors", customerUserErrors);
         return { success: false, error: customerUserErrors[0].message };
       }
       
-      console.log("CustomerContext: password reset request successful");
+      debugLog("CustomerContext: password reset request successful");
       return { success: true };
     } catch (error: any) {
       console.error("CustomerContext: password reset request exception", error);
@@ -198,11 +199,11 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
 
   // Reset password
   const resetCustomerPassword = async (resetToken: string, password: string) => {
-    console.log("CustomerContext: resetting password with token");
+    debugLog("CustomerContext: resetting password with token");
     setIsLoading(true);
     try {
       const { customerUserErrors, customerAccessToken } = await resetPassword(resetToken, password);
-      console.log("CustomerContext: reset password response", { 
+      debugLog("CustomerContext: reset password response", { 
         hasToken: !!customerAccessToken, 
         errors: customerUserErrors 
       });
@@ -213,16 +214,16 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
       }
       
       if (customerAccessToken) {
-        console.log("CustomerContext: setting access token after password reset");
+        debugLog("CustomerContext: setting access token after password reset");
         setAccessToken(customerAccessToken.accessToken);
         setInStorage('customerAccessToken', JSON.stringify(customerAccessToken));
         
-        console.log("CustomerContext: fetching customer data after password reset");
+        debugLog("CustomerContext: fetching customer data after password reset");
         const customerData = await getCustomer(customerAccessToken.accessToken);
-        console.log("CustomerContext: customer data received after password reset?", !!customerData);
+        debugLog("CustomerContext: customer data received after password reset?", !!customerData);
         
         if (customerData) {
-          console.log("CustomerContext: setting customer data after password reset");
+          debugLog("CustomerContext: setting customer data after password reset");
           setCustomer(customerData);
           return { success: true };
         }
@@ -240,7 +241,7 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
 
   // Update customer address
   const updateAddress = async (addressId: string | null, address: any) => {
-    console.log("CustomerContext: updating address", { addressId, address });
+    debugLog("CustomerContext: updating address", { addressId, address });
     if (!accessToken) {
       console.error("CustomerContext: cannot update address, no access token");
       return { success: false, error: 'You must be logged in to update your address' };
@@ -253,7 +254,7 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
         addressId,
         address
       );
-      console.log("CustomerContext: update address response", { 
+      debugLog("CustomerContext: update address response", { 
         hasAddress: !!customerAddress, 
         errors: customerUserErrors 
       });
@@ -265,12 +266,12 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
       
       if (customerAddress) {
         // Refresh customer data to get updated addresses
-        console.log("CustomerContext: fetching updated customer data after address update");
+        debugLog("CustomerContext: fetching updated customer data after address update");
         const customerData = await getCustomer(accessToken);
-        console.log("CustomerContext: customer data received after address update?", !!customerData);
+        debugLog("CustomerContext: customer data received after address update?", !!customerData);
         
         if (customerData) {
-          console.log("CustomerContext: setting updated customer data after address update");
+          debugLog("CustomerContext: setting updated customer data after address update");
           setCustomer(customerData);
           return { success: true };
         }
@@ -288,7 +289,7 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
 
   // Update customer info
   const updateCustomerInfo = async (customerInfo: any) => {
-    console.log("CustomerContext: updating customer info", customerInfo);
+    debugLog("CustomerContext: updating customer info", customerInfo);
     if (!accessToken) {
       console.error("CustomerContext: cannot update customer info, no access token");
       return { success: false, error: 'You must be logged in to update your information' };
@@ -300,7 +301,7 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
         accessToken,
         customerInfo
       );
-      console.log("CustomerContext: update customer info response", { 
+      debugLog("CustomerContext: update customer info response", { 
         hasCustomer: !!customer, 
         errors: customerUserErrors 
       });
@@ -312,12 +313,12 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
       
       if (customer) {
         // Refresh customer data
-        console.log("CustomerContext: fetching updated customer data after info update");
+        debugLog("CustomerContext: fetching updated customer data after info update");
         const customerData = await getCustomer(accessToken);
-        console.log("CustomerContext: customer data received after info update?", !!customerData);
+        debugLog("CustomerContext: customer data received after info update?", !!customerData);
         
         if (customerData) {
-          console.log("CustomerContext: setting updated customer data after info update");
+          debugLog("CustomerContext: setting updated customer data after info update");
           setCustomer(customerData);
           return { success: true };
         }

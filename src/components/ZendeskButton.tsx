@@ -20,7 +20,6 @@ export default function ZendeskButton({
       
       // Use the global openZendeskChat function if available
       if (typeof window !== 'undefined' && (window as any).openZendeskChat) {
-        console.log('Opening Zendesk using global function...');
         await (window as any).openZendeskChat();
       } else {
         console.error('Zendesk launcher function not available');
@@ -44,7 +43,6 @@ export default function ZendeskButton({
           }
         } else {
           // Last resort - try loading the script directly
-          console.log('Zendesk not available, attempting to load it directly...');
           const zendeskKey = process.env.NEXT_PUBLIC_ZENDESK_KEY;
           if (!zendeskKey) {
             console.error('Missing Zendesk key in environment variables');

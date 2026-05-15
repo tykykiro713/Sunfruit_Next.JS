@@ -14,13 +14,13 @@
 - [ ] V2 form path orphaned: `EnhancedProductFormV2`, `SizeSelector2Cards`, `SubscriptionMonthly3MonthCards` retained for A/B but no caller wires `useNewLayout=true` on `ProductInfoWithSubscription`. Decide whether to wire up or delete
 
 ### Pre-existing console.log noise (pre-dates this branch)
-- [ ] `LoginForm.tsx`, `RegisterForm.tsx` — 8 + 8 debug logs in auth flow
-- [ ] `CustomerContext.tsx` — 25+ debug logs across login/register/reset/update flows
-- [ ] `ClientProviders.tsx`, `ZendeskLauncher.tsx`, `ZendeskButton.tsx` — third-party script load logs
-- [ ] `RechargeSDKProvider.tsx`, `src/lib/recharge/config.ts` — SDK init logs
-- [ ] `src/lib/recharge/subscription-options.ts` — selling plan debug logs (will go once Recharge refactor lands)
-- [ ] `UnsplashImage.tsx`, `VideoCTA.tsx`, `HeroVideoV2.tsx` — misc logs
-- [ ] TODO claims "Remove all console.log statements (Phase 1)" was completed — clearly not done; update or re-do
+- [x] `LoginForm.tsx`, `RegisterForm.tsx` — 8 + 8 debug logs in auth flow → gated behind `debugLog` (`src/lib/debugLog.ts`), silent in prod
+- [x] `CustomerContext.tsx` — 30 debug logs across login/register/reset/update flows → gated behind `debugLog`, `console.error` calls preserved
+- [x] `ClientProviders.tsx`, `ZendeskLauncher.tsx`, `ZendeskButton.tsx` — third-party script load logs → removed; `console.error`/`console.warn` calls preserved as real failure signals
+- [ ] `RechargeSDKProvider.tsx`, `src/lib/recharge/config.ts` — SDK init logs (DEFERRED — will go with the Recharge refactor above)
+- [ ] `src/lib/recharge/subscription-options.ts` — selling plan debug logs (DEFERRED — will go with the Recharge refactor above)
+- [x] `UnsplashImage.tsx`, `VideoCTA.tsx`, `HeroVideoV2.tsx` — misc logs → removed
+- [x] Updated stale "Phase 1 complete" claim in the Completed section
 
 ## High Priority Features
 
@@ -101,7 +101,7 @@
 - [ ] Set up automated accessibility testing
 
 ## Completed ✅
-- [x] Remove all console.log statements (Phase 1)
+- [x] Remove all console.log statements (Phase 1) — partial; finished in chore/console-log-cleanup branch (auth flow gated behind `debugLog`, third-party + misc removed, Recharge SDK logs deferred to Recharge refactor)
 - [x] Fix tsconfig.json includes path (Phase 1)
 - [x] Add typecheck script to package.json (Phase 1)
 - [x] Remove unused critters dependency (Phase 1)

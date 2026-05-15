@@ -41,8 +41,8 @@ export default function HeroVideoV2() {
               video.addEventListener('loadeddata', () => {
                 video.play().then(() => {
                   setIsVideoLoaded(true);
-                }).catch((err) => {
-                  console.log('Video autoplay failed:', err);
+                }).catch(() => {
+                  // Autoplay can be blocked by the browser; nothing actionable.
                 });
               }, { once: true });
             }
