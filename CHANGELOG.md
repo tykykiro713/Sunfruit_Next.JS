@@ -5,6 +5,17 @@ All notable changes to the Sunfruit storefront are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-05-15
+
+### Added
+- New `/try` landing page — single-CTA, long-format conversion funnel for the `sunfruit-sample-pack` product. Hero, how-it-works, flavor showcase, why-Sunfruit, reviews + UGC strip, FAQ, closer, and sticky mobile CTA. Logo-only header (no nav, no sign-in) and legal-links-only footer to remove leak points.
+- 5 in-flow CTAs + 1 sticky mobile CTA, all wired to the existing direct-to-checkout flow (`createCart → addToCart → window.location.href = checkoutUrl`). One-time purchase only — no Recharge selling plan attached.
+- Marketing copy is "Try samples for free. Just pay $5 shipping." with "Ships today!" microcopy; FAQ explains the 5pm EST same-day shipping cutoff.
+
+### Notes
+- All non-product imagery on `/try` is placeholder (existing repo assets reused with inline swap-point comments). Final hero bundle shot, sachet-only flavor photography, and customer UGC tiles should be swapped in before the page goes into paid traffic.
+- Star rating shows 5.0 with a placeholder review count of 2,300 — replace with real numbers once the page is live.
+
 ## [0.1.2] - 2026-05-15
 
 ### Changed
