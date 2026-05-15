@@ -8,13 +8,16 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 ## [0.2.0] - 2026-05-15
 
 ### Added
-- New `/try` landing page — single-CTA, long-format conversion funnel for the `sunfruit-sample-pack` product. Hero, how-it-works, flavor showcase, why-Sunfruit, reviews + UGC strip, FAQ, closer, and sticky mobile CTA. Logo-only header (no nav, no sign-in) and legal-links-only footer to remove leak points.
-- 5 in-flow CTAs + 1 sticky mobile CTA, all wired to the existing direct-to-checkout flow (`createCart → addToCart → window.location.href = checkoutUrl`). One-time purchase only — no Recharge selling plan attached.
-- Marketing copy is "Try samples for free. Just pay $5 shipping." with "Ships today!" microcopy; FAQ explains the 5pm EST same-day shipping cutoff.
+- New `/try` landing page — single-CTA, long-form conversion funnel for the `sunfruit-sample-pack` product. Designed to be the entry point for paid traffic: minimal header (no nav, no sign-in), legal-only footer, sticky mobile CTA, and 5+ in-flow CTAs all wired to the existing direct-to-checkout flow. One-time purchase only — no Recharge selling plan attached.
+- **17-section long-form scroll** modeled on best-in-class DTC landing pages (Grüns vs. AG1, Magic Spoon, AG1 welcome kit). In order: hero with stat-anchored headline, 6-metric trust strip, emerald category-claim band ("the first daily organic beverage mix"), "what's in / what's not" wedge, mid-page CTA, 9 numbered reasons (long alternating-image scroll with an inline sodium bar-chart in reason #2), color-band flavor showcase (one band per flavor, swapped background hue), per-ingredient deep-dive card grid, 3-state comparison chart vs. Crystal Light and True Citrus, "Who Sunfruit is for" 4-persona grid, second mid-page CTA, full-bleed lifestyle pacing break, 6-card video-shaped testimonial grid with click-to-modal, 3 long-form "switched from…" reviews, expanded 10-question FAQ, and emerald closer with 0g/0mg/5-ingredient stat anchors.
+- **Sodium spotlight** in reason #2: inline bar chart comparing Sunfruit (0mg) to Liquid I.V. (510mg), Gatorade (270mg), and the AHA daily limit (2,300mg). Sourced from the American Heart Association's published guidelines.
+- **Comparison chart disclaimer** notes that competitor data is sourced from publicly available nutrition facts and should be verified before paid traffic.
 
 ### Notes
-- All non-product imagery on `/try` is placeholder (existing repo assets reused with inline swap-point comments). Final hero bundle shot, sachet-only flavor photography, and customer UGC tiles should be swapped in before the page goes into paid traffic.
-- Star rating shows 5.0 with a placeholder review count of 2,300 — replace with real numbers once the page is live.
+- All non-product imagery on `/try` is placeholder (existing repo assets reused, every section with an inline swap-point comment). Pre-paid-traffic checklist: hero bundle shot, per-ingredient close-ups, real customer UGC for the video grid, lifestyle break image, and final-CTA hero.
+- Review count (2,300) and 5.0 rating are placeholders — swap for real numbers once the page is live.
+- Competitor nutrition facts in the comparison chart (Crystal Light, True Citrus) reflect publicly available data; verify against current packaging before publication.
+- Marketing copy uses "Ships today!" — FAQ clarifies the 5pm EST same-day cutoff.
 
 ## [0.1.2] - 2026-05-15
 
