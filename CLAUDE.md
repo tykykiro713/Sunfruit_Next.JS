@@ -46,6 +46,9 @@ This is production with paid traffic. Treat every change as revenue-affecting.
 
 Pre-existing debt in this repo — be aware, flag if a change touches them:
 
-- Hardcoded Recharge selling-plan IDs go stale; a refactor is on the TODO.
-- `fetchPolicy: 'no-cache'` on product detail pages — performance debt.
-- Product recirculation filters are fragile.
+- **Stale Recharge selling-plan IDs.** `SELLING_PLAN_IDS` in `src/lib/recharge/types.ts` holds hardcoded IDs that are going stale (e.g. LEMON_MINT `7288389839` no longer exists on the live store). Pomegranate Rose and the new 48-pack products have no entries and hit the fallback path. A refactor of `src/lib/recharge/subscription-options.ts` to resolve plans from the product's actual `sellingPlanGroups` is on the TODO. Touch this area carefully.
+- **No-cache on PDPs.** `fetchProductByHandle` in `src/lib/shopify.ts` uses `fetchPolicy: 'no-cache'` — bypasses the Apollo cache on every product page load. Performance risk under paid traffic.
+- **Fragile recirculation filter.** `ProductRecirculation` filters by `handle.includes('24')` — brittle. A SKU-suffix or tag-based filter is the intended fix.
+- **Orphaned V2 form path.** `EnhancedProductFormV2`, `SizeSelector2Cards`, `SubscriptionMonthly3MonthCards` are retained for A/B testing but nothing wires `useNewLayout=true`. Decide to wire up or delete — don't assume it's dead code.
+- **Auth tokens in localStorage.** Authentication tokens are stored in `localStorage` rather than httpOnly cookies — a known security item on the TODO.
+- **Console.log noise.** Debug logs remain across auth flows (`LoginForm.tsx`, `RegisterForm.tsx`, `CustomerContext.tsx`), Recharge SDK init, and misc components — despite the TODO claiming Phase 1 cleanup was done. It wasn't.
