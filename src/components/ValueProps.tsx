@@ -5,8 +5,7 @@ const valueProps = [
   { text: 'NO SUGAR ADDED' },
   { text: 'NO SODIUM' },
   { text: 'NON-GMO' },
-  { text: 'PREBIOTIC' },
-  { text: 'NOTHING ARTIFICIAL' },
+  { text: 'VEGAN' },
 ];
 
 export default function ValueProps() {
