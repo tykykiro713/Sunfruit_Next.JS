@@ -135,6 +135,46 @@ since it's the login identity.
 
 ---
 
+## G. Eng-review resolutions (/plan-eng-review, 2026-06-24)
+
+**Scope (D1): DECOUPLE.** v1 = the migration foundation only. Defer the post-purchase
+quarterly upgrade BUILD (doc 04). Still: create the quarterly selling plan (cheap config)
+and submit the Shopify post-purchase beta-access request now (long pole). Honors the prior
+prepay-upsell design doc's discipline (defer the upsell until take-rate data justifies it).
+
+**Auth sequencing (2A): STRANGLER.** Stand up Customer Account API auth beside current auth
+→ migrate orders/addresses/settings → build subscription portal → delete Storefront-auth +
+Recharge last. Each step shippable and reversible. No big-bang cutover.
+
+**Action layer (2B): UNIFORM, ALL SERVER-SIDE.** cancel/skip/pause/swap all flow through one
+server-side action layer with a shared ownership guard, idempotency keys, and audit logging —
+even the actions that could run client-side via the customer token. v2 OpenClaw reuses the
+same routes.
+
+**Billing engine (2C): APP-MANAGED — verified against shopify.dev.** Shopify does NOT
+auto-bill subscription contracts. The app must call `subscriptionBillingAttemptCreate` on each
+cycle's `billingAttemptExpectedDate`. **Removing Recharge means building the recurring billing
+engine ourselves** — a new P1 component: a **Vercel Cron** daily job that finds due contracts,
+creates billing attempts (idempotency key), polls `attempt.ready`, routes failures to Klaviyo
+dunning, and handles the `CONTRACT_UNDER_REVIEW` fraud error (API 2023-10+). Money-moving and
+must-be-reliable: heaviest test + alerting burden in the foundation. Doc 03 badly understated this.
+
+**Adopted P1 recommendations (not forks):**
+- **One authorization chokepoint** — every Admin mutation passes through a single ownership
+  guard (customer owns the target contract). Per-route checks invite an IDOR.
+- **Dunning before teardown** — stand up + verify the Shopify billing-failure webhook → Klaviyo
+  path BEFORE removing `api/recharge/webhooks`, or failed payments go silent (lost revenue).
+- **Server-only module boundary** — Admin action layer lives in a server-only module
+  (`src/lib/shopify/admin/`) that can never be imported client-side. The offline token is a
+  store master key.
+- **Bundle the `fetchProductByHandle` no-cache fix** with the PDP selling-plan refactor.
+
+**Flag (not a blocker):** the ship-quarterly model reverses the 2026-05-21 design doc's
+deliberate ship-monthly choice. The discount is now claimed to be funded by freight/labor
+savings — **re-derive the unit economics** (the prior doc costed the consolidate-to-one-box
+scenario at ~−$1.40/quarter) before building the quarterly upsell. Not a launch blocker since
+the upsell build is deferred.
+
 ## F. Security notes
 
 - The Admin offline token is a store-wide master key — **server-side only**, never logged,
@@ -143,3 +183,20 @@ since it's the login identity.
   another's subscription).
 - `.env.local` holds a live `RECHARGE_API_KEY` (`sk_...`). It is gitignored (not committed).
   **Rotate it when Recharge is decommissioned.**
+
+## GSTACK REVIEW REPORT
+
+| Review | Trigger | Why | Runs | Status | Findings |
+|--------|---------|-----|------|--------|----------|
+| Eng Review | `/plan-eng-review` | Architecture & tests (required) | 1 | clean (SCOPE_REDUCED) | 7 issues, 0 critical gaps |
+| CEO Review | `/plan-ceo-review` | Scope & strategy | 0 | — | — |
+| Design Review | `/plan-design-review` | UI/UX gaps | 0 | — | — |
+
+**Scope:** reduced — v1 = migration foundation; post-purchase quarterly upgrade build deferred (D1=A).
+**Key decisions:** strangler auth migration (2A); uniform server-side action layer (2B); app-managed
+billing via Vercel Cron, verified against shopify.dev (2C).
+**Biggest surfaced risk:** removing Recharge means building the recurring billing engine ourselves
+(`subscriptionBillingAttemptCreate` cron) — money-moving, the docs understated it.
+**UNRESOLVED:** none.
+**VERDICT:** ENG CLEARED (scope-reduced) — ready to implement the foundation. Recommend the
+ship-quarterly economics re-derivation before the deferred upsell build.
