@@ -193,19 +193,85 @@ the upsell build is deferred.
   updates go through Shopify's hosted payment-update flow (the dunning email links to it).
   That is the one thing that would pull us out of SAQ A.
 
+## H. Portal & login UX spec (/plan-design-review, 2026-06-24)
+
+Reuse the existing vocabulary: `emeraldgreen-500` / `brightgreen-500` tokens,
+`rounded-md`/`rounded-lg border-2` cards, red-50/red-200 error boxes, emerald focus rings.
+The passwordless code-entry UI **already exists** in `RechargePortalAccess.tsx:50-110` (4-digit
+code card) — the new login reuses it at 6 digits with email instead of SMS.
+
+**Decisions:** dedicated `/account/subscriptions` page (D2); cancel = confirm **with a retention
+off-ramp** (D3); swap = **inline flavor picker** (D4).
+
+### Information architecture — `/account/subscriptions`
+New page in the account nav (Orders / Addresses / **Subscriptions** / Settings). One card per
+active contract:
+```
+┌─────────────────────────────────────────────┐
+│ [tin]  Lemon Mint                  ● Active   │  ← flavor = anchor + status pill
+│        1 tin · 24 sticks · monthly            │
+│        Next charge: Jul 12 · $38.00           │  ← prominent, the thing they care about
+│  ─────────────────────────────────────────    │
+│  [ Skip next ]  [ Pause ]  [ Swap flavor ]    │  ← primary actions, equal weight
+│                              Cancel subscription│  ← de-emphasized text link, separated
+└─────────────────────────────────────────────┘
+```
+
+### Interaction states (spec each — what the USER sees)
+```
+ACTION        | LOADING            | SUCCESS                      | ERROR
+--------------|--------------------|------------------------------|---------------------------
+Skip next     | btn spinner        | "Next delivery skipped to <date>" inline | "Couldn't skip — try again" + retry
+Pause         | btn spinner        | card shows ◐ Paused + Resume  | inline error, state unchanged
+Swap flavor   | picker disabled    | card flavor + tin update      | "Swap failed" + keep old flavor
+Cancel        | confirm btn spinner| card → Cancelled empty state  | inline error, sub stays active
+```
+
+### Cancel flow (retention off-ramp — D3)
+```
+Cancel subscription → step 1: "Before you go — too much on hand?"
+                                [ Skip next delivery ]  [ Pause instead ]
+                                "No thanks, cancel" (text link)
+                      → step 2: "Cancel for good? You'll lose your <discount>%."
+                                [ Keep subscription ]  [ Cancel subscription ]
+```
+Never one-tap destructive. The off-ramp is framed as helpful, not a guilt wall.
+
+### Empty / first-time state (a feature, not "No subscriptions found")
+Warm, branded: "No active subscription yet — subscribe and save 15%, skip or cancel anytime."
++ primary CTA to the shop. Reassure on flexibility (skip/cancel anytime) to lower commitment fear.
+
+### Passwordless login flow states (reuse `RechargePortalAccess` pattern)
+```
+enter email → "Code sent to you@email" → enter 6-digit code → success → /account
+   states: sending · code-sent · wrong-code ("That code didn't match") ·
+           expired ("Code expired — resend") · resend (cooldown timer) · success
+```
+Keep the centered large-tracking input. "Register" disappears — first sign-in creates the account.
+
+### Responsive & a11y
+- Mobile-first single column; actions stack full-width <480px; 44px min touch targets.
+- Labels visible (not placeholder-only); error boxes use text + color (not color alone).
+- Code input: `inputmode="numeric"`, `autocomplete="one-time-code"` (iOS SMS-autofill).
+- Cancel confirm + retention off-ramp keyboard-navigable; focus moves to the confirm step.
+- Status pills carry text, not just color (colorblind-safe): "Active" / "Paused" / "Cancelled".
+
+### Design score: 3/10 → 8/10 (mockups deferred — no OpenAI key; run `design setup` for visuals)
+
 ## GSTACK REVIEW REPORT
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
 | Eng Review | `/plan-eng-review` | Architecture & tests (required) | 1 | clean (SCOPE_REDUCED) | 7 issues, 0 critical gaps |
 | CEO Review | `/plan-ceo-review` | Scope & strategy | 0 | — | — |
-| Design Review | `/plan-design-review` | UI/UX gaps | 0 | — | — |
+| Design Review | `/plan-design-review` | UI/UX gaps | 1 | clean | score 3/10 → 8/10, 3 decisions |
 
 **Scope:** reduced — v1 = migration foundation; post-purchase quarterly upgrade build deferred (D1=A).
+**Design:** dedicated `/account/subscriptions` page; cancel with retention off-ramp; inline swap. Portal/login UX spec in §H. Mockups deferred (no OpenAI key).
 **Key decisions:** strangler auth migration (2A); uniform server-side action layer (2B); app-managed
 billing via Vercel Cron, verified against shopify.dev (2C).
 **Biggest surfaced risk:** removing Recharge means building the recurring billing engine ourselves
 (`subscriptionBillingAttemptCreate` cron) — money-moving, the docs understated it.
 **UNRESOLVED:** none.
-**VERDICT:** ENG CLEARED (scope-reduced) — ready to implement the foundation. Recommend the
-ship-quarterly economics re-derivation before the deferred upsell build.
+**VERDICT:** ENG + DESIGN CLEARED (scope-reduced) — ready to implement the foundation. Recommend
+the ship-quarterly economics re-derivation before the deferred upsell build.
