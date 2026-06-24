@@ -42,6 +42,10 @@ This is production with paid traffic. Treat every change as revenue-affecting.
 - `/qa` and `/qa-only` run against the branch's Vercel preview URL, not localhost.
 - Always exercise cart and subscription (Recharge) flows when QAing changes near them.
 
+## Conventions
+
+Performance, image/video/script-loading strategy, design tokens, and Next.js conventions are in [`docs/architecture.md`](docs/architecture.md). Backlog lives in `TODO.md`; shipped changes in `CHANGELOG.md`.
+
 ## Known landmines
 
 Pre-existing debt in this repo — be aware, flag if a change touches them:

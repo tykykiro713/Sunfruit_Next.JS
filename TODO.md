@@ -1,5 +1,18 @@
 # Sunfruit E-commerce TODO List
 
+## 🔴 Major Migration: Recharge → Native Shopify Subscriptions
+
+**Decision (2026-06-24):** Recharge removed from the tech stack. Replace with native Shopify subscriptions (selling plans managed in Shopify).
+
+- [ ] Integrate native Shopify subscriptions to replace Recharge
+- [ ] Reference: seven Shopify integration docs in `docs/integrations/shopify-subscriptions/`
+- [ ] ⚠️ Live subscription revenue runs through Recharge today — highest-risk path (cart/checkout/subscription). Plan migration of existing subscribers before flipping anything.
+- [ ] This **supersedes** the Recharge selling-plan refactor below — the hardcoded selling-plan-ID work is moot if migrating off Recharge entirely. Confirm direction before investing in it.
+- [ ] Retire `src/lib/recharge/`, `RechargeSDKProvider.tsx`, and the selling-plan IDs in `src/lib/recharge/types.ts` (load-bearing — tied to live subs).
+- [ ] Remove the `@rechargeapps/storefront-client` dependency once migrated.
+- [ ] Archive/remove legacy Recharge docs at repo root (`RECHARGE_IMPLEMENTATION_PLAN.md`, `RECHARGE_TECHNICAL_INTEGRATION.md`, `Recharge_complete_integration_guide.md`) once the migration lands.
+- [ ] Update CLAUDE.md stack context + landmines once the cutover is complete (currently still documents Recharge as live, which is accurate until then).
+
 ## Post-Deploy Follow-Ups (feature/new-product-layout)
 
 ### Recharge subscription plan robustness
