@@ -2,16 +2,22 @@
 
 ## 🔴 Major Migration: Recharge → Native Shopify Subscriptions
 
-**Decision (2026-06-24):** Recharge removed from the tech stack. Replace with native Shopify subscriptions (selling plans managed in Shopify).
+**Decision (2026-06-24):** Recharge removed from the tech stack. Sunfruit becomes its own subscription app on native Shopify subscriptions (Storefront + Customer Account + Admin APIs). Reference docs + Sunfruit decisions live in `docs/integrations/shopify-subscriptions/` — **start with `sunfruit-fit-and-decisions.md`.**
 
-- [ ] Integrate native Shopify subscriptions to replace Recharge
-- [ ] Reference: seven Shopify integration docs in `docs/integrations/shopify-subscriptions/`
-- [ ] ⚠️ Live subscription revenue runs through Recharge today — highest-risk path (cart/checkout/subscription). Plan migration of existing subscribers before flipping anything.
-- [ ] This **supersedes** the Recharge selling-plan refactor below — the hardcoded selling-plan-ID work is moot if migrating off Recharge entirely. Confirm direction before investing in it.
-- [ ] Retire `src/lib/recharge/`, `RechargeSDKProvider.tsx`, and the selling-plan IDs in `src/lib/recharge/types.ts` (load-bearing — tied to live subs).
-- [ ] Remove the `@rechargeapps/storefront-client` dependency once migrated.
-- [ ] Archive/remove legacy Recharge docs at repo root (`RECHARGE_IMPLEMENTATION_PLAN.md`, `RECHARGE_TECHNICAL_INTEGRATION.md`, `Recharge_complete_integration_guide.md`) once the migration lands.
-- [ ] Update CLAUDE.md stack context + landmines once the cutover is complete (currently still documents Recharge as live, which is accurate until then).
+**Prelaunch — no subscriber migration.** Sunfruit has no live subscribers yet, so there is no cutover/dual-run/data migration. Build native subs clean and remove Recharge outright.
+
+- [ ] Create native selling plan groups under our own app — monthly + quarterly-prepaid (bill = ship = 3 months, ship 3×24-pack in one box). Prerequisite (doc 05).
+- [ ] Provision Admin API offline token + Customer Account API client; verify Headless channel scopes (doc 06).
+- [ ] Refactor `src/lib/recharge/subscription-options.ts` → resolve the selling plan from the product's `sellingPlanGroups` by attribute (drops hardcoded `SELLING_PLAN_IDS`). Cart/PDP already use native Shopify selling plans, so this is the main PDP change (doc 01).
+- [ ] **Migrate** the whole account area from Storefront `customerAccessTokenCreate` (password) to the Customer Account API (OAuth, Confidential client, httpOnly session). Passwordless login (email 6-digit code / SSO with checkout); replaces `LoginForm`/`RegisterForm`/`recover`/`reset`. Also retires the localStorage-token landmine (doc 02).
+- [ ] Build the server-side Admin action layer (swap/cancel/skip/pause) with a per-route ownership check (doc 03). Keep it transport-agnostic so the v2 OpenClaw SMS/AI agent reuses it.
+- [ ] Submit the Shopify post-purchase extension live-store access request NOW (gated beta, long pole) — powers the quarterly upgrade (doc 04).
+- [ ] Replace `src/app/api/recharge/webhooks/route.ts` with Shopify subscription webhooks; repoint failed-charge dunning to the existing Klaviyo flow.
+- [ ] Remove the Recharge layer: `src/lib/recharge/` (client/auth/session/config/types/subscription-options), the `RechargePortalAccess` widget, the `@rechargeapps/storefront-client` dep, and `NEXT_PUBLIC_RECHARGE_*` / `RECHARGE_API_KEY` / `RECHARGE_WEBHOOK_SECRET` env. Rotate `RECHARGE_API_KEY` on decommission.
+- [ ] Archive/remove legacy Recharge docs at repo root (`RECHARGE_IMPLEMENTATION_PLAN.md`, `RECHARGE_TECHNICAL_INTEGRATION.md`, `Recharge_complete_integration_guide.md`).
+- [ ] Update CLAUDE.md stack context + landmines after cutover.
+
+This **supersedes** the standalone Recharge selling-plan refactor item below.
 
 ## Post-Deploy Follow-Ups (feature/new-product-layout)
 

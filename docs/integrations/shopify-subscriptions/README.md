@@ -7,11 +7,13 @@ migration section in [`TODO.md`](../../../TODO.md) for status and risks.
 
 ## Docs in this folder
 
-Start with **`shopify-headless-subscriptions-00-index.md`** — it explains the three-API
-model (Storefront / Customer Account / Admin) and the build order.
+**Start with `sunfruit-fit-and-decisions.md`** — Sunfruit-specific reality, decisions, and
+where they override the generic reference docs below. Then `...-00-index.md` for the
+three-API model and build order.
 
 | Doc | Purpose |
 | --- | --- |
+| `sunfruit-fit-and-decisions.md` | **Sunfruit decisions + corrections to the reference docs — read first** |
 | `sunfruit-subscription-portal-handoff.md` | Project handoff — the build plan these references support |
 | `shopify-headless-subscriptions-00-index.md` | Reference index + the three-API architecture model |
 | `shopify-headless-subscriptions-01-storefront-pdp-cart.md` | Selling plans on PDP, cart with subscription line |
