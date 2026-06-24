@@ -183,6 +183,15 @@ the upsell build is deferred.
   another's subscription).
 - `.env.local` holds a live `RECHARGE_API_KEY` (`sk_...`). It is gitignored (not committed).
   **Rotate it when Recharge is decommissioned.**
+- **PCI / cardholder data (verified vs shopify.dev):** Shopify vaults the card
+  (`CustomerPaymentMethod`) and holds PCI compliance (Level 1, extends to all stores).
+  The billing engine charges by **contract ID → vaulted token**; it never sees, transmits,
+  or stores the PAN. `subscriptionBillingAttemptCreate` does not accept card data. Building
+  the billing engine does **not** expand PCI scope — we stay **SAQ A** (same posture Recharge
+  gave us; Shopify Payments held the cards, not Recharge). Our risk is **access control +
+  idempotency**, not cardholder data. **Never build a custom card-entry/update form** — card
+  updates go through Shopify's hosted payment-update flow (the dunning email links to it).
+  That is the one thing that would pull us out of SAQ A.
 
 ## GSTACK REVIEW REPORT
 
