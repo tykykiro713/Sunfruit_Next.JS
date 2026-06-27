@@ -53,6 +53,7 @@ src/lib/mock-unsplash.ts
 *VINE*.md
 
 # Strategy & integration docs (reference only, not deployed)
+# Anchored to repo root so committed docs under docs/ are NOT ignored.
 LOOX_INTEGRATION_GUIDE.md
-sunfruit-*.md
+/sunfruit-*.md
 .gstack/
