@@ -1,5 +1,12 @@
 # 02 — Customer Account API: Auth + Portal (Cancel/Skip/Pause)
 
+> **🚫 RETIRED (Appstle).** This was the native portal's customer auth. **Appstle's hosted
+> portal authenticates customers itself** (passwordless magic link in subscription emails, or
+> Shopify customer accounts) and runs cancel/skip/pause/swap — so we do **not** adopt the
+> Customer Account API for subscriptions. The localStorage-token cleanup it would have brought
+> is now an *independent* security item. See `sunfruit-fit-and-decisions.md` §C. Content below
+> kept for reference only (e.g. if we ever build a DIY portal).
+
 **Purpose:** Authenticate the customer (OAuth 2.0 + PKCE) and power the self-service portal actions that are customer-scoped: cancel, skip, pause/resume.
 
 **API:** Customer Account API (GraphQL only). Customer-authenticated. Releases quarterly like other Shopify APIs.

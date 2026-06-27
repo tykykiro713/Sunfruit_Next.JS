@@ -1,21 +1,25 @@
 # Sunfruit E-commerce TODO List
 
-## 🔴 Major Migration: Recharge → Native Shopify Subscriptions
+## 🔴 Major Migration: Recharge → Appstle Subscriptions
 
-**Decision (2026-06-24):** Recharge removed from the tech stack. Sunfruit becomes its own subscription app on native Shopify subscriptions (Storefront + Customer Account + Admin APIs). Reference docs + Sunfruit decisions live in `docs/integrations/shopify-subscriptions/` — **start with `sunfruit-fit-and-decisions.md`.**
+**Decision (2026-06-24):** Recharge removed from the tech stack. **Pivot (2026-06-26):** the
+replacement is **Appstle**, not native Shopify subscriptions — native would have required us to
+build and operate our own recurring-billing engine, which Appstle runs for us. Reference docs +
+decisions live in `docs/integrations/appstle-subscriptions/` — **start with `sunfruit-fit-and-decisions.md`.**
 
-**Prelaunch — no subscriber migration.** Sunfruit has no live subscribers yet, so there is no cutover/dual-run/data migration. Build native subs clean and remove Recharge outright.
+**Prelaunch — no subscriber migration.** Sunfruit has no live subscribers yet (subscriptions are prelaunch; store has one-time-purchase revenue only), so there is no cutover/dual-run/data migration. Stand up Appstle clean and remove Recharge outright.
 
-- [ ] Create native selling plan groups under our own app — monthly + quarterly-prepaid (bill = ship = 3 months, ship 3×24-pack in one box). Prerequisite (doc 05).
-- [ ] Provision Admin API offline token + Customer Account API client; verify Headless channel scopes (doc 06).
-- [ ] Refactor `src/lib/recharge/subscription-options.ts` → resolve the selling plan from the product's `sellingPlanGroups` by attribute (drops hardcoded `SELLING_PLAN_IDS`). Cart/PDP already use native Shopify selling plans, so this is the main PDP change (doc 01).
-- [ ] **Migrate** the whole account area from Storefront `customerAccessTokenCreate` (password) to the Customer Account API (OAuth, Confidential client, httpOnly session). Passwordless login (email 6-digit code / SSO with checkout); replaces `LoginForm`/`RegisterForm`/`recover`/`reset`. Also retires the localStorage-token landmine (doc 02).
-- [ ] Build the server-side Admin action layer (swap/cancel/skip/pause) with a per-route ownership check (doc 03). Keep it transport-agnostic so the v2 OpenClaw SMS/AI agent reuses it.
-- [ ] Submit the Shopify post-purchase extension live-store access request NOW (gated beta, long pole) — powers the quarterly upgrade (doc 04).
-- [ ] Replace `src/app/api/recharge/webhooks/route.ts` with Shopify subscription webhooks; repoint failed-charge dunning to the existing Klaviyo flow.
-- [ ] Remove the Recharge layer: `src/lib/recharge/` (client/auth/session/config/types/subscription-options), the `RechargePortalAccess` widget, the `@rechargeapps/storefront-client` dep, and `NEXT_PUBLIC_RECHARGE_*` / `RECHARGE_API_KEY` / `RECHARGE_WEBHOOK_SECRET` env. Rotate `RECHARGE_API_KEY` on decommission.
+- [ ] Install Appstle; configure the **monthly** standard plan (bill=ship 1mo, qty 1) on each variant — this is what v1 uses. Also create the **90-day** plan (bill=ship 3mo, qty 3, larger discount, **not prepaid**) as the v2 upgrade target, but **do NOT surface it on the PDP.** Verify monthly renders in the Storefront API `sellingPlanGroups` (doc 05). Size the Appstle tier vs. sub MRR (§E).
+- [ ] **PDP unchanged** — point `src/lib/recharge/subscription-options.ts` at Appstle's **monthly** plan (cleanest via attribute resolution, which also drops the stale `SELLING_PLAN_IDS`). No quarterly on the PDP, no UX change (doc 01). Optional: bundle the `fetchProductByHandle` no-cache fix if it doesn't widen the change.
+- [ ] Replace the `RechargePortalAccess` widget with a branded `/account` entry point to Appstle's hosted portal (skip/swap/pause/cancel). Decide embed-vs-link-out (diligence). No Customer Account API migration needed.
+- [ ] Configure Appstle's native Klaviyo integration; map the billing-failure event to a dunning flow. **Verify end-to-end BEFORE removing the Recharge webhook.**
+- [ ] Remove the Recharge layer: `src/lib/recharge/` (client/auth/session/config/types/subscription-options), the `RechargePortalAccess` widget, the `@rechargeapps/storefront-client` dep, and `NEXT_PUBLIC_RECHARGE_*` / `RECHARGE_API_KEY` / `RECHARGE_WEBHOOK_SECRET` env. Replace/delete `src/app/api/recharge/webhooks/route.ts`. Rotate `RECHARGE_API_KEY` on decommission.
 - [ ] Archive/remove legacy Recharge docs at repo root (`RECHARGE_IMPLEMENTATION_PLAN.md`, `RECHARGE_TECHNICAL_INTEGRATION.md`, `Recharge_complete_integration_guide.md`).
 - [ ] Update CLAUDE.md stack context + landmines after cutover.
+
+**v2 (the only quarterly path):** thank-you-page one-click upgrade monthly→90-day — backend calls Appstle's API to change the live contract in place (plan 1mo→3mo, qty 1→3) on the vaulted card. PDP stays monthly-only. In-place change confirmed in Appstle's API; confirm next-charge re-anchor + the thank-you-page trigger surface, re-derive economics (§B5). Needs the API add-on. *(The Shopify post-purchase extension is dead for sub-on-sub.)*
+
+**Deferred (later):** DIY headless portal on Appstle's REST API (paid add-on); SMS/AI agent ("OpenClaw"); Customer Account API auth migration (now an independent localStorage-token security cleanup, §C).
 
 This **supersedes** the standalone Recharge selling-plan refactor item below.
 

@@ -1,5 +1,15 @@
 # 04 — Post-Purchase Quarterly Upgrade (Checkout Extension)
 
+> **⏸️ RE-SCOPED → v2 (Appstle).** The Shopify `Checkout::PostPurchase` extension described
+> below is **structurally dead** for our case — Shopify forbids adding/modifying a subscription
+> via the post-purchase changeset on an order that already contains a subscription (verified
+> 2026-06-26; same wall on Recharge/AfterSell/Zipify). **The replacement:** a one-click upgrade
+> on the Shopify **thank-you page** that calls **Appstle's API to change the live monthly
+> contract in place** (selling plan 1mo→3mo, qty 1→3) against the vaulted card — confirmed
+> viable. NOT prepaid; standard 90-day model. **v1 stays monthly-only (PDP unchanged); quarterly
+> exists only via this v2 thank-you-page upgrade.** See `sunfruit-fit-and-decisions.md` §B5.
+> Content below kept for reference on the (dead) post-purchase-extension mechanics only.
+
 **Purpose:** The PRIMARY quarterly-upgrade mechanism. After the customer completes a monthly subscription checkout, before the Thank You page, offer a one-tap upgrade to quarterly-prepaid. Then cancel the monthly contract.
 
 **API:** `Checkout::PostPurchase` extension. **NOT versioned** — does not follow the quarterly release schedule.

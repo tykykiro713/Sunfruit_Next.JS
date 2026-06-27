@@ -1,5 +1,12 @@
 # 01 — Storefront API: PDP Selling Plans + Subscription Cart
 
+> **✅ KEEP (Appstle) — PDP behavior UNCHANGED in v1.** The PDP stays exactly as today:
+> monthly-only subscribe toggle. **Quarterly is NOT added to the PDP** (decided 2026-06-27 —
+> it's a v2 thank-you-page upsell, see §B5). The only v1 change is invisible: the **monthly**
+> selling plan the PDP resolves moves from Recharge-managed → Appstle-managed (Appstle
+> repopulates the native `sellingPlanGroups`), so `subscription-options.ts` must point at
+> Appstle's monthly plan. No UX/layout change. See `sunfruit-fit-and-decisions.md` §B5/§D.
+
 **Purpose:** Read selling plans on the product page, render the subscribe toggle (monthly / quarterly), and create a cart with the chosen subscription line. This is the PDP work — mostly already built.
 
 **API:** Storefront API (public token `X-Shopify-Storefront-Access-Token`). Separate cost bucket from Admin API.
@@ -28,6 +35,7 @@
 - Hand off via the cart's `checkoutUrl`.
 
 ## For Sunfruit specifically
-- Flat SKUs each carry their own selling plan group with TWO plans: monthly and quarterly-prepaid (see `05`).
-- The PDP toggle = picking which `sellingPlanId` goes on the cart line. Monthly vs. quarterly is purely which ID you pass.
-- Quarterly is presented at checkout as an option; the post-purchase upgrade (`04`) is the secondary capture.
+- **v1 PDP = monthly only, unchanged.** The toggle resolves the monthly `sellingPlanId` (now
+  from Appstle's plan group) and passes it on the cart line — same as today.
+- The 90-day plan exists in Appstle but is **not** shown on the PDP; it's the target of the v2
+  thank-you-page upgrade (`04`), not a PDP choice.

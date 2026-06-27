@@ -1,5 +1,11 @@
 # 06 — Headless Channel Setup (Tokens, Scopes, Client Types)
 
+> **🚫 MOSTLY RETIRED (Appstle).** The only part that still applies: the **Storefront API
+> public token with `unauthenticated_read_selling_plans`** (so the PDP can read native selling
+> plans) — which the storefront **already has**. The Admin offline token and Customer Account
+> API client described below are **not needed** (Appstle owns contracts + the portal). See
+> `sunfruit-fit-and-decisions.md` §C/§D. Content below kept for reference only.
+
 **Purpose:** The plumbing. Install the Headless channel, get your tokens, set the right scopes, and configure the Customer Account API client. Do this before wiring any API calls.
 
 ## Canonical docs

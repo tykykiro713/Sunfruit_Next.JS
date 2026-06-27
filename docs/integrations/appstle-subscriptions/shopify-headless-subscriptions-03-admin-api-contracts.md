@@ -1,5 +1,13 @@
 # 03 — Admin API: Subscription Contracts (Swap, Edit, Cancel, Billing Cycles)
 
+> **🚫 RETIRED (Appstle).** This was the self-built server-side action layer for the native
+> build — including the recurring-billing engine (`subscriptionBillingAttemptCreate` on a cron)
+> whose risk/cost killed the native plan. **Appstle owns the contracts, the billing, and the
+> skip/swap/pause/cancel actions.** We build none of this in v1. If a v2 SMS/AI agent or DIY
+> portal ever needs programmatic contract control, it would use **Appstle's REST API** (paid
+> add-on), not Shopify's Admin API. See `sunfruit-fit-and-decisions.md` §0/§B4. Content below
+> kept for reference only.
+
 **Purpose:** The server-side action layer. Powers flavor swap, the portal-based quarterly upgrade (fallback), the cancel-the-monthly step in the post-purchase flow, and any contract editing.
 
 **API:** Admin GraphQL API. **Offline token, server-side ONLY.** Never expose to the client.

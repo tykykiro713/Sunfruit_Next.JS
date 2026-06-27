@@ -1,9 +1,13 @@
-# 05 — Selling Plans Config (Monthly + Quarterly-Prepaid)
+# 05 — Selling Plans Config (Monthly + 90-day)
 
-> **⚠️ Sunfruit override:** Sunfruit ships **quarterly** — billing interval = delivery
-> interval = 3 months, one box of 3×24-pack. We do **NOT** use the ship-monthly / decoupled
-> billing-and-delivery model described below; it is a Shopify capability we are not using.
-> Our quarterly plan is a standard plan. See `sunfruit-fit-and-decisions.md` (§B2).
+> **✅ KEEP (Appstle), with two overrides:**
+> 1. **Plans are created in Appstle's admin**, not under our own native app — Appstle creates
+>    native Shopify selling plan groups under the hood, which our PDP then reads via the
+>    Storefront API.
+> 2. **Sunfruit model (REVISED 2026-06-26): NOT prepaid.** Each variant's plan group has **two
+>    standard plans** — monthly (bill = ship 1mo, qty 1) and **90-day** (bill = ship 3mo, qty 3,
+>    larger discount). One charge + one shipment every 90 days. We do **NOT** use prepaid or the
+>    ship-monthly / decoupled model described below. See `sunfruit-fit-and-decisions.md` (§B2/§B3).
 
 **Purpose:** The prerequisite for EVERYTHING. Selling plan groups define how each flat SKU can be sold as a subscription. Both the PDP toggle and the post-purchase upgrade depend on these existing and rendering correctly in the Storefront API.
 

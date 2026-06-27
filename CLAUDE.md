@@ -1,5 +1,15 @@
 # Sunfruit Storefront
 
+## Communication style (override default verbosity)
+
+Talk to Tyson like an ER doctor briefing a colleague. Lead with the answer.
+
+- **Bottom line first.** Headline + your recommendation, then supporting detail only if needed.
+- **Bullets, not paragraphs.** No throat-clearing, no recaps of what was asked, no closing summaries.
+- **Cut commentary.** State facts and the call. Don't explain your reasoning unless asked or it changes the decision.
+- **Flag uncertainty in a word** ("unverified," "assume"), don't write a paragraph hedging.
+- Keep mission-critical info; drop everything else. Shorter is better.
+
 ## Skill routing
 
 When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
@@ -20,11 +30,13 @@ Key routing rules:
 
 ## Stack context
 
-Sunfruit storefront — live DTC store with real customers and real subscription revenue.
+Sunfruit storefront — live DTC store with real customers and paid traffic (one-time
+purchase revenue). **No subscribers yet — subscriptions are prelaunch**, so the
+Recharge → Appstle migration has no live subscriber base to migrate.
 
 - **Frontend:** Next.js 16 (App Router)
 - **Commerce backend:** Shopify Storefront API (hosted — not editable from this repo)
-- **Subscriptions:** Recharge
+- **Subscriptions:** Recharge (live) — **migrating to Appstle Subscriptions.** Native Shopify subscriptions were scoped then abandoned (would have required building our own billing engine). Scope/decisions: `docs/integrations/appstle-subscriptions/` (start with `sunfruit-fit-and-decisions.md`).
 - **Hosting/deploy:** Vercel (preview deploy per branch, production on main)
 
 ## Guardrails
@@ -33,7 +45,7 @@ This is production with paid traffic. Treat every change as revenue-affecting.
 
 - Always work on a branch. Never commit directly to main, never auto-merge a PR.
 - A human reviews and merges every PR. Agents open PRs; they do not land them.
-- Never edit Recharge selling-plan IDs without explicitly flagging it first — these are load-bearing and tied to live subscriptions.
+- Never edit Recharge selling-plan IDs without explicitly flagging it first — they are load-bearing in the live subscribe/checkout flow (no subscribers yet, but the purchase path is live).
 - Do not attempt to modify Shopify configuration; it is not in this repo. Only the Next.js integration layer is in scope.
 - Cart, checkout, and subscription flows are the highest-risk paths — extra review and QA on any change touching them.
 
