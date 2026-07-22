@@ -37,6 +37,7 @@ This **supersedes** the standalone Recharge selling-plan refactor item below.
 - [ ] `fetchProductByHandle` uses `fetchPolicy: 'no-cache'` (`src/lib/shopify.ts`) — bypasses Apollo cache on every PDP load. Reconsider `cache-and-network` or short TTL to protect Core Web Vitals under paid traffic
 - [ ] `ProductRecirculation` filters by `handle.includes('24')` — fragile. Switch to SKU suffix `-24PK` or tag-based filter
 - [ ] V2 form path orphaned: `EnhancedProductFormV2`, `SizeSelector2Cards`, `SubscriptionMonthly3MonthCards` retained for A/B but no caller wires `useNewLayout=true` on `ProductInfoWithSubscription`. Decide whether to wire up or delete
+- [ ] SEO/canonical: `src/app/sitemap.ts` uses `baseUrl = 'https://sunfruit.com'` (apex), but production canonicalizes to **www** (apex 308-redirects to `https://www.sunfruit.com`). Sitemap advertises URLs that redirect. Fix: `baseUrl = 'https://www.sunfruit.com'`. Low priority — Google tolerates the redirect.
 
 ### Pre-existing console.log noise (pre-dates this branch)
 - [x] `LoginForm.tsx`, `RegisterForm.tsx` — 8 + 8 debug logs in auth flow → gated behind `debugLog` (`src/lib/debugLog.ts`), silent in prod
