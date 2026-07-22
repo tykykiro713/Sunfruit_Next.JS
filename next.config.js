@@ -117,6 +117,25 @@ const nextConfig = {
     SHOPIFY_STOREFRONT_ACCESS_TOKEN: process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
   },
 
+  // Reverse proxy for PostHog — routes analytics through this origin so
+  // ad-blockers / Safari ITP don't drop events. /ingest/static serves the SDK
+  // assets; /ingest/* is the event + decide/flags API. Order matters: the
+  // static rule must precede the catch-all.
+  async rewrites() {
+    return [
+      {
+        source: '/ingest/static/:path*',
+        destination: 'https://us-assets.i.posthog.com/static/:path*',
+      },
+      {
+        source: '/ingest/:path*',
+        destination: 'https://us.i.posthog.com/:path*',
+      },
+    ];
+  },
+  // Required for the PostHog proxy: don't append a trailing slash to /ingest.
+  skipTrailingSlashRedirect: true,
+
   // Output configuration
   output: 'standalone',
   
