@@ -408,7 +408,7 @@ export async function createCart(): Promise<string> {
 }
 
 // Create a cart with multiple lines + cart attributes in one call; returns the
-// checkoutUrl (or null on failure). Used by the /offices order flow so the
+// checkoutUrl (or null on failure). Used by the /quickorder order flow so the
 // company name rides through to the order as a custom attribute.
 export async function createCartWithLines(
   lines: CartLineInput[],

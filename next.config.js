@@ -29,9 +29,12 @@ const nextConfig = {
     ],
   },
 
-  // Compiler optimizations
+  // Compiler optimizations. Keep console.error in production — every failure
+  // path in the checkout flows reports through it; stripping it leaves zero
+  // signal when revenue pages start failing.
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole:
+      process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
   },
 
   // Source maps for production debugging (optional)

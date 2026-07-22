@@ -44,9 +44,11 @@ export default function OfficeOrderForm({ flavors }: OfficeOrderFormProps) {
     [flavors, selections],
   );
 
-  // All flavors share the same case size/price; derive the per-stick figure once.
-  const pricePerStick = flavors[0]
-    ? flavors[0].casePrice / flavors[0].sticksPerCase
+  // All flavors share the same case size/price; derive the per-stick figure from
+  // the first flavor that actually resolved a price (flavors[0] may have failed).
+  const pricedFlavor = flavors.find((f) => f.casePrice > 0);
+  const pricePerStick = pricedFlavor
+    ? pricedFlavor.casePrice / pricedFlavor.sticksPerCase
     : 0;
 
   const companyProvided = companyName.trim().length > 0;
@@ -64,36 +66,45 @@ export default function OfficeOrderForm({ flavors }: OfficeOrderFormProps) {
     if (!canCheckout || isSubmitting) return;
 
     setIsSubmitting(true);
-    trackEvent("add_to_cart", {
-      currency: "USD",
-      value: pricePerDelivery,
-      items: flavors
-        .filter((f) => (selections[f.key] ?? 0) > 0)
-        .map((f) => ({
-          item_id: f.sku,
-          item_name: f.name,
-          price: f.casePrice,
-          quantity: selections[f.key],
-        })),
-    });
-    trackEvent("begin_checkout", {
-      currency: "USD",
-      value: pricePerDelivery,
-      total_cases: totalCases,
-    });
-
     try {
       const checkout = await startOfficeSubscriptionCheckout({
         flavors,
         selections,
         companyName,
       });
-      // On success the browser redirects to Shopify; only non-redirect states
-      // surface here.
-      if (checkout.status !== "redirecting") setResult(checkout);
-    } finally {
-      setIsSubmitting(false);
+      if (checkout.status === "redirecting") {
+        // Fire funnel events only for a checkout that actually started, so GA
+        // doesn't count carts that never existed. Browser is navigating away;
+        // keep the button disabled (no setIsSubmitting(false)) to block a
+        // double-submit creating a second cart during the redirect.
+        trackEvent("add_to_cart", {
+          currency: "USD",
+          value: pricePerDelivery,
+          items: flavors
+            .filter((f) => (selections[f.key] ?? 0) > 0)
+            .map((f) => ({
+              item_id: f.sku,
+              item_name: f.name,
+              price: f.casePrice,
+              quantity: selections[f.key],
+            })),
+        });
+        trackEvent("begin_checkout", {
+          currency: "USD",
+          value: pricePerDelivery,
+          total_cases: totalCases,
+        });
+        return;
+      }
+      setResult(checkout);
+    } catch (error) {
+      console.error("[quickorder] checkout failed:", error);
+      setResult({
+        status: "error",
+        message: "Sorry — we couldn’t start checkout. Please try again.",
+      });
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -195,6 +206,7 @@ export default function OfficeOrderForm({ flavors }: OfficeOrderFormProps) {
           type="text"
           autoComplete="organization"
           required
+          maxLength={255}
           value={companyName}
           onChange={(e) => {
             setResult(null);
@@ -231,7 +243,9 @@ export default function OfficeOrderForm({ flavors }: OfficeOrderFormProps) {
             Add at least one case to continue.
           </p>
         )}
-        {result?.status === "error" && (
+        {/* "error" and "empty" both need a visible message — "empty" can occur
+            with cases selected if every selected flavor failed to resolve. */}
+        {result && result.status !== "redirecting" && (
           <p className="mt-2 text-center text-sm text-red-600">
             {result.message}
           </p>

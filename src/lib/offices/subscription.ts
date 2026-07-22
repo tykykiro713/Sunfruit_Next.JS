@@ -1,7 +1,7 @@
 /**
  * OFFICE PANTRY CHECKOUT SEAM
  * ------------------------------------------------------------------------------
- * The only module that knows how /offices turns a selection into a Shopify cart.
+ * The only module that knows how /quickorder turns a selection into a Shopify cart.
  *
  * Product data (variant GID, price, image) is live — resolved from the real
  * Shopify case-pack products by handle in `./products` (`resolveOfficeFlavors`).
@@ -33,6 +33,12 @@ import { createCartWithLines, type CartLineInput } from "@/lib/cart";
  */
 export const OFFICE_RETAIL_PRICE_PER_STICK = 1.6;
 
+/**
+ * Sentinel for "no Appstle plan yet". Referenced by both officeFlavors and
+ * buildOfficeCartLines so a typo can't silently attach a bogus plan id.
+ */
+export const PLACEHOLDER_SELLING_PLAN_ID = "REPLACE_ME";
+
 /** Static config for an office case flavor. Live price/variant/image are resolved
  *  from Shopify at request time — see `resolveOfficeFlavors` in `./products`. */
 export interface OfficeFlavorConfig {
@@ -63,7 +69,7 @@ export const officeFlavors: OfficeFlavorConfig[] = [
     sku: "VAR-CASEPK",
     caseDescriptor: "12 tins · 288 sticks / case",
     sticksPerCase: 288,
-    sellingPlanId: "REPLACE_ME", // TODO(appstle): shared monthly plan
+    sellingPlanId: PLACEHOLDER_SELLING_PLAN_ID, // TODO(appstle): shared monthly plan
   },
   {
     key: "raspberry-hibiscus",
@@ -72,7 +78,7 @@ export const officeFlavors: OfficeFlavorConfig[] = [
     sku: "RH-CASE",
     caseDescriptor: "12 tins · 288 sticks / case",
     sticksPerCase: 288,
-    sellingPlanId: "REPLACE_ME", // TODO(appstle): shared monthly plan
+    sellingPlanId: PLACEHOLDER_SELLING_PLAN_ID, // TODO(appstle): shared monthly plan
   },
   {
     key: "pomegranate-rose",
@@ -81,7 +87,7 @@ export const officeFlavors: OfficeFlavorConfig[] = [
     sku: "PR-CASE",
     caseDescriptor: "12 tins · 288 sticks / case",
     sticksPerCase: 288,
-    sellingPlanId: "REPLACE_ME", // TODO(appstle): shared monthly plan
+    sellingPlanId: PLACEHOLDER_SELLING_PLAN_ID, // TODO(appstle): shared monthly plan
   },
   {
     key: "blueberry-lavender",
@@ -90,7 +96,7 @@ export const officeFlavors: OfficeFlavorConfig[] = [
     sku: "BL-CASE",
     caseDescriptor: "12 tins · 288 sticks / case",
     sticksPerCase: 288,
-    sellingPlanId: "REPLACE_ME", // TODO(appstle): shared monthly plan
+    sellingPlanId: PLACEHOLDER_SELLING_PLAN_ID, // TODO(appstle): shared monthly plan
   },
   {
     key: "lemon-mint",
@@ -99,7 +105,7 @@ export const officeFlavors: OfficeFlavorConfig[] = [
     sku: "LM-CASE",
     caseDescriptor: "12 tins · 288 sticks / case",
     sticksPerCase: 288,
-    sellingPlanId: "REPLACE_ME", // TODO(appstle): shared monthly plan
+    sellingPlanId: PLACEHOLDER_SELLING_PLAN_ID, // TODO(appstle): shared monthly plan
   },
 ];
 
@@ -135,8 +141,11 @@ export function buildOfficeCartLines(
         quantity: selections[flavor.key],
       };
       // One-time today (no plan on the products yet). The moment a real monthly
-      // Appstle plan id replaces "REPLACE_ME", lines become subscriptions.
-      if (flavor.sellingPlanId && flavor.sellingPlanId !== "REPLACE_ME") {
+      // Appstle plan id replaces the placeholder, lines become subscriptions.
+      if (
+        flavor.sellingPlanId &&
+        flavor.sellingPlanId !== PLACEHOLDER_SELLING_PLAN_ID
+      ) {
         line.sellingPlanId = flavor.sellingPlanId;
       }
       return line;
@@ -146,7 +155,7 @@ export function buildOfficeCartLines(
 export interface OfficeCheckoutInput {
   flavors: ResolvedOfficeFlavor[];
   selections: OfficeSelections;
-  /** Company name — captured on /offices, carried to the order as a cart attribute. */
+  /** Company name — captured on /quickorder, carried to the order as a cart attribute. */
   companyName: string;
 }
 
@@ -172,7 +181,14 @@ export async function startOfficeSubscriptionCheckout(
     return { status: "empty", message: "Add at least one case to continue." };
   }
 
-  const companyName = input.companyName.trim();
+  // Strip control chars and cap length — this value lands on the Shopify order
+  // and gets rendered by staff-facing tools (packing slips, order printers)
+  // that may not escape it. An oversized value also trips a cartCreate
+  // userError whose detail never reaches the user.
+  const companyName = input.companyName
+    .replace(/[\u0000-\u001f\u007f]/g, "")
+    .trim()
+    .slice(0, 255);
   const cartAttributes = companyName
     ? [{ key: "company_name", value: companyName }]
     : [];

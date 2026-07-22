@@ -94,3 +94,25 @@ The 4 case-pack products now exist in Shopify and are published to the headless 
    util) + `company_name` cart attribute + redirect to `checkoutUrl`.
 3. Confirm Storefront token has `unauthenticated_read_selling_plans`.
 4. Verify all lines land in ONE monthly contract (shared `sellingPlanId`).
+
+## Update 2026-07-22 — route is /quickorder + pre-landing review hardening
+Corrections to this log: the route shipped as **`/quickorder`** (`src/app/quickorder/page.tsx`),
+not `/offices`, and there are **5 flavors** (Variety Pack — All Flavors added, SKU `VAR-CASEPK`).
+Internal dirs remain `src/lib/offices/` + `src/components/offices/`.
+
+Review fixes applied before landing (PR #15):
+- **Strict SKU match** in `resolveOfficeFlavors` — removed the silent `variants[0]` fallback;
+  a stale SKU now disables the flavor + logs, instead of selling the wrong variant.
+  `availableForSale` now requires a resolved variant and price > 0. All 5 SKUs verified
+  against the live store ($345/case, available).
+- **ISR (`revalidate = 3600`)** — the route was prerendering statically at build time,
+  freezing prices/availability until the next deploy.
+- **Background image** — 1.94 MB PNG → 62 KB WebP; dropped `background-attachment: fixed`
+  (iOS jank); added preload. Old PNG deleted.
+- **Form**: catch on checkout (thrown errors now show a message); "empty" result rendered;
+  GA `add_to_cart`/`begin_checkout` fire only after cart creation succeeds; button stays
+  disabled during the redirect (double-submit → duplicate carts); company name capped at
+  255 chars + control chars stripped before the cart attribute.
+- **`next.config.js`**: `removeConsole` now excludes `console.error` in production —
+  checkout failure paths were being stripped to zero telemetry.
+- `PLACEHOLDER_SELLING_PLAN_ID` constant replaces the 6 scattered `"REPLACE_ME"` literals.

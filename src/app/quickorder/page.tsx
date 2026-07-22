@@ -5,13 +5,18 @@ import { resolveOfficeFlavors } from "@/lib/offices/products";
 
 // Public but UNLINKED + UNINDEXED — direct-URL only. Also excluded from
 // src/app/sitemap.ts (which uses an explicit allowlist, so /quickorder is omitted).
+
+// ISR: without this the route prerenders statically at build time, freezing
+// prices/availability/variant GIDs until the next deploy. Refresh hourly.
+export const revalidate = 3600;
+
 export const metadata = {
   title: "Quick Order — Cases — Sunfruit",
   description: "Order Sunfruit by the case, delivered monthly to your office.",
   robots: { index: false, follow: false },
 };
 
-export default async function OfficesPage() {
+export default async function QuickOrderPage() {
   const flavors = await resolveOfficeFlavors();
 
   return (
@@ -19,13 +24,15 @@ export default async function OfficesPage() {
       className="flex min-h-screen flex-col bg-yellow-50"
       style={{
         backgroundImage:
-          "linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.25)), url('/images/Lemon_slice_bg.png')",
+          "linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.25)), url('/images/Lemon_slice_bg.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        backgroundAttachment: "fixed",
       }}
     >
+      {/* React 19 hoists this to <head>; the background is the LCP element but
+          CSS-referenced images are discovered late without a preload. */}
+      <link rel="preload" as="image" href="/images/Lemon_slice_bg.webp" />
       {/* Minimal logo-only header (no nav, no sign-in) */}
       <header className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-2xl items-center justify-center px-4 py-3 sm:px-6 lg:px-8">
