@@ -6,6 +6,7 @@ import "./globals.css";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import GoogleAdsTag from "@/components/GoogleAdsTag";
 import ClientProviders from "@/components/ClientProviders";
+import PostHogProvider from "@/components/PostHogProvider";
 import "@/lib/recharge/client"; // Initialize Recharge SDK
 
 // CRITICAL: Changed font loading strategy for production
@@ -86,6 +87,7 @@ export default function RootLayout({
           <GoogleAnalytics />
         </Suspense>
         <GoogleAdsTag />
+        <PostHogProvider />
       </body>
     </html>
   );

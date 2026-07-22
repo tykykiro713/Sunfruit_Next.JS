@@ -1,13 +1,19 @@
 // lib/analytics.ts
-type EventParams = Record<string, any>;
+import { posthogCapture } from '@/lib/posthog';
+
+type EventParams = Record<string, unknown>;
 
 /**
- * Track a general event in Google Analytics
+ * Track a general event. Fans out to Google Analytics and PostHog from a single
+ * call site, so every existing trackEvent() (add_to_cart, begin_checkout,
+ * sample_request, etc.) lands in both. The PostHog call no-ops until its SDK
+ * has loaded.
  */
 export const trackEvent = (eventName: string, params: EventParams = {}) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', eventName, params);
   }
+  posthogCapture(eventName, params);
 };
 
 /**
