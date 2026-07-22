@@ -131,6 +131,23 @@ export const CREATE_CART = gql`
   }
 `;
 
+// One-shot: create a cart with lines + cart-level attributes (e.g. company_name),
+// and return its checkoutUrl. Cart attributes surface as order custom attributes.
+export const CREATE_CART_WITH_LINES = gql`
+  mutation CartCreateWithLines($input: CartInput!) {
+    cartCreate(input: $input) {
+      cart {
+        id
+        checkoutUrl
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
 export const ADD_TO_CART = gql`
   mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
     cartLinesAdd(cartId: $cartId, lines: $lines) {
@@ -387,6 +404,36 @@ export async function createCart(): Promise<string> {
   } catch (error) {
     console.error("Error creating cart:", error);
     throw error;
+  }
+}
+
+// Create a cart with multiple lines + cart attributes in one call; returns the
+// checkoutUrl (or null on failure). Used by the /quickorder order flow so the
+// company name rides through to the order as a custom attribute.
+export async function createCartWithLines(
+  lines: CartLineInput[],
+  attributes: Array<{ key: string; value: string }> = [],
+): Promise<string | null> {
+  try {
+    const { data } = await client.mutate<{
+      cartCreate: {
+        cart: { id: string; checkoutUrl: string } | null;
+        userErrors: Array<{ field: string[] | null; message: string }>;
+      };
+    }>({
+      mutation: CREATE_CART_WITH_LINES,
+      variables: { input: { lines, attributes } },
+    });
+
+    const userErrors = data?.cartCreate.userErrors ?? [];
+    if (userErrors.length > 0) {
+      console.error("cartCreate userErrors:", userErrors);
+      return null;
+    }
+    return data?.cartCreate.cart?.checkoutUrl ?? null;
+  } catch (error) {
+    console.error("Error creating cart with lines:", error);
+    return null;
   }
 }
 
