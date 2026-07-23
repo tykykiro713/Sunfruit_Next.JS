@@ -6,7 +6,7 @@ import { initPostHog } from "@/lib/posthog";
 /**
  * Loads + initializes PostHog after hydration, off the critical path.
  *
- * Unlike Zendesk/Clarity/Klaviyo (interaction-gated in ClientProviders), this
+ * Unlike Zendesk/Klaviyo (interaction-gated in ClientProviders), this
  * fires on mount via requestIdleCallback: product analytics is far less useful
  * if it only starts after the user clicks something — we'd miss pageviews,
  * bounces, and the top of every funnel. Idle scheduling keeps it off the
