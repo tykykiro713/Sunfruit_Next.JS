@@ -112,6 +112,18 @@ This **supersedes** the standalone Recharge selling-plan refactor item below.
 - [ ] Implement A/B testing framework
 - [ ] Add performance monitoring
 
+### PostHog follow-ups (post-integration)
+PostHog is live (analytics + autocapture + session replay, via same-origin `/ingest` proxy; Clarity removed to avoid double-recording). Next, in rough value order:
+
+- [ ] **Tie funnels to logged-in customers.** Call `posthogIdentify(customerId, { email })` on login and `posthogReset()` on logout in `src/context/CustomerContext.tsx`. Helpers already exported from `src/lib/posthog.ts`. Turns anonymous sessions into known-customer journeys → per-customer funnels, cohorts, and retention. Small, additive; touches the auth flow so QA the login/logout path.
+- [ ] **Capture the actual purchase/revenue (server-side).** Checkout completes on Shopify's hosted domain (off our origin), so no client-side `purchase` event fires — every funnel currently dead-ends at `begin_checkout` with zero revenue attribution. Fix: Shopify `orders/create` webhook → PostHog capture API (server) emitting a `purchase` event with order value + `company_name`. This is the single biggest analytics gap.
+- [ ] **Build the core conversion funnel** in the PostHog dashboard: pageview → `add_to_cart` → `begin_checkout` → `purchase` (once the event above lands). All but `purchase` already flow.
+- [ ] **Feature flags for the orphaned V2/V3 PDP A/B** (resolves a known landmine). The `useNewLayout` A/B path has no wiring; a PostHog feature flag can drive that experiment cleanly with real conversion readout, instead of the dead code path. Decide via data whether to keep or delete the V2 components.
+- [ ] **Frontend error tracking.** Wire PostHog exception capture into the existing `ErrorHandler` / error boundaries so prod JS errors are visible alongside sessions (complements the `console.error` we kept in prod).
+- [ ] **Group analytics by company** for `/quickorder`. Office orders already carry a `company_name` cart attribute — grouping PostHog events by company surfaces per-office behavior for the B2B flow.
+- [ ] **Re-enable heatmaps** via the PostHog toolbar to replace the Clarity heatmaps we dropped (no code — toolbar + authorized domain).
+- [ ] After confirming PostHog is stable in prod, delete the now-unused `NEXT_PUBLIC_CLARITY_PROJECT_ID` env var from Vercel.
+
 ## Low Priority Features
 
 ### 9. Admin Features
